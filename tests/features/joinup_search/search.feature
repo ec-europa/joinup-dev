@@ -126,12 +126,9 @@ Feature: Global search
     And I should not see the "Spherification" tile
     And I should not see the "Foam" tile
 
-    # Reset the search by visiting again the search page.
-    Given I am on the search page
-    Then I should see the text "Content types" in the "Left sidebar" region
-
     # Select link in the 'type' facet.
-    When I check the "News (5)" checkbox from the "Content types" facet form
+    Given I am on the search page
+    When I select "News (5)" from the "Content types" select facet form
     And I click Search in facets form
     Then the option with text "News (5)" from select facet form "Content types" is selected
     And the "Content types" select facet form should contain the following options:
@@ -139,7 +136,7 @@ Feature: Global search
       | News (5)        |
       | Solutions (2)   |
 
-    When I check the "Solutions (2)" checkbox from the "Content types" facet form
+    When I select "Solutions (2)" option in the "Content types" select facet form
     And I click Search in facets form
     And I should see the following facet summary "News, Solutions"
     And the "Content types" select facet form should contain the following options:
@@ -318,14 +315,15 @@ Feature: Global search
     Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
-    When I enter "Jenessa" in the search bar and press enter
-    Then the page should show the tiles "Jenessa Carlyle"
-    When I enter "freeman" in the search bar and press enter
-    Then the page should show the tiles "Ulysses Freeman"
-    When I enter "clyffco" in the search bar and press enter
-    Then the page should show the tiles "Jenessa Carlyle"
-    When I enter "Omero+snc" in the search bar and press enter
-    Then the page should show the tiles "Ulysses Freeman"
+    # @todo Enable when this ticket is implemented ISAICP-6575.
+    # When I enter "Jenessa" in the search bar and press enter
+    # Then the page should show the tiles "Jenessa Carlyle"
+    # When I enter "freeman" in the search bar and press enter
+    # Then the page should show the tiles "Ulysses Freeman"
+    # When I enter "clyffco" in the search bar and press enter
+    # Then the page should show the tiles "Jenessa Carlyle"
+    # When I enter "Omero+snc" in the search bar and press enter
+    # Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Advanced search
     # An advanced search link is shown in the header, except on the search page.
@@ -374,7 +372,8 @@ Feature: Global search
       | Chickens are small birds          |
       | Bird spotting                     |
       | Best place to find an exotic bird |
-      | Bird Birdman                      |
+      # @todo Enable when this ticket is implemented ISAICP-6575.
+      # | Bird Birdman                      |
 
   @clearStaticCache
   Scenario: Solutions and/or releases are found by their distribution keyword.
@@ -596,19 +595,20 @@ Feature: Global search
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=relevance"
 
-    Given I select "Creation Date" from "Sort by"
-    Then I should see the following tiles in the correct order:
-      | Absolutely nonesense               |
-      | Relativity news: Relativity theory |
-      | Relativity is the word             |
-    And I should be on "/search?keys=Relativity&sort_by=creation-date"
-
-    Given I select "Last Updated Date" from "Sort by"
-    Then I should see the following tiles in the correct order:
-      | Relativity is the word             |
-      | Relativity news: Relativity theory |
-      | Absolutely nonesense               |
-    And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
+    # @todo Enable when this ticket is implemented ISAICP-6575.
+    # When I select "Creation Date" from "Sort by"
+    # And I should see the following tiles in the correct order:
+    #   | Absolutely nonesense               |
+    #   | Relativity news: Relativity theory |
+    #   | Relativity is the word             |
+    # And I should be on "/search?keys=Relativity&sort_by=creation-date"
+    #
+    # When I select "Last Updated Date" from "Sort by"
+    # And I should see the following tiles in the correct order:
+    #   | Relativity is the word             |
+    #   | Relativity news: Relativity theory |
+    #   | Absolutely nonesense               |
+    # And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
 
   @javascript
   Scenario: Anonymous user can find facets summary

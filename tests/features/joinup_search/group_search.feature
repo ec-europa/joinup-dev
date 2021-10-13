@@ -220,15 +220,13 @@ Feature: Search inside groups
     When I enter "ground" in the search bar and press enter
     Then the option with text "Chalet construction (2)" from select facet form "collection/solution" is selected
     And the page should show the tiles "Ground plan, Natural materials"
-    And the page should show the following chip in the "Search bar":
-      | Chalet construction |
-    When I press the remove button on the chip "Chalet construction"
-    And I submit the search by pressing enter
-    Then the page should not contain any chips
+    And I should see the following facet summary "Chalet construction"
+    When I should remove the following facet summary "Chalet construction"
+    Then the page should not contain any facet summary
     And the page should show the tiles "Ground plan, Pre-alpha, Natural materials, Presenting DrillMaster X88"
 
   @javascript
-  Scenario: Group filter chips appear in search bar after selecting them in facets
+  Scenario: Group facet summary appear in search after selecting them in facets
     When I visit the search page
     And I should see 12 tiles
 
@@ -241,13 +239,12 @@ Feature: Search inside groups
     And I should see 6 tiles
 
     When I open the search bar by clicking on the search icon
-    Then the page should show the following chip in the "Search bar":
-      | Inclined foundations |
+    And I should see the following facet summary "Inclined foundations"
 
-    # The filter chip should remain active when doing another search.
+    # The filter facets summary shouldn't remain active when doing another search.
     When I enter "ground" in the search bar and press enter
-    Then the option with text "Inclined foundations (2)" from select facet form "collection/solution" is selected
+    Then I select "Inclined foundations" from the "collection/solution" select facet form
+    And I click Search in facets form
     And I should see 2 tiles
     When I open the search bar by clicking on the search icon
-    Then the page should show the following chip in the "Search bar":
-      | Inclined foundations |
+    And I should see the following facet summary "Inclined foundations"

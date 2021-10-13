@@ -28,6 +28,12 @@ facets:
     separator: ', '
     weight: 0
     show_count: false
+  group:
+    checked: true
+    label: Collection/Solution
+    separator: ', '
+    weight: 0
+    show_count: false
 facet_source_id: 'search_api:views_page__search__page_1'
 processor_configs:
   hide_when_not_rendered:
