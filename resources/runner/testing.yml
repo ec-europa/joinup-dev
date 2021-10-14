@@ -53,12 +53,6 @@ phpcs:
 
 commands:
 
-  # Sets-up the tests/behat.yml file.
-  testing:behat-setup:
-    - task: process
-      source: ${joinup.dir}/tests/behat.yml.dist
-      destination: ${joinup.dir}/tests/behat.yml
-
   # Adds a Git hook that enforces coding standards check on push.
   testing:phpcs-git-hook:
     - task: remove
