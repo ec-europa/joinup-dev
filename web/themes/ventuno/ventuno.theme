@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
@@ -225,4 +226,32 @@ function ventuno_preprocess_rdf_entity__explore_item(&$variables) {
 function ventuno_smart_trim(string $string, int $length, bool $ellipsis = TRUE): string {
   $truncate = new TruncateHTML();
   return $truncate->truncateChars($string, $length, $ellipsis ? '…' : '');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for form-element.html.twig.
+ */
+function ventuno_theme_suggestions_form_element_alter(array &$suggestions, array $variables): void {
+  if (isset($variables['element']['#joinup_parent'])) {
+    $suggestions[] = 'form_element__' . $variables['element']['#joinup_parent'];
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function ventuno_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  // Check if the form contains exposed filter form element.
+  if ($form_id == 'views_exposed_form') {
+    // Here you can define the check for specific view so that
+    // it doesn't apply to all views.
+    $view = $form_state->get('view');
+    if ($view->id() === 'search') {
+      $form['keys']['#theme'] = 'input__search_expose_form';
+      $form['keys']['#title_display'] = 'invisible';
+      $form['keys']['#attributes']['placeholder'] = t('Start typing to search…');
+      $form['keys']['#joinup_parent'] = $form_id . '_' . $view->id();
+      $form['sort_by']['#type'] = 'hidden';
+    }
+  }
 }

@@ -2742,6 +2742,29 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
+   * Returns elements that match the given human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements matching the identifier.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getElementsMatchingElementAlias(string $alias): array {
+    $elements = [];
+
+    foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
+      [$selector, $locator] = $selector_tuple;
+      $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
+    }
+
+    return $elements;
+  }
+
+  /**
    * Asserts that a paragraph containing the given text is present in the page.
    *
    * @param string $text
