@@ -76,22 +76,42 @@ default:
       contexts: *contexts
       paths: *paths
       filters:
-        tags: '~@wip&&~@javascript&&@group-a'
+        tags: '~@wip&&@group-a'
     group_b:
       contexts: *contexts
       paths: *paths
       filters:
-        tags: '~@wip&&~@javascript&&@group-b'
+        tags: '~@wip&&@group-b'
+    group_c:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&@group-c'
+    group_d:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&@group-d'
+    group_e:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&@group-e'
+    group_f:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&@group-f'
+    group_g:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&@group-g'
     default:
       contexts: *contexts
       paths: *paths
       filters:
-        tags: '~@wip&&~@javascript&&~@group-a&&~@group-b'
-    selenium:
-      contexts: *contexts
-      paths: *paths
-      filters:
-        tags: '~@wip&&@javascript'
+        tags: '~@wip&&~@group-a&&~@group-b&&~@group-c&&~@group-d&&~@group-e&&~@group-f&&~@group-g'
   extensions:
     Drupal\MinkExtension:
       base_url: ${env.DRUPAL_BASE_URL}
