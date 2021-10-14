@@ -1,4 +1,4 @@
-@group-b
+@group-d
 Feature:
   As an owner of a website
   When I visit non existing pages

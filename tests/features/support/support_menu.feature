@@ -1,4 +1,4 @@
-@api
+@api @group-f
 Feature:
   - As a moderator, in order to maintain the support dropdown, I am able to
     administer the 'support' menu.

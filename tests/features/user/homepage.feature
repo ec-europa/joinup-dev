@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-f
 Feature: Homepage feature
   As a registered user of the website
   when I visit the homepage of Joinup

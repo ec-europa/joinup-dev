@@ -1,4 +1,4 @@
-@api @joinup_collection @group-b
+@api @joinup_collection
 Feature: Tests membership to Joinup collection.
 
   Background:

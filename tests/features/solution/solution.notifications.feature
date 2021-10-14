@@ -1,6 +1,6 @@
 # Tests notifications for solutions. This file does not include template 1.
 # Template 1 is tested in the add_solution.feature already.
-@api @terms
+@api @terms @group-f
 Feature: Solution notifications
   In order to manage solutions
   As a user of the website
