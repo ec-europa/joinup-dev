@@ -1,11 +1,3 @@
-style:
-  version: VERSION
-  css:
-    theme:
-      assets/css/styles.css: {}
-  js:
-    assets/js/popovers.js: {}
-
 slick:
   js:
     assets/js/slick.js: { minified: true }
@@ -13,3 +5,11 @@ slick:
   css:
     theme:
       assets/css/slick.css: { minified: true }
+
+style:
+  version: VERSION
+  css:
+    theme:
+      assets/css/styles.css: {}
+  js:
+    assets/js/popovers.js: {}
