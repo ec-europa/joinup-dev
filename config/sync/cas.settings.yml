@@ -9,7 +9,7 @@ server:
 gateway:
   enabled: false
   recheck_time: 720
-  method: 'client_side'
+  method: client_side
   paths:
     id: request_path
     pages: '<front>'
