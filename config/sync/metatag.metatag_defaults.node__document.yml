@@ -5,16 +5,16 @@ dependencies: {  }
 id: node__document
 label: 'Content: Document'
 tags:
-  schema_digital_document_about: '[node:field_keywords]'
-  schema_digital_document_associated_media: 'a:4:{s:5:"@type";s:11:"MediaObject";s:4:"name";s:62:"[node:field_file:entity:name][node:field_file:entity:filename]";s:3:"url";s:56:"[node:field_file:entity:url][node:field_file:entity:uri]";s:13:"datePublished";s:57:"[node:field_document_publication_date:date:html_datetime]";}'
+  schema_digital_document_encoding_format: '[node:field_file:entity:mime][node:field_file:entity:filemime]'
+  schema_digital_document_main_entity_of_page: '[node:field_file:entity:url][node:field_file:entity:uri]'
+  schema_digital_document_is_accessible_for_free: 'True'
+  schema_digital_document_headline: '[node:title]'
+  schema_digital_document_name: '[node:title]'
   schema_digital_document_author: 'a:4:{s:5:"@type";s:6:"Person";s:3:"@id";s:17:"[node:author:url]";s:4:"name";s:26:"[node:author:display-name]";s:3:"url";s:17:"[node:author:url]";}'
-  schema_digital_document_date_modified: '[node:changed:html_datetime]'
+  schema_digital_document_type: DigitalDocument
   schema_digital_document_date_published: '[node:field_document_publication_date:date:html_datetime]'
   schema_digital_document_description: '[node:summary]'
-  schema_digital_document_encoding_format: '[node:field_file:entity:mime][node:field_file:entity:filemime]'
-  schema_digital_document_headline: '[node:title]'
-  schema_digital_document_is_accessible_for_free: 'True'
   schema_digital_document_license: '[node:field_licence:target_id]'
-  schema_digital_document_main_entity_of_page: '[node:field_file:entity:url][node:field_file:entity:uri]'
-  schema_digital_document_name: '[node:title]'
-  schema_digital_document_type: DigitalDocument
+  schema_digital_document_date_modified: '[node:changed:html_datetime]'
+  schema_digital_document_associated_media: 'a:5:{s:5:"@type";s:11:"MediaObject";s:3:"@id";s:56:"[node:field_file:entity:url][node:field_file:entity:uri]";s:4:"name";s:62:"[node:field_file:entity:name][node:field_file:entity:filename]";s:3:"url";s:56:"[node:field_file:entity:url][node:field_file:entity:uri]";s:13:"datePublished";s:57:"[node:field_document_publication_date:date:html_datetime]";}'
+  schema_digital_document_about: '[node:field_keywords]'
