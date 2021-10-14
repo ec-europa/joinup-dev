@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_test\EventSubscriber;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\State\StateInterface;
@@ -67,7 +68,7 @@ class JoinupTestSubscriber implements EventSubscriberInterface {
 
     foreach ($state['messages'] as $type => $messages) {
       foreach ($messages as $message) {
-        $this->messenger->addMessage(t($message), $type);
+        $this->messenger->addMessage(new FormattableMarkup($message, []), $type);
       }
     }
   }
