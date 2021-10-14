@@ -44,6 +44,14 @@ module.exports = {
         sourceMap: "file",
       },
     },
+    {
+      entry: path.resolve(outputFolder, "src/scss/overrides/tour.scss"),
+      dest: path.resolve(outputFolder, "assets/css/tour.css"),
+      options: {
+        includePaths,
+        sourceMap: "file",
+      },
+    },
   ],
   copy: [
     {
