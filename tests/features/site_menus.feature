@@ -27,8 +27,6 @@ Feature: Site menus
       | Firecrakers list | Check the list first. | Hungry Firecracker | validated |
 
     When I am on the homepage
-    # Todo: This should become "Contact Joinup Support" in the new theme.
-    # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6694
     And I click "Contact Joinup Support" in the Footer region
     Then no menu items should be active in the "Header menu" menu
 
