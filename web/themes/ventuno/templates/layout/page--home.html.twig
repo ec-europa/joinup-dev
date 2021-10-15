@@ -143,7 +143,11 @@
             <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
           </div>
 
-          {{ page.footer }}
+          {{ page.footer|without('followus', 'socialmedia') }}
+          <div class="col-md-3 col-lg-2 column-follow-us">
+            {{ page.footer.followus }}
+            {{ page.footer.socialmedia }}
+          </div>
 
         </div>
       </div>
