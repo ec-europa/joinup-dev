@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @font-face {
   font-family: "joinup-icons";
   src: url("../fonts/joinup-icons/joinup-icons.woff2") format("woff2"), url("../fonts/joinup-icons/joinup-icons.woff") format("woff");
@@ -109,7 +108,7 @@
   right: 0.75rem;
 }
 .joyride-tip-guide .joyride-content-wrapper .joyride-close-tip::after {
-  content: "";
+  content: "\e806";
   font-family: "joinup-icons";
   font-style: normal;
   font-weight: normal;

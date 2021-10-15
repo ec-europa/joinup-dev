@@ -1,22 +1,19 @@
 (function (factory) {
   typeof define === 'function' && define.amd ? define(factory) :
   factory();
-}((function () { 'use strict';
+})((function () { 'use strict';
 
   /**
    * Popovers.
    */
-  (function ($, Drupal) {
-    Drupal.behaviors.popovers = {
-      attach: function (context) {
-        $(function () {
-          $('.popover-getstarted').popover({
-            trigger: "click"
-          });
-        });
-      }
-    };
-  })(jQuery, Drupal);
+  Drupal.behaviors.popover = {
+    attach: function () {
+      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+      });
+    }
+  };
 
-})));
+}));
 //# sourceMappingURL=popovers.js.map
