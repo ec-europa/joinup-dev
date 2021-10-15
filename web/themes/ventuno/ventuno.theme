@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
@@ -23,8 +24,17 @@ use Drupal\smart_trim\Truncate\TruncateHTML;
  * styled in the same way.
  */
 function ventuno_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
-  if (in_array($variables['menu_name'], ['footer', 'support'])) {
+  if (in_array($variables['menu_name'], [
+    'footer',
+    'support',
+    'footer-about-us',
+    'footer-european-commission',
+    'footer-follow-us',
+    'footer-help-and-support',
+    'footer-social-media',
+  ])) {
     $suggestions[] = 'menu__region_footer';
+    $suggestions[] = 'menu__region_footer__' . str_replace('-', '_', $variables['menu_name']);
   }
 }
 
@@ -204,6 +214,38 @@ function ventuno_preprocess_rdf_entity__explore_item(&$variables) {
 
   // Trim the label text.
   $variables['label'] = ventuno_smart_trim($entity->label(), 74);
+}
+
+/**
+ * Implements template_preprocess_menu().
+ */
+function ventuno_preprocess_menu(&$variables) {
+  // Set a class on each link in the social media footer menu, so that the link
+  // text can be replaced with an icon.
+  if ($variables['menu_name'] === 'footer-social-media') {
+    _ventuno_preprocess_menu_items($variables['items']);
+  }
+}
+
+/**
+ * Helper function to recursively set a class on each menu item.
+ *
+ * These classes identify the social media links so we can replace them with
+ * icons. Used for the links to Twitter and LinkedIn.
+ */
+function _ventuno_preprocess_menu_items(&$items) {
+  foreach ($items as $item) {
+    /** @var \Drupal\Core\Menu\MenuLinkDefault $menu_link */
+    $menu_link = isset($item['original_link']) ? $item['original_link'] : NULL;
+    if ($menu_link instanceof MenuLinkInterface) {
+      $title = strtolower(trim($menu_link->getTitle()));
+      $machine_name = preg_replace('/[^a-z0-9-]+/', '-', $title);
+      $item['attributes']->setAttribute('class', $machine_name);
+    }
+    if (!empty($item['below'])) {
+      _ventuno_preprocess_menu_items($item['below']);
+    }
+  }
 }
 
 /**

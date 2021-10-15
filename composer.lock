@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1380cbf5249c71c884247bd7988e1f87",
+    "content-hash": "7f2e1978740ffaacb4c01be3542f1767",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2237,6 +2237,10 @@
                 {
                     "name": "floretan",
                     "homepage": "https://www.drupal.org/user/66163"
+                },
+                {
+                    "name": "nord102",
+                    "homepage": "https://www.drupal.org/user/3471419"
                 }
             ],
             "description": "Limit which text formats are available for each field instance.",
@@ -2279,6 +2283,10 @@
             ],
             "authors": [
                 {
+                    "name": "gaurav.kapoor",
+                    "homepage": "https://www.drupal.org/user/3495331"
+                },
+                {
                     "name": "mstef",
                     "homepage": "https://www.drupal.org/user/107190"
                 }
@@ -2291,33 +2299,30 @@
         },
         {
             "name": "drupal/cached_computed_field",
-            "version": "1.0.0-beta5",
+            "version": "1.0.0-beta6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cached_computed_field.git",
-                "reference": "8.x-1.0-beta5"
+                "reference": "8.x-1.0-beta6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cached_computed_field-8.x-1.0-beta5.zip",
-                "reference": "8.x-1.0-beta5",
-                "shasum": "23d5b5521e414f866ce3e7a67cef8f479c50c55c"
+                "url": "https://ftp.drupal.org/files/projects/cached_computed_field-8.x-1.0-beta6.zip",
+                "reference": "8.x-1.0-beta6",
+                "shasum": "179a3eb1b3c945de0793036c5eaad1963cf3cdf1"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8.9 || ^9.1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-beta5",
-                    "datestamp": "1574845680",
+                    "version": "8.x-1.0-beta6",
+                    "datestamp": "1634145439",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Missing schema for fields default values @see https://www.drupal.org/i/3194940": "https://git.drupalcode.org/project/cached_computed_field/-/merge_requests/1.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3177,6 +3182,82 @@
             }
         },
         {
+            "name": "drupal/default_content",
+            "version": "2.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/default_content.git",
+                "reference": "2.0.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/default_content-2.0.0-alpha1.zip",
+                "reference": "2.0.0-alpha1",
+                "shasum": "0d534ab8e44786a352e24c7cec3dc06bef155f66"
+            },
+            "require": {
+                "drupal/core": "^8.7.7 || ^9"
+            },
+            "require-dev": {
+                "drupal/paragraphs": "^1"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0-alpha1",
+                    "datestamp": "1595072288",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                },
+                {
+                    "name": "andypost",
+                    "homepage": "https://www.drupal.org/user/118908"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "jibran",
+                    "homepage": "https://www.drupal.org/user/1198144"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                }
+            ],
+            "description": "Imports default content when a module is enabled",
+            "homepage": "https://www.drupal.org/project/default_content",
+            "support": {
+                "source": "https://git.drupalcode.org/project/default_content"
+            }
+        },
+        {
             "name": "drupal/diff",
             "version": "1.0.0",
             "source": {
@@ -3827,7 +3908,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.4",
-                    "datestamp": "1624457459",
+                    "datestamp": "1624457496",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4749,6 +4830,139 @@
             }
         },
         {
+            "name": "drupal/jquery_ui",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/jquery_ui.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/jquery_ui-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "64c19ecc8902e2b4b1ab0cc5f5fe28dbc83bfebe"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1582149957",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "RobLoach",
+                    "homepage": "https://www.drupal.org/user/61114"
+                },
+                {
+                    "name": "jjeff",
+                    "homepage": "https://www.drupal.org/user/17190"
+                },
+                {
+                    "name": "lauriii",
+                    "homepage": "https://www.drupal.org/user/1078742"
+                },
+                {
+                    "name": "litwol",
+                    "homepage": "https://www.drupal.org/user/78134"
+                },
+                {
+                    "name": "mfb",
+                    "homepage": "https://www.drupal.org/user/12302"
+                },
+                {
+                    "name": "mfer",
+                    "homepage": "https://www.drupal.org/user/25701"
+                },
+                {
+                    "name": "mikelutz",
+                    "homepage": "https://www.drupal.org/user/2972409"
+                },
+                {
+                    "name": "sun",
+                    "homepage": "https://www.drupal.org/user/54136"
+                },
+                {
+                    "name": "webchick",
+                    "homepage": "https://www.drupal.org/user/24967"
+                },
+                {
+                    "name": "zrpnr",
+                    "homepage": "https://www.drupal.org/user/1448368"
+                }
+            ],
+            "description": "Provides jQuery UI library.",
+            "homepage": "https://www.drupal.org/project/jquery_ui",
+            "support": {
+                "source": "https://git.drupalcode.org/project/jquery_ui"
+            }
+        },
+        {
+            "name": "drupal/jquery_ui_accordion",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/jquery_ui_accordion.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/jquery_ui_accordion-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "988a3da3b0bc3042e2f42fd20e401272f8369bbd"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/jquery_ui": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1584106477",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "bnjmnm",
+                    "homepage": "https://www.drupal.org/user/2369194"
+                },
+                {
+                    "name": "lauriii",
+                    "homepage": "https://www.drupal.org/user/1078742"
+                },
+                {
+                    "name": "zrpnr",
+                    "homepage": "https://www.drupal.org/user/1448368"
+                }
+            ],
+            "description": "Provides jQuery UI Accordion library.",
+            "homepage": "https://www.drupal.org/project/jquery_ui_accordion",
+            "support": {
+                "source": "https://git.drupalcode.org/project/jquery_ui_accordion"
+            }
+        },
+        {
             "name": "drupal/json_field",
             "version": "1.0.0-rc4",
             "source": {
@@ -5066,6 +5280,10 @@
                 {
                     "name": "See other contributors",
                     "homepage": "https://www.drupal.org/node/247808/committers"
+                },
+                {
+                    "name": "shelane",
+                    "homepage": "https://www.drupal.org/user/2674989"
                 }
             ],
             "description": "Adds Matomo javascript tracking code to all your site's pages",
@@ -5223,6 +5441,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Array to string conversion @see https://www.drupal.org/project/menu_link_destination/issues/3240983": "https://git.drupalcode.org/project/menu_link_destination/-/merge_requests/1.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5936,36 +6157,34 @@
         },
         {
             "name": "drupal/password_policy",
-            "version": "3.0.0-alpha5",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/password_policy.git",
-                "reference": "8.x-3.0-alpha5"
+                "reference": "8.x-3.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/password_policy-8.x-3.0-alpha5.zip",
-                "reference": "8.x-3.0-alpha5",
-                "shasum": "74f170caa739e886d2de0df27a479f94014e273f"
+                "url": "https://ftp.drupal.org/files/projects/password_policy-8.x-3.0.zip",
+                "reference": "8.x-3.0",
+                "shasum": "6fbc4fe40ab26ec19e5ca37aaaa676348dc7fddb"
             },
             "require": {
-                "drupal/core": "^8.5.0",
+                "drupal/core": "^8 || ^9",
                 "drupal/ctools": "^3.1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-3.0-alpha5",
-                    "datestamp": "1559916365",
+                    "version": "8.x-3.0",
+                    "datestamp": "1625082607",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 },
                 "patches_applied": {
-                    "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
-                    "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch",
-                    "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
+                    "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2021-07-05/password_policy_field_last_password_reset_unknown_error_2771129-130.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6941,24 +7160,16 @@
                     "role": "Maintainer"
                 },
                 {
-                    "name": "chrisjlee",
-                    "homepage": "https://www.drupal.org/user/760600"
-                },
-                {
-                    "name": "drywall",
-                    "homepage": "https://www.drupal.org/user/192591"
-                },
-                {
-                    "name": "jsenich",
-                    "homepage": "https://www.drupal.org/user/58871"
-                },
-                {
-                    "name": "markie",
-                    "homepage": "https://www.drupal.org/user/206687"
-                },
-                {
                     "name": "newsignature",
                     "homepage": "https://www.drupal.org/user/765518"
+                },
+                {
+                    "name": "ultimike",
+                    "homepage": "https://www.drupal.org/user/51132"
+                },
+                {
+                    "name": "volkswagenchick",
+                    "homepage": "https://www.drupal.org/user/3332522"
                 }
             ],
             "description": "Provides a more robust alternative to 'summary or trimmed' textfield format.",
@@ -6989,7 +7200,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.8",
-                    "datestamp": "1615222638",
+                    "datestamp": "1615222684",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7702,36 +7913,34 @@
         },
         {
             "name": "drupal/video_embed_field",
-            "version": "1.6.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/video_embed_field.git",
-                "reference": "8.x-1.6"
+                "reference": "8.x-2.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.6.zip",
-                "reference": "8.x-1.6",
-                "shasum": "e5e6dc6baa538b54da1413f7c6a2f4c040c5fa05"
+                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-2.4.zip",
+                "reference": "8.x-2.4",
+                "shasum": "96b14bb93c1bb6a07b84315a4f87367870f8b574"
             },
             "require": {
-                "drupal/core": "^8"
+                "drupal/core": "^8.8 || ^9"
             },
             "require-dev": {
-                "drupal/colorbox": "*",
-                "drupal/media_entity": "*",
-                "drupal/media_entity_embeddable_video": "*"
+                "drupal/colorbox": "^1.0",
+                "drupal/video_embed_media": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.x",
-                    "datestamp": "1557724631",
+                    "version": "8.x-2.4",
+                    "datestamp": "1587686337",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
-                    },
-                    "package": "Field types"
+                    }
                 },
                 "patches_applied": {
                     "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
@@ -11281,7 +11490,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2020-11-25T21:59:37+00:00"
         },
         {
             "name": "stack/builder",
@@ -15167,9 +15376,6 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "patches_applied": {
-                    "Add a Drush command for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://git.drupalcode.org/project/config_devel/-/merge_requests/4.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -15388,8 +15594,7 @@
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
                 "source": "https://git.drupalcode.org/project/config_update"
-            },
-            "time": "2020-11-06T21:01:03+00:00"
+            }
         },
         {
             "name": "drupal/devel",
@@ -15423,7 +15628,7 @@
             "extra": {
                 "drupal": {
                     "version": "4.1.1",
-                    "datestamp": "1609419527",
+                    "datestamp": "1631968537",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -15579,44 +15784,35 @@
         },
         {
             "name": "drupal/filecache",
-            "version": "dev-1.x",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/filecache.git",
-                "reference": "474f3562b045200b5abb983ee94c9d96c49c7cde"
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/filecache-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "c12347e6894f853280972d9643ed1c729c8fc0d3"
             },
             "require": {
-                "drupal/core": "~8.5"
+                "drupal/core": "^8 || ^9",
+                "php": "^7.1 || ^8"
             },
             "require-dev": {
-                "composer/installers": "^1.2",
-                "drupal-composer/drupal-scaffold": "^2.5",
                 "drupal/coder": "^8.3.1",
-                "webflo/drupal-core-require-dev": "~8.5"
+                "slevomat/coding-standard": "^6 || ^7"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+2-dev",
-                    "datestamp": "1568894884",
+                    "version": "8.x-1.0",
+                    "datestamp": "1633781924",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "installer-paths": {
-                    "../build/core": [
-                        "type:drupal-core"
-                    ],
-                    "../build/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "../build/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ]
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -15640,8 +15836,7 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
-            },
-            "time": "2019-09-19T12:07:17+00:00"
+            }
         },
         {
             "name": "drupal/renderviz",
@@ -15788,7 +15983,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1601040732",
+                    "datestamp": "1601040759",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -20340,6 +20535,7 @@
     "stability-flags": {
         "dkarv/mdl-chip-input": 20,
         "drupal/config_ignore": 20,
+        "drupal/default_content": 15,
         "drupal/menu_link_destination": 20,
         "drupal/og": 20,
         "drupal/page_manager": 10,

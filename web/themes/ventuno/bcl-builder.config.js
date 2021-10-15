@@ -10,6 +10,14 @@ const includePaths = [nodeModules];
 module.exports = {
   scripts: [
     {
+      entry: path.resolve(outputFolder, "src/js/popovers.js"),
+      dest: path.resolve(outputFolder, "assets/js/popovers.js"),
+      options: {
+        minify: false,
+        sourceMap: true,
+      },
+    },
+    {
       entry: path.resolve(outputFolder, "src/js/slick-config.js"),
       dest: path.resolve(outputFolder, "assets/js/slick-config.js"),
       options: {
@@ -18,17 +26,24 @@ module.exports = {
         sourceMap: true,
       },
     },
-    {
-      entry: path.resolve(outputFolder, "src/js/popovers.js"),
-      dest: path.resolve(outputFolder, "assets/js/popovers.js"),
-      options: {
-        name: "popovers",
-        minify: false,
-        sourceMap: true,
-      },
-    },
   ],
   styles: [
+    {
+      entry: path.resolve(outputFolder, "src/scss/main.scss"),
+      dest: path.resolve(outputFolder, "assets/css/main.css"),
+      options: {
+        includePaths,
+        sourceMap: "file",
+      },
+    },
+    {
+      entry: path.resolve(outputFolder, "src/scss/homepage.scss"),
+      dest: path.resolve(outputFolder, "assets/css/homepage.css"),
+      options: {
+        includePaths,
+        sourceMap: "file",
+      },
+    },
     {
       entry: path.resolve(outputFolder, "src/scss/overrides/tour.scss"),
       dest: path.resolve(outputFolder, "assets/css/tour.css"),
@@ -37,16 +52,18 @@ module.exports = {
         sourceMap: "file",
       },
     },
-    {
-      entry: path.resolve(outputFolder, "src/scss/styles.scss"),
-      dest: path.resolve(outputFolder, "assets/css/styles.css"),
-      options: {
-        includePaths,
-        sourceMap: "file",
-      },
-    },
   ],
   copy: [
+    {
+      from: [
+        path.resolve(
+          nodeModules,
+          "@openeuropa/bcl-theme-joinup/js/oe-bcl-joinup.bundle.min.js"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/js"),
+      options: { up: true },
+    },
     {
       from: [
         path.resolve(

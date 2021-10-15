@@ -1,0 +1,8 @@
+name: Joinup default content
+type: module
+description: Provides exported content that will be imported in Joinup when the module is enabled.
+package: Custom
+core_version_requirement: ^8 || ^9
+php: 7.1
+dependencies:
+  - default_content:default_content

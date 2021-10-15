@@ -1,0 +1,40 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 3b5a3987-33e3-48be-b67b-ea7d745e7aa1
+  bundle: menu_link_content
+  default_langcode: en
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'About Joinup'
+  menu_name:
+    -
+      value: footer-about-us
+  link:
+    -
+      uri: 'internal:/collection/joinup/about'
+      title: ''
+      options:
+        menu_link_destination: 0
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: true
+  weight:
+    -
+      value: 0
+  expanded:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  live_link:
+    -
+      value: false

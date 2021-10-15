@@ -1,0 +1,40 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: 8c1531f4-3d69-4f9f-b3f0-8f846336c5d8
+  bundle: menu_link_content
+  default_langcode: en
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: Twitter
+  menu_name:
+    -
+      value: footer-social-media
+  link:
+    -
+      uri: 'https://twitter.com/joinup_eu'
+      title: ''
+      options:
+        menu_link_destination: 0
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: -50
+  expanded:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  live_link:
+    -
+      value: false

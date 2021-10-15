@@ -1,0 +1,25 @@
+uuid: d516d818-3d5b-4165-9c28-097f3d30a5a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.footer-european-commission
+  module:
+    - system
+  theme:
+    - ventuno
+id: europeancommission
+theme: ventuno
+region: footer
+weight: -25
+provider: null
+plugin: 'system_menu_block:footer-european-commission'
+settings:
+  id: 'system_menu_block:footer-european-commission'
+  label: 'European Commission'
+  provider: system
+  label_display: visible
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

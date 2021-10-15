@@ -7,3 +7,13 @@ joinup_tour.support.tour:
     attributes:
       data-drupal-tour-link: true
   weight: -200
+
+joinup_tour.support.footer-tour:
+  title: 'Take a tour'
+  menu_name: footer-help-and-support
+  url: 'internal:#'
+  class: Drupal\joinup_tour\Plugin\Menu\TourMenuLink
+  options:
+    attributes:
+      data-drupal-tour-link: true
+  weight: -200

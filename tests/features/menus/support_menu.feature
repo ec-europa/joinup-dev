@@ -1,9 +1,7 @@
 @api
 Feature:
-  - As a moderator, in order to maintain the support dropdown, I am able to
-    administer the 'support' menu.
-  - As a user, I should see the the 'Take a tour' menu item only on pages that
-    are implementing tours.
+  - As a moderator, in order to maintain the support dropdown, I am able to administer the 'support' menu.
+  - As a user, I should see the the 'Take a tour' menu item only on pages that are implementing tours.
   - As a moderator I can add custom menu items and disable default menu items.
 
   Scenario Outline: Moderators are not able to admin menus except support menu.
@@ -24,13 +22,18 @@ Feature:
     But I should <add link> the link "Add link"
 
     Examples:
-      | menu    | code | add link |
-      | admin   | 403  | not see  |
-      | footer  | 403  | not see  |
-      | main    | 403  | not see  |
-      | support | 200  | see      |
-      | tools   | 403  | not see  |
-      | account | 403  | not see  |
+      | menu                       | code | add link |
+      | admin                      | 403  | not see  |
+      | footer                     | 403  | not see  |
+      | main                       | 403  | not see  |
+      | support                    | 200  | see      |
+      | footer-about-us            | 200  | see      |
+      | footer-european-commission | 200  | see      |
+      | footer-follow-us           | 200  | see      |
+      | footer-help-and-support    | 200  | see      |
+      | footer-social-media        | 200  | see      |
+      | tools                      | 403  | not see  |
+      | account                    | 403  | not see  |
 
   Scenario Outline: Test user support menu usage.
 
@@ -42,8 +45,8 @@ Feature:
 
     When I am on the homepage
     Then I should not see the link "Guided tour" in the "Footer"
-    And I should see the link "Contact support"
-    Then I click "Contact support"
+    And I should see the link "Contact Joinup Support"
+    Then I click "Contact Joinup Support"
     And I fill in the following:
       | First name     | Rufus                       |
       | Last name      | Modric                      |
