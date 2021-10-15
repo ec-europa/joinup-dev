@@ -249,6 +249,7 @@ function ventuno_form_alter(&$form, FormStateInterface $form_state, $form_id): v
     if ($view->id() === 'search') {
       $form['keys']['#theme'] = 'input__search_expose_form';
       $form['keys']['#title_display'] = 'invisible';
+      $form['keys']['#attributes']['id'] = 'search-bar__input';
       $form['keys']['#attributes']['placeholder'] = t('Start typing to search…');
       $form['keys']['#joinup_parent'] = $form_id . '_' . $view->id();
       $form['sort_by']['#type'] = 'hidden';
