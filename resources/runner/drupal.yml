@@ -157,7 +157,7 @@ drupal:
           'config_update',
           'config_update_ui',
           'dblog',
-          'defautl_content',
+          'default_content',
           'devel',
           'filecache',
           'hal',
