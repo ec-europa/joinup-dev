@@ -1,0 +1,24 @@
+uuid: bff8bc88-a65f-4a6d-ba05-d29c7c2475f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.solution
+  module:
+    - joinup_stats
+    - rdf_entity
+third_party_settings:
+  joinup_stats:
+    matomo_method: ''
+    parameter_name: ''
+    parameter_method: ''
+    period: 7
+    type: null
+id: solution_settings
+label: 'Solution settings'
+description: ''
+mapping:
+  rdf_entity:
+    solution:
+      field_name: related_solution
+      auto_create: false

@@ -22,6 +22,7 @@ module:
   contextual: 0
   csv_serialization: 0
   ctools: 0
+  curated_content_listing: 0
   custom_page: 0
   dashboard: 0
   datetime: 0
@@ -107,6 +108,8 @@ module:
   joinup_validation: 0
   joinup_video: 0
   joinup_workflow: 0
+  jquery_ui: 0
+  jquery_ui_accordion: 0
   json_field: 0
   language: 0
   layout_builder: 0

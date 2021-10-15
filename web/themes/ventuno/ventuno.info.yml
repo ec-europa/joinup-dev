@@ -10,6 +10,7 @@ libraries:
   - ventuno/style
 
 libraries-override:
+  oe_bootstrap_theme/style: false
   joinup_layout/twocol_60_40:
     css:
       theme:
@@ -18,6 +19,10 @@ libraries-override:
     css:
       theme:
         layouts/twocolfooter-onecol-67-33/twocolfooter_onecol_67_33.css: false
+  tour/tour-styling:
+    css:
+      component:
+        css/tour.module.css: assets/css/tour.css
 
 regions:
   header: Header

@@ -13,7 +13,10 @@ use Drupal\Core\Language\LanguageInterface;
  * Implements hook_install().
  */
 function joinup_legal_install(): void {
-  /** @var \Drupal\Core\Path\AliasStorageInterface $path_storage */
-  $path_storage = \Drupal::service('path.alias_storage');
-  $path_storage->save('/legal/document/legal_notice', '/joinup/legal-notice', LanguageInterface::LANGCODE_NOT_SPECIFIED);
+  $path_alias = \Drupal::entityTypeManager()->getStorage('path_alias')->create([
+    'path' => '/legal/document/legal_notice',
+    'alias' => '/joinup/legal-notice',
+    'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+  ]);
+  $path_alias->save();
 }
