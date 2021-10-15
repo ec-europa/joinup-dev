@@ -1,4 +1,4 @@
-@api  @group-e
+@api @group-e
 Feature: User registration
   As a user I must be able to register to the site and complete my user profile
   and receive appropriate notifications.
