@@ -10,6 +10,7 @@ libraries:
   - ventuno/style
 
 libraries-override:
+  oe_bootstrap_theme/style: false
   joinup_layout/twocol_60_40:
     css:
       theme:
