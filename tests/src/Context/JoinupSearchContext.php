@@ -500,8 +500,11 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function iClickActionsInFacetsForm(string $name) {
     $region = $this->getSession()->getPage();
-    $element = $region->find('xpath', "//input[@value='{$name}']");
-    $element->click();
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//div[@data-drupal-selector="edit-actions"]';
+    $actions = $region->find('xpath', $xpath);
+
+    $element = $actions->find('css', "input[value|='{$name}']");
+    $element->submit();
   }
 
   /**
@@ -526,8 +529,7 @@ class JoinupSearchContext extends RawDrupalContext {
 
     $session->getDriver()->keyDown($element->getXpath(), '', NULL);
     $session->wait(500);
-    $allResults = $session->getPage()->findAll('css', '.ui-autocomplete a');
-
+    $allResults = $this->getSession()->getPage()->findAll('css', 'ul.search-api-autocomplete-search li');
     $found = array_map(function ($item) {
       /** @var \Behat\Mink\Element\NodeElement $item */
       return $item->getText();
