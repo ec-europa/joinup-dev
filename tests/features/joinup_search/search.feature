@@ -40,7 +40,6 @@ Feature: Global search
     And I should see the "Foam" tile
     # Terms are sorted alphabetically
     And the slim select "topic" should contain the following options:
-      | Any topic               |
       # Parent term.
       | Info                    |
       # Child term.
@@ -73,7 +72,6 @@ Feature: Global search
     And I click Search in facets form
     Then the option with text "Social and Political" from slim select "topic" is selected
     And the slim select "topic" should contain the following options:
-      | Any topic                 |
       | Info                      |
       | - Statistics and Analysis |
       | Social and Political      |
@@ -84,14 +82,15 @@ Feature: Global search
     And I should see the "Dummy news 2" tile
     And I should see the "Dummy news 3" tile
     And I should see the "Dummy news 4" tile
+    Then I remove "Social and Political" from the "topic" slim select
 
     # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
-    When I select " Demography" from the "topic" slim select
+
+    When I select "Demography" from the "topic" slim select
     And I click Search in facets form
     Then the option with text "- Demography" from slim select "topic" is selected
     # The selected option moves to the last position by default.
     And the slim select "topic" should contain the following options:
-      | Any topic                 |
       | Info                      |
       | - Statistics and Analysis |
       | Social and Political      |
@@ -118,7 +117,6 @@ Feature: Global search
       | European Union (1) |
     Then the option with text "- Demography" from slim select "topic" is selected
     And the slim select "topic" should contain the following options:
-      | Any topic            |
       | Social and Political |
       | - Demography         |
     And I should see the "Molecular cooking collection" tile
@@ -144,7 +142,6 @@ Feature: Global search
       | News (5)        |
       | Solutions (2)   |
     And the slim select "topic" should contain the following options:
-      | Any topic                 |
       | Info                      |
       | - Statistics and Analysis |
       | Social and Political      |

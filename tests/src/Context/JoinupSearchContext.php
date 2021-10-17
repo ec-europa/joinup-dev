@@ -306,16 +306,54 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function iSelectAnOptionFromSlimSelect(string $select, string $label): void {
     $region = $this->getSession()->getPage();
-    $topic = $region->find('xpath', "//*[@data-drupal-selector='edit-topic']");
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//select[@data-drupal-selector="edit-topic"]';
+    $topic = $region->find('xpath', $xpath);
     if (!$topic) {
       throw new \Exception("The slim select '$label' was not found in the page.");
     }
-    $region->find('css', ".{$topic->getAttribute('data-ssid')}")->click();
-    $element = $region->find('css', ".{$topic->getAttribute('data-ssid')} .ss-option:contains('{$select}')");
+
+    $topic_xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//div[contains(concat(" ", normalize-space(@class), " "), "' . $topic->getAttribute('data-ssid') . '")]';
+    $select_topic = $region->find('xpath', $topic_xpath);
+    $select_topic->click();
+
+    $element = $select_topic->find('css', ".ss-option:contains('{$select}')");
     if (!$element) {
       throw new \Exception("The slim select element '$select' was not found in the page.");
     }
     $element->click();
+  }
+
+  /**
+   * Remove a slim select item in facet form.
+   *
+   * @param string $select
+   *   The option to select.
+   * @param string $label
+   *   The select label.
+   *
+   * @throws \Exception
+   *   Thrown when the facet or the link inside the facet is not found.
+   *
+   * @When I remove :option from the :label slim select
+   */
+  public function iRemoveAnOptionFromSlimSelect(string $select, string $label): void {
+    $region = $this->getSession()->getPage();
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//select[@data-drupal-selector="edit-topic"]';
+    $topic = $region->find('xpath', $xpath);
+    if (!$topic) {
+      throw new \Exception("The slim select '$label' was not found in the page.");
+    }
+
+    $topic_xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//div[contains(concat(" ", normalize-space(@class), " "), "' . $topic->getAttribute('data-ssid') . '")]';
+    $select_topic = $region->find('xpath', $topic_xpath);
+    $select_topic->click();
+
+    $element = $select_topic->find('css', ".ss-multi-selected .ss-value:contains('{$select}')");
+    if (!$element) {
+      throw new \Exception("The slim select element '$select' was not found in the page.");
+    }
+    $element->find('css', '.ss-value-delete')->click();
+    $select_topic->click();
   }
 
   /**
@@ -602,10 +640,13 @@ class JoinupSearchContext extends RawDrupalContext {
    *
    * @Given I click :name in facets form
    */
-  public function iClickActionsInFacetsForm(string $name) {
+  public function iClickSearchInFacetsForm(string $name) {
     $region = $this->getSession()->getPage();
-    $element = $region->find('xpath', "//input[@value='{$name}']");
-    $element->click();
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//div[@data-drupal-selector="edit-actions"]';
+    $actions = $region->find('xpath', $xpath);
+
+    $element = $actions->find('css', "input[value|='{$name}']");
+    $element->submit();
   }
 
   /**
