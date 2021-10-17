@@ -555,8 +555,9 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function assertSlimSelectOptionsAsList(string $select, TableNode $table) {
     $region = $this->getSession()->getPage();
-    $topic = $region->find('xpath', "//*[@data-drupal-selector='edit-topic']");
-    $results = $region->findAll('css', ".{$topic->getAttribute('data-ssid')} .ss-option");
+    $topic = $region->find('xpath', "//select[@data-drupal-selector='edit-topic']");
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $topic->getAttribute('data-ssid') . '")]//div[contains(concat(" ", normalize-space(@class), " "), "ss-option")]';
+    $results = $region->findAll('xpath', $xpath);
 
     if (!$results) {
       throw new \Exception("The slim select '$select' was not found in the page.");
