@@ -652,7 +652,8 @@ Feature: Global search
     Then I should remove the following facet summary "News"
     And the page should show only the tiles "Radio cooking collection"
 
-    Then I enter "funn" in the search and I should see the suggestions:
+    Then I click "Clear filters"
+    And I enter "funn" in the search and I should see the suggestions:
       | funni |
       | funny |
 
