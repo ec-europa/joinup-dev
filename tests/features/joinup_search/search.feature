@@ -633,7 +633,13 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     When I visit the search page
-    And I select "Solutions (2)" from the "Content types" select facet form
+    And I enter "funn" in the search and I should see the suggestions:
+      | funni |
+      | funny |
+
+    Then I enter "bott" in the search and it should see the suggestion "body"
+
+    Then I select "Solutions (2)" from the "Content types" select facet form
     And I select "News (5)" option in the "Content types" select facet form
     And I click Search in facets form
     And I should see the following facet summary "News, Solutions"
@@ -651,10 +657,3 @@ Feature: Global search
     And I should see the following facet summary "Collection, News"
     Then I should remove the following facet summary "News"
     And the page should show only the tiles "Radio cooking collection"
-
-    Then I click "Clear filters"
-    And I enter "funn" in the search and I should see the suggestions:
-      | funni |
-      | funny |
-
-    Then I enter "bott" in the search and it should see the suggestion "body"

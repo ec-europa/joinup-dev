@@ -528,8 +528,9 @@ class JoinupSearchContext extends RawDrupalContext {
     $element->setValue($keywords);
 
     $session->getDriver()->keyDown($element->getXpath(), '', NULL);
-    $session->wait(2000);
-    $allResults = $session->getPage()->findAll('css', 'ul.search-api-autocomplete-search li');
+    $session->wait(500);
+    $xpath = '//ul[contains(concat(" ", normalize-space(@class), " "), "search-api-autocomplete-search")]//li';
+    $allResults = $session->getPage()->findAll('xpath', $xpath);
     $found = array_map(function ($item) {
       /** @var \Behat\Mink\Element\NodeElement $item */
       return $item->getText();
@@ -560,7 +561,8 @@ class JoinupSearchContext extends RawDrupalContext {
 
     $session->getDriver()->keyDown($element->getXpath(), '', NULL);
     $session->wait(500);
-    $allResults = $session->getPage()->findAll('css', '.ui-autocomplete a');
+    $xpath = '//ul[contains(concat(" ", normalize-space(@class), " "), "search-api-autocomplete-search")]//li';
+    $allResults = $session->getPage()->findAll('xpath', $xpath);
 
     $found = array_map(function ($item) {
       /** @var \Behat\Mink\Element\NodeElement $item */
