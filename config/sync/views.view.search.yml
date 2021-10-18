@@ -182,17 +182,19 @@ display:
             description: ''
             use_operator: false
             operator: search_api_fulltext_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: keys
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+              licence_manager: '0'
               anonymous: '0'
               moderator: '0'
               administrator: '0'
-            operator_limit_selection: false
-            operator_list: {  }
+              rdf_graph_manager: '0'
           is_grouped: false
           group_info:
             label: ''
