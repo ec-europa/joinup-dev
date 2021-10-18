@@ -1,4 +1,4 @@
-@api
+@api @group-e
 Feature: User profile
   A user must be able to change his own profile.
   A moderator must be able to edit any user account.

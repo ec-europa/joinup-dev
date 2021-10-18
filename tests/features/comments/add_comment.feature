@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-e
 Feature: Add comments
   As a visitor of the website I can leave a comment on community content.
 

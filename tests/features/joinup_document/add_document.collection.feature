@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature: "Add document" visibility options.
   In order to manage documents
   As a collection member

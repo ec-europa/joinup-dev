@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature: Discussions added to collections
   In order to manage discussions
   As a collection member

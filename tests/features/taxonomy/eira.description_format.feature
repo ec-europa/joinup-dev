@@ -1,4 +1,4 @@
-@api
+@api @group-e
 Feature:
   In order to better read the eira descriptions
   As a user of the website

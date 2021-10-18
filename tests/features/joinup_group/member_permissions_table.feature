@@ -1,4 +1,4 @@
-@api @terms @group-b
+@api @terms @group-d
 Feature: Group member permissions table
   In order to get an overview of which actions I can take in a group
   As a member of a collection or solution

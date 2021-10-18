@@ -1,4 +1,4 @@
-@wip @api @errorPage @group-a
+@wip @api @errorPage @group-c
 Feature: On errors I want to see a friendly page and be able to report an
   incident number/code.
 

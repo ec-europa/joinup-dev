@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature:
   As an owner of the website
   In order for users to easier navigate in the website

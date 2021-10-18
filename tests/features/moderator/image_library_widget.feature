@@ -1,4 +1,4 @@
-@api @group-a @uploadFiles:logo.png
+@api @group-g @uploadFiles:logo.png
 Feature: As a moderator I want to be able to maintain sets of images to be
   reused as logo or banner images for collections, solutions, events and news.
 

@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-g
 Feature: Prefill contact form fields
   In order to simplify the gathering of feedback from the users
   As a moderator

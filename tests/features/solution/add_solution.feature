@@ -1,4 +1,4 @@
-@api
+@api @group-e
 Feature: "Add solution" visibility options.
   In order to manage solutions
   As a moderator

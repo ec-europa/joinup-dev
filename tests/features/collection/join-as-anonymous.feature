@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-c
 Feature: Joining a collection as an anonymous user
   In order to participate in the activities of a collection
   As an anonymous user

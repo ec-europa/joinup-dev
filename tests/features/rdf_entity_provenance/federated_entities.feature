@@ -1,4 +1,4 @@
-@api
+@api @group-e
 Feature: In order to avoid users changing federated values
   As a site owner
   I want federated entities to have the schema values disabled.
