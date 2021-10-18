@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a22430b7035f609f4324424be09b8a8c",
+    "content-hash": "a285aee5227111925d6cde0d474462c7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6233,18 +6233,103 @@
             }
         },
         {
+            "name": "drupal/schema_article",
+            "version": "2.2.0",
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/schema_metatag": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.2",
+                    "datestamp": "1619640197",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "KarenS",
+                    "homepage": "https://www.drupal.org/user/45874"
+                }
+            ],
+            "description": "Adds Schema.org/Article to the JSON LD array. Creates Article, BlogPosting, SocialMediaPosting, Report, ScholarlyArticle, TechArticle or APIReference.",
+            "homepage": "https://www.drupal.org/project/schema_metatag",
+            "support": {
+                "source": "https://git.drupalcode.org/project/schema_metatag"
+            }
+        },
+        {
+            "name": "drupal/schema_digital_document",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/schema_digital_document.git",
+                "reference": "a5769bbce0415ac5f57240d4f04da2d7760374bd"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/schema_metatag": "^2"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1634053474",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
+            ],
+            "description": "Adds Schema.org/DigitalDocument to the JSON-LD array. Provides DigitalDocument, NoteDigitalDocument, PresentationDigitalDocument, SpreadsheetDigitalDocument, TextDigitalDocument.",
+            "homepage": "https://www.drupal.org/project/schema_digital_document",
+            "support": {
+                "source": "https://git.drupalcode.org/project/schema_digital_document"
+            },
+            "time": "2021-10-12T17:45:49+00:00"
+        },
+        {
             "name": "drupal/schema_metatag",
-            "version": "1.8.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/schema_metatag.git",
-                "reference": "8.x-1.8"
+                "reference": "8.x-2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/schema_metatag-8.x-1.8.zip",
-                "reference": "8.x-1.8",
-                "shasum": "dac50842bcac35607b0be8e28518e08fa3f6b66f"
+                "url": "https://ftp.drupal.org/files/projects/schema_metatag-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "67443d138dd8fe3555e882f28f5b5abf9236a554"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -6258,16 +6343,12 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1599905688",
+                    "version": "8.x-2.2",
+                    "datestamp": "1619640197",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "patches_applied": {
-                    "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch",
-                    "Add support for DigitalDocument @see https://www.drupal.org/project/schema_metatag/issues/3120153": "https://www.drupal.org/files/issues/2020-03-16/digital_document_group-D8-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6289,6 +6370,58 @@
                 "source": "http://cgit.drupalcode.org/schema_metatag",
                 "issues": "https://www.drupal.org/project/issues/schema_metatag"
             }
+        },
+        {
+            "name": "drupal/schema_social_media_posting",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/schema_social_media_posting.git",
+                "reference": "ed680cecdfe83cb56261104ee90d0e44e5e7f231"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/schema_article": "*",
+                "drupal/schema_metatag": "^2"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1634046282",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
+            ],
+            "description": "Adds the full Schema.org/SocialMediaPosting to the JSON-LD array. Provides SocialMediaPosting, BlogPosting, LiveBlogPosting, DiscussionForumPosting.",
+            "homepage": "https://www.drupal.org/project/schema_social_media_posting",
+            "support": {
+                "source": "https://git.drupalcode.org/project/schema_social_media_posting"
+            },
+            "time": "2021-10-12T18:22:40+00:00"
         },
         {
             "name": "drupal/search_api",
@@ -8510,7 +8643,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2021-06-30T06:04:10+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -10668,7 +10801,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",
@@ -14990,7 +15123,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1633781890",
+                    "datestamp": "1633781924",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -19713,6 +19846,8 @@
         "drupal/config_ignore": 20,
         "drupal/menu_link_destination": 20,
         "drupal/og": 20,
+        "drupal/schema_digital_document": 20,
+        "drupal/schema_social_media_posting": 20,
         "drupal/site_verify": 20,
         "drupal/subpathauto": 20,
         "drupal/swiftmailer": 20,
