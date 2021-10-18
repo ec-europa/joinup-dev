@@ -462,13 +462,14 @@ class JoinupSearchContext extends RawDrupalContext {
   public function theOptionWithTextFromSlimSelectIsSelected(string $option, string $select): void {
     $region = $this->getSession()->getPage();
     $topic = $region->find('xpath', "//*[@data-drupal-selector='edit-topic']");
-
     if (!$topic) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
 
     if ($this->browserSupportsJavaScript()) {
-      $element = $region->find('css', ".{$topic->getAttribute('data-ssid')} .ss-option.ss-option-selected");
+      $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $topic->getAttribute('data-ssid') . '")]//div[contains(concat(" ", normalize-space(@class), " "), "ss-option-selected")]';
+      $element = $region->find('xpath', $xpath);
+
       Assert::assertEquals($option, strip_tags($element->getHtml()));
     }
     else {
@@ -555,13 +556,15 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function assertSlimSelectOptionsAsList(string $select, TableNode $table) {
     $region = $this->getSession()->getPage();
-    $topic = $region->find('xpath', "//select[@data-drupal-selector='edit-topic']");
+    $topic = $region->find('xpath', "//*[@data-drupal-selector='edit-topic']");
+
+    if (!$topic) {
+      throw new \Exception("The slim select '$select' was not found in the page.");
+    }
+
     $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $topic->getAttribute('data-ssid') . '")]//div[contains(concat(" ", normalize-space(@class), " "), "ss-option")]';
     $results = $region->findAll('xpath', $xpath);
 
-    if (!$results) {
-      throw new \Exception("The slim select '$select' was not found in the page.");
-    }
     $available_options = [];
     foreach ($results as $result) {
       $available_options[] = strip_tags($result->getHtml());
