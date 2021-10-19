@@ -1,0 +1,6 @@
+name: Interoperable Europe
+type: module
+description: Custom code for the Interoperable Europe section of the Joinup project.
+package: Joinup
+core: 8.x
+core_version_requirement: ^8 || ^9
