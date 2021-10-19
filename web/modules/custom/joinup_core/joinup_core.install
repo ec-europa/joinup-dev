@@ -110,6 +110,5 @@ function joinup_core_update_0107500(): void {
     ->fields(['data' => serialize($config)])
     ->condition('collection', '')
     ->condition('name', 'password_policy.password_policy.generic_policy')
-    ->execute()
-  ;
+    ->execute();
 }
