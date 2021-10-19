@@ -56,7 +56,7 @@ function ventuno_preprocess_page(&$variables) {
   $variables['user_name'] = \Drupal::currentUser()->getDisplayName();
 
   // Show links to 'Interoperable Europe' and 'Interoperability Solutions'.
-  $links = [];
+  $landing_page_links = [];
   foreach ([
     InteroperableEuropeCollectionInterface::LANDING_PAGE_ENTITY_ID,
     JoinupCollectionHelper::INTEROPERABILITY_SOLUTIONS_ENTITY_ID,
@@ -68,7 +68,7 @@ function ventuno_preprocess_page(&$variables) {
       }
       $label = $node->getTitle();
       $url = $node->toUrl();
-      $links[] = [
+      $landing_page_links[] = [
         'label' => $label,
         'link' => $url,
       ];
@@ -79,6 +79,7 @@ function ventuno_preprocess_page(&$variables) {
       // source project.
     }
   }
+  $variables['landing_page_links'] = $landing_page_links;
 
   // Export the user account menu in the format expected by the header template.
   /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree */
@@ -95,7 +96,7 @@ function ventuno_preprocess_page(&$variables) {
     // @see joinup_eulogin_preprocess_menu()
     return $element->link->isEnabled() && $element->link->getPluginId() !== 'joinup_eulogin.eu_login_info';
   });
-  $variables['profile_links'] = $links + array_map(function (MenuLinkTreeElement $element): array {
+  $variables['profile_links'] = array_map(function (MenuLinkTreeElement $element): array {
     return [
       'link' => $element->link->getUrlObject(),
       'label' => $element->link->getTitle(),
@@ -113,7 +114,7 @@ function ventuno_preprocess_page(&$variables) {
   ];
 
   // Include the links to the interoperability landing pages.
-  $anonymous_links = array_merge($anonymous_links, $links);
+  $anonymous_links = array_merge($anonymous_links, $landing_page_links);
 
   // Generate a link to EU Login.
   $cas_login_link = Url::fromRoute('cas.login');
