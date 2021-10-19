@@ -14,7 +14,12 @@ class JoinupCollectionHelper {
   /**
    * The default entity ID of the Joinup collection.
    */
-  const JOINUP_COLLECTION_DEFAULT_ENTITY_ID = 'http://data.europa.eu/w21/df34e3a2-207b-4910-a804-344931654e20';
+  public const JOINUP_COLLECTION_DEFAULT_ENTITY_ID = 'http://data.europa.eu/w21/df34e3a2-207b-4910-a804-344931654e20';
+
+  /**
+   * The node ID of the Interoperability Solutions custom page.
+   */
+  public const INTEROPERABILITY_SOLUTIONS_ENTITY_ID = 704741;
 
   /**
    * Returns the entity ID of the Joinup collection.
