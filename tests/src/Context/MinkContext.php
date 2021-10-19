@@ -88,4 +88,16 @@ class MinkContext extends DrupalExtensionMinkContext {
     parent::iWaitForAjaxToFinish($event);
   }
 
+  /**
+   * Waits to make sure that the page is loaded completely.
+   *
+   * @param int $sec
+   *   The seconds to wait.
+   *
+   * @Given I wait :sec seconds until the page is loaded( completely)
+   */
+  public function iWaitTillDocumentIsReady(int $sec): void {
+    $this->getSession()->wait($sec * 1000, "document.readyState === 'complete'");
+  }
+
 }
