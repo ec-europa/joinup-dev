@@ -34,7 +34,7 @@ Feature: Global search
     And the cache has been cleared
     And I am on the homepage
     When I visit the search page
-    And I wait 5 seconds until the page is loaded completely
+    And I wait until slim select is ready
     # All content is visible.
     Then I should see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile

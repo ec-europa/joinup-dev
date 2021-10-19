@@ -175,6 +175,7 @@ Feature: Solution homepage
       | Statistics and Analysis          |
     And I should not see the link "Supplier exchange"
     When I click "HR"
+    And I wait until slim select is ready
     Then the url should match "/search"
     Then the option with text "- HR" from slim select "topic" is selected
     Then I should see the following facet summary "HR, Solution"

@@ -89,15 +89,12 @@ class MinkContext extends DrupalExtensionMinkContext {
   }
 
   /**
-   * Waits to make sure that the page is loaded completely.
+   * Waits to make sure that slim select completes rendering.
    *
-   * @param int $sec
-   *   The seconds to wait.
-   *
-   * @Given I wait :sec seconds until the page is loaded( completely)
+   * @Given I wait until slim select is ready
    */
-  public function iWaitTillDocumentIsReady(int $sec): void {
-    $this->getSession()->wait($sec * 1000, "document.readyState === 'complete'");
+  public function iWaitTillSlimSelectIsReady(): void {
+    $this->getSession()->wait(5000);
   }
 
 }
