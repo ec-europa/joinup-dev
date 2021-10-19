@@ -528,7 +528,7 @@ class JoinupSearchContext extends RawDrupalContext {
     $element->setValue($keywords);
 
     $session->getDriver()->keyDown($element->getXpath(), '', NULL);
-    $session->wait(500);
+    $session->wait(2000);
     $xpath = '//ul[contains(concat(" ", normalize-space(@class), " "), "search-api-autocomplete-search")]//li';
     $allResults = $session->getPage()->findAll('xpath', $xpath);
     $found = array_map(function ($item) {
@@ -560,7 +560,7 @@ class JoinupSearchContext extends RawDrupalContext {
     $element->setValue($keywords);
 
     $session->getDriver()->keyDown($element->getXpath(), '', NULL);
-    $session->wait(500);
+    $session->wait(2000);
     $xpath = '//ul[contains(concat(" ", normalize-space(@class), " "), "search-api-autocomplete-search")]//li';
     $allResults = $session->getPage()->findAll('xpath', $xpath);
 
