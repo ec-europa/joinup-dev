@@ -91,3 +91,25 @@ function joinup_core_requirements($phase): array {
 
   return $requirements;
 }
+
+/**
+ * Fix 'password_policy.password_policy.generic_policy' config.
+ */
+function joinup_core_update_0107500(): void {
+  $db = \Drupal::database();
+  $config = unserialize(
+    $db->select('config')
+      ->fields('config', ['data'])
+      ->condition('collection', '')
+      ->condition('name', 'password_policy.password_policy.generic_policy')
+      ->execute()
+      ->fetchField()
+  );
+  $config['uuid'] = 'ce356128-8068-480c-b400-68e73bdb0d33';
+  $db->update('config')
+    ->fields(['data' => serialize($config)])
+    ->condition('collection', '')
+    ->condition('name', 'password_policy.password_policy.generic_policy')
+    ->execute()
+  ;
+}
