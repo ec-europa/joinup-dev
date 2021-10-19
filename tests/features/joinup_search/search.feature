@@ -633,11 +633,16 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     When I visit the search page
-    And I enter "funn" in the search and I should see the suggestions:
+    And I enter "funn" in the search bar
+    And I wait for AJAX to finish
+    Then I should see the following search suggestions:
       | funni |
       | funny |
 
-    Then I enter "bott" in the search and it should see the suggestion "body"
+    When I enter "bott" in the search bar
+    And I wait for AJAX to finish
+    Then I should see the following search suggestions:
+      | body |
 
     Then I select "Solutions (2)" from the "Content types" select facet form
     And I select "News (5)" option in the "Content types" select facet form

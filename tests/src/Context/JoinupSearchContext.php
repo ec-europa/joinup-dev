@@ -512,23 +512,19 @@ class JoinupSearchContext extends RawDrupalContext {
    *
    * This function asserts also the order of the items.
    *
-   * @param string $keywords
-   *   A list of words to search.
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A list of items to be present.
    *
    * @throws \Exception
    *    Thrown when the suggestions are not present in the page.
    *
-   * @Then I enter :keywords in the search and I should see the suggestions:
+   * @Then I should see the (following )search suggestion(s):
    */
-  public function iShouldSeeTheSuggestions(string $keywords, TableNode $table): void {
+  public function iShouldSeeTheSuggestions(TableNode $table): void {
     $session = $this->getSession();
     $element = $this->getSearchBarElement();
-    $element->setValue($keywords);
-
     $session->getDriver()->keyDown($element->getXpath(), '', NULL);
-    $session->wait(2000);
+    $this->getSession()->wait(1000);
     $xpath = '//ul[contains(concat(" ", normalize-space(@class), " "), "search-api-autocomplete-search")]//li';
     $allResults = $session->getPage()->findAll('xpath', $xpath);
     $found = array_map(function ($item) {
@@ -537,39 +533,6 @@ class JoinupSearchContext extends RawDrupalContext {
     }, $allResults);
 
     Assert::assertEquals($table->getColumn(0), $found, "The autocomplete values mismatch the expected ones.");
-  }
-
-  /**
-   * Asserts the autocomplete single item from search.
-   *
-   * This function asserts also the order of the items.
-   *
-   * @param string $keywords
-   *   A list of words to search.
-   * @param string $suggestion
-   *   The word we need to see in suggestion.
-   *
-   * @throws \Exception
-   *   Thrown when the suggestion is not present in the page.
-   *
-   * @Then I enter :keywords in the search and it should see the suggestion :suggestion
-   */
-  public function iShouldSeeTheSuggestion(string $keywords, string $suggestion): void {
-    $session = $this->getSession();
-    $element = $this->getSearchBarElement();
-    $element->setValue($keywords);
-
-    $session->getDriver()->keyDown($element->getXpath(), '', NULL);
-    $session->wait(2000);
-    $xpath = '//ul[contains(concat(" ", normalize-space(@class), " "), "search-api-autocomplete-search")]//li';
-    $allResults = $session->getPage()->findAll('xpath', $xpath);
-
-    $found = array_map(function ($item) {
-      /** @var \Behat\Mink\Element\NodeElement $item */
-      return $item->getText();
-    }, $allResults);
-
-    Assert::assertEquals([$suggestion], $found, "The autocomplete values mismatch the expected ones.");
   }
 
   /**
