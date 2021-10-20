@@ -6,6 +6,7 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\KeyboardInteractionTrait;
@@ -556,13 +557,16 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function assertSlimSelectOptionsAsList(string $select, TableNode $table) {
     $region = $this->getSession()->getPage();
-    $topic = $region->find('xpath', "//*[@data-drupal-selector='edit-topic']");
+    $xpath = "//*[@data-drupal-selector='edit-topic']";
+    $page = $this->getSession()->getPage();
 
-    if (!$topic) {
-      throw new \Exception("The slim select '$select' was not found in the page.");
-    }
+    // Based on the JSWebAssert class.
+    // @see \Drupal\FunctionalJavascriptTests\JSWebAssert::waitForElement
+    $topic_slim_select = $page->waitFor(5, function () use ($page, $xpath): TraversableElement {
+      return $page->find('xpath', $xpath);
+    });
 
-    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $topic->getAttribute('data-ssid') . '")]//div[contains(concat(" ", normalize-space(@class), " "), "ss-option")]';
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $topic_slim_select->getAttribute('data-ssid') . '")]//div[contains(concat(" ", normalize-space(@class), " "), "ss-option")]';
     $results = $region->findAll('xpath', $xpath);
 
     $available_options = [];

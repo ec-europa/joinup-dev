@@ -29,12 +29,8 @@ Feature: Global search
       | Dummy news 4          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
 
     Given I am logged in as a user with the "authenticated" role
-    # @todo The search page cache should be cleared when new content is added.
-    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
-    And the cache has been cleared
     And I am on the homepage
     When I visit the search page
-    And I wait until slim select is ready
     # All content is visible.
     Then I should see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile

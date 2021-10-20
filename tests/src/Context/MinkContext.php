@@ -88,13 +88,4 @@ class MinkContext extends DrupalExtensionMinkContext {
     parent::iWaitForAjaxToFinish($event);
   }
 
-  /**
-   * Waits to make sure that slim select completes rendering.
-   *
-   * @Given I wait until slim select is ready
-   */
-  public function iWaitTillSlimSelectIsReady(): void {
-    $this->getSession()->wait(5000);
-  }
-
 }
