@@ -143,29 +143,31 @@ function ventuno_preprocess_page(&$variables) {
  */
 function ventuno_preprocess_block(&$variables) {
   if ($variables['derivative_plugin_id'] == 'highlighted_solution') {
-    /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    $entity = $variables['elements']['content']['entities'][0]['#rdf_entity'];
+    if (isset($variables['elements']['content']['entities'][0])) {
+      /** @var \Drupal\rdf_entity\RdfInterface $entity */
+      $entity = $variables['elements']['content']['entities'][0]['#rdf_entity'];
 
-    $topics = $entity->get('field_topic')->getValue();
+      $topics = $entity->get('field_topic')->getValue();
 
-    $options = [
-      'query' =>
-      [
-        'f' =>
+      $options = [
+        'query' =>
         [
-          'type:' . $entity->bundle(),
-          'topic:' . reset($topics)["target_id"],
+          'f' =>
+          [
+            'type:' . $entity->bundle(),
+            'topic:' . reset($topics)["target_id"],
+          ],
         ],
-      ],
-    ];
-    $variables['related_content'] = [
-      '#type' => 'link',
-      '#title' => t('Related content'),
-      '#url' => Url::fromRoute('view.search.page_1', [], $options),
-      '#attributes' => [
-        'class' => ['more-link'],
-      ],
-    ];
+      ];
+      $variables['related_content'] = [
+        '#type' => 'link',
+        '#title' => t('Related content'),
+        '#url' => Url::fromRoute('view.search.page_1', [], $options),
+        '#attributes' => [
+          'class' => ['more-link'],
+        ],
+      ];
+    }
   }
 }
 

@@ -859,7 +859,7 @@ class SolutionContext extends RawDrupalContext {
   public function assertHighlightedSolution(string $label): void {
     $solution = self::getSolutionByName($label);
 
-    $block_element = $this->getSession()->getPage()->find('css', '.block-entityqueue--highlighted-content');
+    $block_element = $this->getSession()->getPage()->find('css', '.block-entityqueue--highlighted-solution');
 
     // Check block title.
     $actual_block_title = $block_element->find('css', 'h2')->getText();
