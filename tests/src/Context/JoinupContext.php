@@ -1133,7 +1133,7 @@ class JoinupContext extends RawDrupalContext {
    * @Then I (should )see the :heading tile
    */
   public function assertTilePresent($heading) {
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title, article.tile h2');
+    $results = $this->getSession()->getPage()->findAll('css', '.card .card-title, article.tile h2');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {

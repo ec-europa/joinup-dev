@@ -235,12 +235,9 @@ trait TraversingTrait {
     }
 
     $result = [];
-    // @todo The `.listing__item--tile` selector is part of the original Joinup
-    //   theme and can be removed once we have fully migrated to the new theme.
-    foreach ($regionObj->findAll('css', '.listing__item--tile, article.tile') as $element) {
-      // @todo The `.listing__title` selector is part of the original Joinup
-      //   theme and can be removed once we migrated to the new theme.
-      $title_element = $element->find('css', ' .listing__title, h2 a');
+
+    foreach ($regionObj->findAll('css', '.card, article.tile') as $element) {
+      $title_element = $element->find('css', ' .card-title, h2 a');
       // Some tiles don't have a title, like the one to create a new collection
       // in the collections page.
       if ($title_element) {
