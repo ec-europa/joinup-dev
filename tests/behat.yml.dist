@@ -104,7 +104,6 @@ default:
         Contact information inline form: '#edit-field-ar-contact-information-wrapper'
         Content: '.section--content-middle, main .layout-content'
         Cookie consent banner: '#cookie-consent-banner'
-        Discover topics block: '.block-views-blockdiscover-topics-block'
         Entity actions: '.block-joinup-local-tasks-block'
         Explore block: '.block-joinup-front-page-explore-block'
         Featured: '.region-featured'
