@@ -522,20 +522,18 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function iShouldSeeTheSuggestions(TableNode $table): void {
     $session = $this->getSession();
-    $page = $session->getPage();
-    $element = $this->getSearchBarElement();
-    $session->getDriver()->keyDown($element->getXpath(), '', NULL);
     $xpath = '//ul[contains(concat(" ", normalize-space(@class), " "), "search-api-autocomplete-search")]//li';
-    $allResults = $page->waitFor(2, function () use ($page, $xpath): ?array {
-      return $page->findAll('xpath', $xpath);
+    $session->getPage()->waitFor(5, function () use ($session, $xpath, $table): bool {
+      $element = $this->getSearchBarElement();
+      $session->getDriver()->keyDown($element->getXpath(), '', NULL);
+      $allResults = $session->getPage()->findAll('xpath', $xpath);
+      $found = array_map(function ($item) {
+        /** @var \Behat\Mink\Element\NodeElement $item */
+        return $item->getText();
+      }, $allResults);
+
+      return $table->getColumn(0) === $found;
     });
-
-    $found = array_map(function ($item) {
-      /** @var \Behat\Mink\Element\NodeElement $item */
-      return $item->getText();
-    }, $allResults);
-
-    Assert::assertEquals($table->getColumn(0), $found, "The autocomplete values mismatch the expected ones.");
   }
 
   /**
