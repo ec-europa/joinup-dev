@@ -1,4 +1,4 @@
-@api @email @group-b
+@api @group-b
 Feature: Sharing content between collections
   As a privileged user
   I want to share content between collections

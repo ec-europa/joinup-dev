@@ -329,14 +329,35 @@ function asset_release_title_version_is_unique(AssetReleaseInterface $asset_rele
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_alter().
  *
- * For releases, put a permission control on who can edit the creation date.
- * This applies in edit forms only.
+ * For releases, publish time should only be allowed
+ * between the user's present time and past.
+ * This applies in create/edit forms only.
  */
-function asset_release_form_rdf_entity_asset_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (isset($form['created'])) {
-    $form['created']['#access'] = \Drupal::currentUser()->hasPermission('access release create field');
+function asset_release_form_alter(&$form, FormStateInterface $form_state, string $form_id): void {
+  $ids = ['rdf_entity_asset_release_form', 'rdf_entity_asset_release_edit_form'];
+  if (!in_array($form_id, $ids)) {
+    return;
+  }
+
+  $form['#validate'][] = '_asset_release_edit_date_validate';
+}
+
+/**
+ * Validate publish time date.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _asset_release_edit_date_validate(array &$form, FormStateInterface $form_state): void {
+  $dt_now = new DateTime();
+  $values = $form_state->getValues();
+  $date_value = $values['created'][0]['value'];
+  if ($date_value->format('c') > $dt_now->format('c')) {
+    $form_state->setErrorByName('created', t('Your "Authored on" field date is greater than @date', ['@date' => $dt_now->format('c')]));
   }
 }
 

@@ -160,11 +160,11 @@ DTT_MINK_DRIVER_ARGS="['chrome', null, 'http://localhost:4444/wd/hub']"
 
 #### Build the project
 
-Execute the Task Runner command `toolkit:build-dev` to build a development
-instance, then install the site with `toolkit:install-clean`:
+Run Composer install to get all dependencies and prepare the code base, then
+install the site with `toolkit:install-clean`:
 
 ```
-$ ./vendor/bin/run toolkit:build-dev
+$ composer install
 $ ./vendor/bin/run toolkit:install-clean
 ```
 

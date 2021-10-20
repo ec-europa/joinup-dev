@@ -39,9 +39,10 @@ services:
       ASDA_URL:
       ASDA_USER:
       ASDA_PASSWORD:
+      DISABLE_XDEBUG:
     depends_on:
       - mysql
-      - virtuoso
+      - sparql
       - solr
       - redis
       - mail
@@ -64,7 +65,7 @@ services:
       MYSQL_DATABASE: 'joinup'
       DOCKER_RESTORE_PRODUCTION:
 
-  virtuoso:
+  sparql:
     image: tenforce/virtuoso
     # macOS users should override 'volumes:' in docker-compose.override.yml.
     # See docker-compose.override.yml.dist.

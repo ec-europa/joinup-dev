@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature: "Add event" visibility options.
   In order to manage events
   As a solution member

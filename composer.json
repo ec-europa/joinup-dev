@@ -4,20 +4,19 @@
     "type": "project",
     "license": "EUPL-1.2",
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pdo": "*",
         "composer/installers": "^1.9",
-        "cpliakas/git-wrapper": "~1.7",
         "cweagans/composer-patches": "^1.7",
         "dkarv/mdl-chip-input": "dev-master",
         "drupal/allowed_formats": "^1.3",
         "drupal/antibot": "^1.4",
-        "drupal/cached_computed_field": "^1.0-beta5",
-        "drupal/cas": "^1.7",
-        "drupal/cas_account_link": "~2.0",
-        "drupal/cas_attributes": "dev-1.x",
+        "drupal/cached_computed_field": "^1.0",
+        "drupal/cas": "^2.0",
+        "drupal/cas_account_link": "^2.0",
+        "drupal/cas_attributes": "^2.0",
         "drupal/changed_fields": "^3.2",
         "drupal/config_ignore": "dev-3.x",
         "drupal/config_readonly": "^1.0",
@@ -40,30 +39,34 @@
         "drupal/geocoder": "^3.0",
         "drupal/geofield": "~1.6",
         "drupal/honeypot": "~2",
-        "drupal/iframe": "^2.10",
+        "drupal/iframe": "2.11.0",
         "drupal/image_library_widget": "^1.0",
         "drupal/inline_entity_form": "^1.0",
+        "drupal/jquery_ui_accordion": "^1.1",
         "drupal/json_field": "^1.0",
         "drupal/linkit": "^5.0-beta11",
         "drupal/matomo": "^1.11",
-        "drupal/matomo_reporting_api": "^2.2",
+        "drupal/matomo_reporting_api": "^2.3",
         "drupal/menu_admin_per_menu": "^1.3",
+        "drupal/menu_link_destination": "1.x-dev@dev",
         "drupal/message": "^1.1",
-        "drupal/message_digest": "^1.0-rc3",
+        "drupal/message_digest": "^1.0.0",
         "drupal/message_notify": "~1.2",
         "drupal/meta_entity": "^1.0-alpha2",
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/paragraphs": "^1.12",
         "drupal/paragraphs_jquery_ui_accordion": "^1.4",
-        "drupal/password_policy": "3.0-alpha5",
+        "drupal/password_policy": "^3.0",
         "drupal/pathauto": "~1.8",
         "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta2",
         "drupal/rdf_entity": "^1.0",
         "drupal/redirect": "^1.6",
         "drupal/redis": "^1.4",
-        "drupal/schema_metatag": "^1.8",
+        "drupal/schema_digital_document": "dev-1.0.x",
+        "drupal/schema_metatag": "^2",
+        "drupal/schema_social_media_posting": "dev-1.0.x",
         "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
         "drupal/simple_block": "^1.3",
@@ -78,10 +81,10 @@
         "drupal/subpathauto": "dev-1.x#fcd7c1c4c49d5ee1648630d92eb9da46e6bf25f0",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
         "drupal/token": "~1.7",
-        "drupal/video_embed_field": "~1.6",
+        "drupal/video_embed_field": "^2",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_autosubmit": "^1.2",
-        "drupal/views_bulk_operations": "^2.6",
+        "drupal/views_bulk_operations": "^4",
         "drupal/views_data_export": "^1.0",
         "drush/drush": "~10.3",
         "easyrdf/easyrdf": "1.0.0 as 0.9.2",
@@ -108,11 +111,11 @@
         "behat/gherkin": "^4.6.2",
         "behat/mink": "~1.8",
         "behat/mink-goutte-driver": "~1.2",
-        "behat/mink-selenium2-driver": "~1.4",
+        "behat/mink-selenium2-driver": "1.4.0",
         "boedah/robo-drush": "^4.2",
         "composer/composer": "^1.10.22",
         "drupal/admin_toolbar": "~2.4",
-        "drupal/cas_mock_server": "^1.0",
+        "drupal/cas_mock_server": "^1.3",
         "drupal/coder": "^8.3.11",
         "drupal/config_devel": "~1.7",
         "drupal/config_filter": "^1.8",
@@ -120,17 +123,18 @@
         "drupal/config_update": "dev-1.x",
         "drupal/devel": "^4.0",
         "drupal/drupal-extension": "^4.1",
-        "drupal/filecache": "^1.0-beta2",
+        "drupal/filecache": "^1",
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.18",
         "drupal/stage_file_proxy": "^1.1",
         "drupaltest/behat-one-time-login": "^1.0",
-        "ec-europa/toolkit": "^4.4.6",
+        "ec-europa/toolkit": "^4.4.11",
+        "foxy/foxy": "^1.1",
         "jcalderonzumba/gastonjs": "^1.2@dev",
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.12.12",
         "mikey179/vfsstream": "~1.6",
-        "openeuropa/task-runner": "dev-php-7.1 as 1.0.0-beta7",
+        "openeuropa/task-runner": "dev-master as 1.0.0-beta7",
         "pear/http_request2": "~2.4",
         "pfrenssen/phpcs-pre-push": "1.1",
         "php-task-runner/composer": "dev-master",
@@ -156,7 +160,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.1.9"
+            "php": "7.4.0"
         }
     },
     "autoload": {
@@ -195,16 +199,17 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev"
         ],
         "post-update-cmd": [
-            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev",
+            "rm -rf ./resources/solr/conf && cp -r ./web/modules/contrib/search_api_solr/solr-conf/6.x ./resources/solr/conf"
         ]
     },
     "extra": {
@@ -224,6 +229,7 @@
                 "web-root": "web/"
             },
             "file-mapping": {
+                "[web-root]/.eslintrc.json": false,
                 "[web-root]/robots.txt": {
                     "append": "resources/drupal-scaffold/robots.txt.append"
                 },
@@ -238,12 +244,6 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/cached_computed_field": {
-                "Missing schema for fields default values @see https://www.drupal.org/i/3194940": "https://git.drupalcode.org/project/cached_computed_field/-/merge_requests/1.diff"
-            },
-            "drupal/cas": {
-                "Properly fetch submit handlers @see https://www.drupal.org/project/cas/issues/3179292": "https://www.drupal.org/files/issues/2020-10-27/properly_fetch_submit_handlers.patch"
-            },
             "drupal/config_devel": {
                 "Add a Drush command for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://git.drupalcode.org/project/config_devel/-/merge_requests/4.diff"
             },
@@ -295,19 +295,13 @@
                 "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
             },
             "drupal/message_digest": {
-                "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch",
                 "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
             },
             "drupal/paragraphs_jquery_ui_accordion": {
                 "Formatter settings are missing schema @see https://www.drupal.org/i/3194916": "https://git.drupalcode.org/project/paragraphs_jquery_ui_accordion/-/merge_requests/1.diff"
             },
             "drupal/password_policy": {
-                "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
-                "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch",
-                "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
-            },
-            "drupal/pipeline": {
-                "Allow other modules to interact when the pipeline finishes @see https://www.drupal.org/project/pipeline/issues/3192409": "https://git.drupalcode.org/project/pipeline/-/merge_requests/1.diff"
+                "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2021-07-05/password_policy_field_last_password_reset_unknown_error_2771129-130.patch"
             },
             "drupal/publication_date": {
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
@@ -315,16 +309,15 @@
             "drupal/rdf_entity": {
                 "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...ea8f6af001fca732e89a4be0e29643953f49a88f.diff"
             },
-            "drupal/schema_metatag": {
-                "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch",
-                "Add support for DigitalDocument @see https://www.drupal.org/project/schema_metatag/issues/3120153": "https://www.drupal.org/files/issues/2020-03-16/digital_document_group-D8-3.patch"
-            },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-3136277-18-8.x-1.13.patch",
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                 "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                 "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch",
                 "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff"
+            },
+            "drupal/search_api_solr": {
+                "Trying to access array offset on value of type int @see https://www.drupal.org/project/search_api_solr/issues/3173950": "resources/patch/search_api_solr-3173950.diff"
             },
             "drupal/site_alert": {
                 "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-26/3118800-44.patch"
@@ -334,7 +327,8 @@
             },
             "drupal/sparql_entity_storage": {
                 "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
-                "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff"
+                "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff",
+                "Allow more information shown on a query exception @see https://www.drupal.org/project/sparql_entity_storage/issues/3239395": "https://git.drupalcode.org/project/sparql_entity_storage/-/merge_requests/1.diff"
             },
             "drupal/subpathauto": {
                 "Subpaths with redirect not resolved @see https://www.drupal.org/project/subpathauto/issues/3175637": "https://git.drupalcode.org/project/subpathauto/-/merge_requests/1/diffs.diff"
@@ -356,9 +350,8 @@
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
             },
-            "openeuropa/task-runner": {
-                "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff",
-                "Tokens containing digits are not supported @see https://github.com/openeuropa/task-runner/pull/145": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/145.diff"
+            "solarium/solarium": {
+                "implode() deprecated usage": "resources/patch/solarium.diff"
             }
         },
         "patches-ignore": {
@@ -405,10 +398,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/gizra/og.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/pfrenssen/task-runner.git"
         },
         {
             "type": "composer",

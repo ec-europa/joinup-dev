@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a custom menu link that leads to the EULogin login form.
+ *
+ * @todo Remove once feature ISAICP-6660 is implemented.
  */
 class EuLoginMenuLink extends MenuLinkDefault {
 
@@ -102,7 +104,6 @@ class EuLoginMenuLink extends MenuLinkDefault {
     // for authenticated users.
     return [
       'url',
-      'url.query_args',
       'user.roles:authenticated',
     ];
   }
@@ -125,7 +126,7 @@ class EuLoginMenuLink extends MenuLinkDefault {
     }
     // If we are on the homepage, set the 'returnto' path to '/' alias.
     elseif ($this->pathMatcher->isFrontPage()) {
-      $return_to = '/';
+      $return_to = base_path();
     }
     // Return to the current page URL.
     else {

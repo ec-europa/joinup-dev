@@ -1,4 +1,4 @@
-@api @terms @group-b
+@api @terms @group-d
 Feature: Global search
   As a user of the site I can find content through the global search.
 
@@ -38,31 +38,31 @@ Feature: Global search
     And the option with text "Any topic" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
       | Any topic                     |
-      | Demography   (2)              |
-      | Statistics and Analysis   (1) |
+      | Demography (2)              |
+      | Statistics and Analysis (1) |
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location         |
-      | Belgium   (1)        |
-      | European Union   (1) |
-      | Luxembourg   (1)     |
+      | Belgium (1)        |
+      | European Union (1) |
+      | Luxembourg (1)     |
     # Check that only one search field is available. In an earlier version of
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
     # Test the topic facet.
     When I select "Demography" from the "topic" select facet
-    Then the option with text "Demography   (2)" from select facet "topic" is selected
+    Then the option with text "Demography (2)" from select facet "topic" is selected
     # The selected option moves to the last position by default.
     And the "topic" select facet should contain the following options:
       | Any topic                     |
-      | Statistics and Analysis   (1) |
-      | Demography   (2)              |
+      | Statistics and Analysis (1) |
+      | Demography (2)              |
     Then the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location         |
-      | Belgium   (1)        |
-      | European Union   (1) |
+      | Belgium (1)        |
+      | European Union (1) |
     And I should see the "Molecular cooking collection" tile
     And I should see the "Spherification" tile
     But I should not see the "El Celler de Can Roca" tile
@@ -70,15 +70,15 @@ Feature: Global search
 
     # Test the spatial coverage facet.
     When I select "Belgium" from the "spatial coverage" select facet
-    Then the option with text "Belgium   (1)" from select facet "spatial coverage" is selected
+    Then the option with text "Belgium (1)" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location         |
-      | Belgium   (1)        |
-      | European Union   (1) |
-    Then the option with text "Demography   (1)" from select facet "topic" is selected
+      | Belgium (1)        |
+      | European Union (1) |
+    Then the option with text "Demography (1)" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
       | Any topic        |
-      | Demography   (1) |
+      | Demography (1) |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -99,12 +99,12 @@ Feature: Global search
     Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
     And the "topic" select facet should contain the following options:
       | Any topic                     |
-      | Demography   (1)              |
-      | Statistics and Analysis   (1) |
+      | Demography (1)              |
+      | Statistics and Analysis (1) |
     And the "spatial coverage" select facet should contain the following options:
       | Any location         |
-      | European Union   (1) |
-      | Luxembourg   (1)     |
+      | European Union (1) |
+      | Luxembourg (1)     |
     And I should not see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
@@ -141,15 +141,15 @@ Feature: Global search
     When I visit the search page
     And the "spatial coverage" select facet should contain the following options:
       | Any location     |
-      | Greece   (1)     |
-      | Luxembourg   (2) |
+      | Greece (1)     |
+      | Luxembourg (2) |
     When I select "Luxembourg" from the "spatial coverage" select facet
-    Then the option with text "Luxembourg   (2)" from select facet "spatial coverage" is selected
+    Then the option with text "Luxembourg (2)" from select facet "spatial coverage" is selected
     # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
     And the "spatial coverage" select facet should contain the following options:
       | Any location     |
-      | Greece   (1)     |
-      | Luxembourg   (2) |
+      | Greece (1)     |
+      | Luxembourg (2) |
 
   Scenario: Content can be found with a full-text search.
     Given the following owner:

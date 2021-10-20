@@ -5,8 +5,7 @@ timeago:
     name: MIT
     url: https://github.com/rmm5t/jquery-timeago/blob/master/LICENSE.txt
   js:
-    https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.1/jquery.timeago.min.js:
-      type: external
+    js/jquery.timeago.min.js:
       minified: true
 timestamp_timeago:
   js:

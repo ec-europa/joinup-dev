@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-g
 Feature: Creation of contact information
   In order to add contact information
   As a facilitator

@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-d
 Feature:
   In order to see how content evolved over time
   As a content author or facilitator
@@ -65,7 +65,7 @@ Feature:
 
     Given I am logged in as "Clumsy Bounce"
     When I visit the "Goodbi world" <content type>
-    Then I should not see the link "Revisions" in the "Entity actions" region
+    Then I should not see the link "Revisions"
     When I visit the revisions page for "Goodbi world"
     Then I should see the heading "Access denied"
 
@@ -141,7 +141,7 @@ Feature:
     Then I should see the success message "You are no longer a member of Hellow world."
 
     When I visit the "<final title>" <content type>
-    Then I should not see the link "Revisions" in the "Entity actions" region
+    Then I should not see the link "Revisions"
     When I visit the revisions page for "<final title>"
     Then I should see the heading "Access denied"
 
@@ -172,7 +172,7 @@ Feature:
 
     Given I am logged in as "Clumsy Bounce"
     When I visit the "Goodbi world" <content type>
-    Then I should not see the link "Revisions" in the "Entity actions" region
+    Then I should not see the link "Revisions"
     When I visit the revisions page for "Goodbi world"
     Then I should see the heading "Access denied"
 

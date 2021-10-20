@@ -1,4 +1,4 @@
-@api
+@api @group-f
 Feature: Creation of owners through UI
   In order to manage owners
   As a user

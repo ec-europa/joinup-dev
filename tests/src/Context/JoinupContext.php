@@ -861,15 +861,19 @@ class JoinupContext extends RawDrupalContext {
   /**
    * Fills a date or time field at a datetime widget.
    *
-   * Example: When I fill in "Start date" with the date "29-08-2016".
-   * Example: When I fill in "Start date" with the time "26:59:00".
+   * Examples:
+   * - When I fill in "Start date" with the date "2016-08-29".
+   * - When I fill in "Start date" with the date "+2 days".
+   * - When I fill in "Start date" with the time "26:59:00".
+   * - When I fill in "Start date" with the time "+1 hour".
    *
    * @param string $field_group
    *   The field component's label.
    * @param string $date_component
    *   The field to be filled.
    * @param string $value
-   *   The value of the field.
+   *   The value of the field. This should either be in the format "DD-MM-YYYY"
+   *   for dates, "HH:MM:SS" for time, or a relative date format.
    *
    * @throws \Exception
    *    Thrown when more than one elements match the given field in the given
@@ -877,7 +881,13 @@ class JoinupContext extends RawDrupalContext {
    *
    * @When I fill in :field_group with the :date_component :value
    */
-  public function fillDateField($field_group, $date_component, $value) {
+  public function fillDateField(string $field_group, string $date_component, string $value): void {
+    $is_relative_value = $date_component === 'date' ? preg_match('/^\d{2}-\d{2}-\d{4}$/', $value) === 0 : preg_match('/^\d{2}:\d{2}:\d{2}$/', $value) === 0;
+
+    if ($is_relative_value) {
+      $value = date('Y-m-d', strtotime($value));
+    }
+
     $field_selectors = $this->findDateFields($field_group);
     if (count($field_selectors) > 1) {
       throw new \Exception("More than one elements were found.");
@@ -1984,7 +1994,10 @@ class JoinupContext extends RawDrupalContext {
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
-    $entity_url = $entity->toUrl()->setAbsolute()->toString();
+    // @todo Drop the base_url trick as soon as ISAICP-6648 is fixed.
+    $entity_url = $entity->toUrl('canonical', [
+      'base_url' => $GLOBALS['base_url'],
+    ])->setAbsolute()->toString();
     $href = $link_element->getAttribute('href');
 
     Assert::assertContains(urlencode($entity_url), $href);

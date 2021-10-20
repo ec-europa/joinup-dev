@@ -4,6 +4,7 @@ joinup:
   site_dir: ${joinup.dir}/web
   theme_dir: ${joinup.site_dir}/themes/joinup
   db_dir: ${joinup.dir}/db
+  files_private_dir: ${joinup.site_dir}/${env.DRUPAL_PRIVATE_FILE_SYSTEM}
 
 scss:
   import_dir: ${joinup.theme_dir}/scss

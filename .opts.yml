@@ -10,3 +10,14 @@ upgrade_commands:
     - ./vendor/bin/drush deploy --yes
     - rm disable-config-readonly
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes
+
+php_version: 7.4
+
+solr: True
+solr_version: 6
+solr_core: custom
+
+virtuoso_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:virtuoso
+
+install_clean: Yes
+install_clone: False

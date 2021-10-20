@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-c
 Feature: "Add release" visibility options.
   In order to manage releases
   As a solution facilitator
@@ -33,17 +33,19 @@ Feature: "Add release" visibility options.
       | title          | description        | documentation | owner                | state     |
       | Release Test 1 | test description 1 | text.pdf      | Organisation example | validated |
     And the following release:
-      | title             | Chasing shadows |
-      | is version of     | Release Test 1  |
-      | release number    | 1.0             |
-      | state             | validated       |
+      | title          | Chasing shadows     |
+      | is version of  | Release Test 1      |
+      | release number | 1.0                 |
+      | state          | validated           |
+      | creation date  | 2014-08-30 23:59:00 |
+
     # Check that the release should have a unique combination of title and
     # version number.
     When I am logged in as a "facilitator" of the "Release Test 1" solution
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Release"
-    And the following fields should be present "Name, Release number, Release notes, Upload a new file or enter a URL, Geographical coverage, Keyword, Status, Language"
+    And the following fields should be present "Name, Release number, Release notes, Upload a new file or enter a URL, Geographical coverage, Keyword, Status, Language, Date, Time"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Description, Logo, Banner, Solution type, Contact information, Included asset, Translation, Distribution, Current workflow state, Langcode, Motivation"
 
@@ -102,3 +104,21 @@ Feature: "Add release" visibility options.
     When I am logged in as a moderator
     And I go to "/rdf_entity/http_e_f_fexample1regression/asset_release/add"
     Then I should see the heading "Page not found"
+
+  Scenario: Check publish time release is present time and past.
+    Given the following owner:
+      | name                     | type    |
+      | Organisation example two | Company |
+    And the following solutions:
+      | title          | description        | documentation | owner                    | state     |
+      | Release Test 2 | test description 2 | text.pdf      | Organisation example two | validated |
+    When I am logged in as a "facilitator" of the "Release Test 2" solution
+    And I go to the homepage of the "Release Test 2" solution
+    And I click "Add release" in the plus button menu
+    Then I should see the heading "Add Release"
+    And I should see the workflow buttons "Save as draft, Publish"
+    And I fill in "Name" with "Release of the dark ship1"
+    And I fill in "Release number" with "1"
+    And I fill in "Authored on" with the date "+2 day"
+    And I press "Publish"
+    Then I should see the error message 'Your "Authored on" field date is greater than'

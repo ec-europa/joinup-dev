@@ -1,4 +1,4 @@
-@api @email @wip
+@api @wip
 Feature: Solution notification system
   In order to manage solutions
   As a user of the website

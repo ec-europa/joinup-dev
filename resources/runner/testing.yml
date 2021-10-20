@@ -3,7 +3,7 @@
 behat:
   screenshots:
     local:
-      dir: ${toolkit.tmp_folder}/behat
+      dir: ${env.ARTIFACTS_DIR}
   # Either 'firefox' or 'chrome'.
   browser_name: chrome
   formatter:
@@ -11,6 +11,7 @@ behat:
 
 phpcs:
   file:
+    bin: ${joinup.dir}/vendor/bin/phpcs
     config: ${joinup.dir}/phpcs.xml
     standard: ${joinup.dir}/phpcs-ruleset.xml.dist
     global: ${joinup.dir}/vendor/squizlabs/php_codesniffer/CodeSniffer.conf
@@ -52,12 +53,6 @@ phpcs:
 
 commands:
 
-  # Sets-up the tests/behat.yml file.
-  testing:behat-setup:
-    - task: process
-      source: ${joinup.dir}/tests/behat.yml.dist
-      destination: ${joinup.dir}/tests/behat.yml
-
   # Adds a Git hook that enforces coding standards check on push.
   testing:phpcs-git-hook:
     - task: remove
@@ -71,4 +66,5 @@ commands:
       command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse src tests/src web/modules/custom web/profiles web/themes
   testing:check-deprecated-code-contrib:
     - task: exec
-      command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse web/modules/contrib
+      # Mute the returning error code as is used only for reporting.
+      command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse web/modules/contrib || true

@@ -1,11 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains step definitions for the Joinup project.
- */
-
 declare(strict_types = 1);
+
+namespace Drupal\joinup\Context;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
@@ -84,6 +81,20 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @var \Drupal\Core\Entity\EntityInterface[][]
    */
   protected $entities = [];
+
+  /**
+   * The mail system storage settings.
+   *
+   * @var \Drupal\Core\Config\StorableConfigBase
+   */
+  protected static $mailConfig;
+
+  /**
+   * Holds the default settings for the mail server so a revert is possible.
+   *
+   * @var array
+   */
+  protected static $savedMailDefaults;
 
   /**
    * Checks that a 200 OK response occurred.
@@ -469,14 +480,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   Text value of the option to find.
    * @param string $select
    *   CSS selector of the select field.
-   * @param \Behat\Mink\Element\TraversableElement $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region to search in. Defaults to the whole page.
    *
    * @throws \Exception
    *   Thrown when the select is not found in the page or the selected option is
    *   not the expected one.
    */
-  protected function assertFieldOptionSelectedInRegion(string $option, string $select, TraversableElement $region = NULL): void {
+  protected function assertFieldOptionSelectedInRegion(string $option, string $select, ?TraversableElement $region = NULL): void {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
@@ -512,7 +523,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldRadioSelected(string $radio, string $field): void {
     // Find the grouping fieldset that contains the radios field.
-    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
+    $fieldset = $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      $field,
+    ]);
 
     if (!$field) {
       throw new \Exception("The field '$field' was not found in the page.");
@@ -718,7 +732,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($region);
 
     if (!isset($links[$text])) {
-      throw new \Exception(sprintf('Contextual link %s expected but not found in the region %s', $text, $region));
+      throw new \Exception(sprintf('Contextual link %s expected but not found in page.', $text));
     }
   }
 
@@ -1379,7 +1393,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->checkMaterialCheckboxHelper($this->getSession()->getPage(), $text);
   }
 
-
   /**
    * Unchecks a material checkbox in a row that contains a certain text.
    *
@@ -1406,8 +1419,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string|null $text
    *   (optional) The checkbox label, if any. Defaults to false.
    *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException When the checkbox cannot be found in $context.
-   * @throws \Exception When the checkbox is already checked.
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   When the checkbox cannot be found in $context.
+   * @throws \Exception
+   *   When the checkbox is already checked.
    */
   protected function checkMaterialCheckboxHelper(TraversableElement $element, ?string $text = NULL): void {
     $checkbox = $text ? $element->findField($text) : $element->find('css', 'input[type="checkbox"]');
@@ -1451,7 +1466,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   When the checkbox is already unchecked.
    */
-  protected function uncheckMaterialCheckboxHelper(TraversableElement $element, ?string $text =  NULL): void {
+  protected function uncheckMaterialCheckboxHelper(TraversableElement $element, ?string $text = NULL): void {
     $checkbox = $text ? $element->findField($text) : $element->find('css', 'input[type="checkbox"]');
     if (!$checkbox) {
       throw new ElementNotFoundException($this->getSession(), 'checkbox', NULL, $text);
@@ -1588,11 +1603,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * trouble with the static caching being preserved across step requests,
    * because clearing the static cache too often might affect performance.
    *
-   * @see \Drupal\Core\Cache\DatabaseCacheTagsChecksum
-   * @see https://github.com/jhedstrom/drupalextension/issues/133
-   *
    * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
    *   The after step scope event.
+   *
+   * @see \Drupal\Core\Cache\DatabaseCacheTagsChecksum
+   * @see https://github.com/jhedstrom/drupalextension/issues/133
    *
    * @AfterStep
    */
@@ -1673,7 +1688,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \RuntimeException("Only Selenium is currently supported for typing in autocomplete fields.");
     }
 
-    $xpath = $this->getSession()->getSelectorsHandler()->selectorToXpath('named', ['field', $field]);
+    $xpath = $this->getSession()->getSelectorsHandler()->selectorToXpath('named', [
+      'field',
+      $field,
+    ]);
     try {
       $element = $driver->getWebDriverSession()->element('xpath', $xpath);
     }
@@ -1751,7 +1769,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given the site error reporting verbosity is( set to) :error_level
    */
-  public function setSiteErrorLevel(string $error_level = NULL): void {
+  public function setSiteErrorLevel(?string $error_level = NULL): void {
     static $original_error_level;
 
     $config = \Drupal::configFactory()->getEditable('system.logging');
@@ -1898,17 +1916,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Cleans up the existing list of entities before the scenario starts.
-   *
-   * @BeforeScenario @messageCleanup&&@api
-   */
-  public function cleanupMessageEntities(): void {
-    $message_storage = \Drupal::entityTypeManager()->getStorage('message');
-    $mids = $message_storage->getQuery()->execute();
-    $message_storage->delete($message_storage->loadMultiple($mids));
-  }
-
-  /**
    * Creates a backup of the Joinup `VERSION` file.
    *
    * Tests that interact with the version file should be tagged with `@version`.
@@ -1987,11 +1994,13 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     // Get the path part from the URL.
-    $path = trim(parse_url($url, PHP_URL_PATH), '/');
+    $path = rtrim(parse_url($url, PHP_URL_PATH), '/');
+    // Remove the base path.
+    $path = substr($path, strlen(base_path()));
 
     // Drupal private file.
     if (strpos($path, 'system/files') === 0) {
-      $path = Settings::get('file_private_path') . '/' . substr($path, 12);
+      $path = Settings::get('file_private_path') . substr($path, 12);
     }
     // Webserver accessible file.
     else {
@@ -2173,6 +2182,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
         $file_storage->delete($file_storage->loadMultiple($fids));
       }
     }
+  }
+
+  /**
+   * Cleans the mail collector before the scenario starts.
+   *
+   * @BeforeScenario @api
+   */
+  public function cleanUpEmailCollector(): void {
+    \Drupal::state()->delete('system.test_mail_collector');
   }
 
   /**

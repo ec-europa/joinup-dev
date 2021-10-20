@@ -1,10 +1,10 @@
-@api @group-b
+@api @group-f
 Feature: Submit the contact form
   In order to gather feedback from the users
   As a moderator
   I want to collect wishes and grievances through a contact form
 
-  @email @uploadFiles:logo.png
+  @uploadFiles:logo.png
   Scenario: Submit a message as an anonymous user
     Given users:
       | Username                | Roles     |
@@ -13,9 +13,9 @@ Feature: Submit the contact form
 
     # There should be a link to the contact form in the footer.
     Given I am not logged in
-    When I am on the homepage
+    When I visit "/?destination=collections"
     And I click "Contact Joinup Support" in the "Footer" region
-    Then I should see the heading "Contact"
+    And I should see the heading "Contact"
     And the "Category" select should contain the following options:
       | - Select a value -             |
       | Technical problem / bug report |
@@ -28,8 +28,23 @@ Feature: Submit the contact form
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
     And I should see the text "Submissions of this form are processed by a contractor of the European Commission."
+    And I fill in the following:
+      | First name     | Wolverine                   |
+      | Last name      | Wolves                      |
+      | Organisation   | The Deaf-Mute Wolves        |
+      | E-mail address | oswine@example.pt           |
+      | Category       | other                       |
+      | Subject        | Screen reader accessibility |
+      | Message        | Dear sir, madam, ...        |
+    And I attach the file "logo.png" to "Attachment"
+    # We need to wait 5 seconds for the spam protection time limit to pass.
+    And I wait for the spam protection time limit to pass
+    And I press "Submit"
+    Then I should be on "collections"
 
-    When I fill in the following:
+    And I am on the homepage
+    When I click "Contact Joinup Support" in the "Footer" region
+    And I fill in the following:
       | First name     | Oswine                      |
       | Last name      | Wulfric                     |
       | Organisation   | The Deaf-Mute Society       |
@@ -53,6 +68,7 @@ Feature: Submit the contact form
     And I should see the following success messages:
       | success messages                                              |
       | Your message has been submitted. Thank you for your feedback. |
+    And I should be on the homepage
     When I click the link for the "logo.png" attachment in the contact form email sent to "DIGIT-JOINUP-SUPPORT-EXT-FORWARD@ec.europa.eu"
     # For anonymous users, the file should not be accessible.
     # The redirection to the EU login page returns a 200 code instead of a 403

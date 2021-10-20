@@ -114,6 +114,7 @@ function joinup_front_page_theme($existing, $type, $theme, $path) {
         'collection' => $default,
         'solution' => $default,
         'content' => $default,
+        'base_path' => base_path(),
       ],
     ],
   ];

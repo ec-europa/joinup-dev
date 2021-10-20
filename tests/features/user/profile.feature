@@ -1,4 +1,4 @@
-@api
+@api @group-e
 Feature: User profile
   A user must be able to change his own profile.
   A moderator must be able to edit any user account.
@@ -66,7 +66,7 @@ Feature: User profile
     When I go to the public profile of "Leonardo Da Vinci"
     Then I should see the text "Country of origin: Italy" in the "Header" region
 
-  @terms @email
+  @terms
   Scenario: A moderator can navigate to any user's profile and edit it.
     Given users:
       | Username          | E-mail                | Roles     |
@@ -256,7 +256,6 @@ Feature: User profile
     Then I should not see the link "Subscription settings"
     And I should not see the link "Persistent Logins"
 
-  @email
   Scenario: A user, changing its E-mail should receive a notification on his old
   E-mail address and a verification link on its new address.
 

@@ -62,13 +62,21 @@ class DiscussionWorkflowTest extends CommunityContentWorkflowTestBase {
   protected function deleteAccessProvider(): array {
     $data = parent::deleteAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
-      $data[$bundle][GroupInterface::POST_MODERATION]['archived']['own'] = TRUE;
+      $data[$bundle][GroupInterface::POST_MODERATION]['archived']['own'] = [
+        'member' => TRUE,
+        'blocked' => FALSE,
+        'non-member' => FALSE,
+      ];
       $data[$bundle][GroupInterface::POST_MODERATION]['archived']['any'] = [
         'userModerator',
         'userOgFacilitator',
       ];
 
-      $data[$bundle][GroupInterface::PRE_MODERATION]['archived']['own'] = TRUE;
+      $data[$bundle][GroupInterface::PRE_MODERATION]['archived']['own'] = [
+        'member' => TRUE,
+        'blocked' => FALSE,
+        'non-member' => FALSE,
+      ];
       $data[$bundle][GroupInterface::PRE_MODERATION]['archived']['any'] = [
         'userModerator',
         'userOgFacilitator',

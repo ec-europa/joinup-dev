@@ -1,4 +1,4 @@
-@api
+@api @group-g
 Feature:
   As a moderator of the website
   In order to draw the attention of the users for the changes in Joinup

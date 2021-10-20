@@ -9,10 +9,17 @@ use Drupal\Core\Url;
 /**
  * A service that retrieves the current Joinup version.
  *
- * The version is saved during composer install in a `VERSION` file in the root
- * folder of the project.
+ * The version is saved during building the codebase in a `VERSION` file, in the
+ * root folder of the project.
  */
 class JoinupVersion implements JoinupVersionInterface {
+
+  /**
+   * Pseudo version used when a real version cannot be determined.
+   *
+   * @var string
+   */
+  const UNTAGGED = 'untagged.version';
 
   /**
    * The current Joinup version.
@@ -27,7 +34,7 @@ class JoinupVersion implements JoinupVersionInterface {
   public function getVersion(): string {
     if (empty($this->version)) {
       $path = JoinupVersionInterface::PATH;
-      $this->version = file_exists($path) ? $this->version = trim(file_get_contents($path)) : 'untagged.version';
+      $this->version = file_exists($path) ? trim(file_get_contents($path)) : static::UNTAGGED;
 
       // Sanitize the version string. This is perhaps overkill since if a hacker
       // can access the version file we are in big trouble anyway. In any case
@@ -48,18 +55,17 @@ class JoinupVersion implements JoinupVersionInterface {
     // If a development version is checked out, return a link to the currently
     // checked out commit.
     if (preg_match('/^.+-\d+-g([a-f0-9]+)$/', $version, $matches) === 1) {
-      return Url::fromUri('https://github.com/ec-europa/joinup-dev/commit/' . $matches[1]);
+      return Url::fromUri('https://git.fpfis.eu/digit/digit-joinup-dev/-/commit/' . $matches[1]);
     }
 
     // If the current version could not be determined, return a link to the
     // releases page on Github.
-    if ($version === 'n/a') {
-      return Url::fromUri('https://github.com/ec-europa/joinup-dev/releases');
+    if ($version === static::UNTAGGED) {
+      return Url::fromUri('https://git.fpfis.eu/digit/digit-joinup-reference/-/tags');
     }
 
-    // If a tag is checked out, return a link to the release that matches the
-    // tag.
-    return Url::fromUri('https://github.com/ec-europa/joinup-dev/releases/tag/' . $version);
+    // If a tag is checked out, return a link to the matching release.
+    return Url::fromUri('https://git.fpfis.eu/digit/digit-joinup-reference/-/tags/' . $version);
   }
 
 }

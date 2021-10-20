@@ -153,6 +153,7 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     And I should see the link "Previous page"
     And I should see the link "Page 1"
     And I should see the link "Current page 2"
+    And I delete the "TikTok" contact information
 
   @javascript
   Scenario: Test the recommendation selector.
