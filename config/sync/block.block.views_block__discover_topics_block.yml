@@ -12,7 +12,7 @@ dependencies:
 id: views_block__discover_topics_block
 theme: ventuno
 region: featured
-weight: -24
+weight: -25
 provider: null
 plugin: 'views_block:discover_topics-block'
 settings:
