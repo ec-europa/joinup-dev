@@ -562,7 +562,7 @@ class JoinupSearchContext extends RawDrupalContext {
 
     // Based on the JSWebAssert class.
     // @see \Drupal\FunctionalJavascriptTests\JSWebAssert::waitForElement
-    $topic_slim_select = $page->waitFor(5, function () use ($page, $xpath): TraversableElement {
+    $topic_slim_select = $page->waitFor(5, function () use ($page, $xpath): ?TraversableElement {
       return $page->find('xpath', $xpath);
     });
 
