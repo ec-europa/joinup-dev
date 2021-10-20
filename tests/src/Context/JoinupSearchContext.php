@@ -522,11 +522,14 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function iShouldSeeTheSuggestions(TableNode $table): void {
     $session = $this->getSession();
+    $page = $session->getPage();
     $element = $this->getSearchBarElement();
     $session->getDriver()->keyDown($element->getXpath(), '', NULL);
-    $this->getSession()->wait(1000);
     $xpath = '//ul[contains(concat(" ", normalize-space(@class), " "), "search-api-autocomplete-search")]//li';
-    $allResults = $session->getPage()->findAll('xpath', $xpath);
+    $allResults = $page->waitFor(2, function () use ($page, $xpath): ?array {
+      return $page->findAll('xpath', $xpath);
+    });
+
     $found = array_map(function ($item) {
       /** @var \Behat\Mink\Element\NodeElement $item */
       return $item->getText();
