@@ -99,12 +99,12 @@ Feature: Homepage
       | solution type | Interoperability Specification, Networking Service                         |
       | topic         | Demography, EU and European Policies, HR                                   |
       | state         | validated                                                                  |
-    And the "Highlighted solution" content listing contains:
+    And the "Highlighted content" content listing contains:
       | type     | label             |
       | solution | Mercury poisoning |
 
     When I am on the homepage
-    Then I should see "Mercury poisoning" as the highlighted solution
+    Then I should see "Mercury poisoning" as the Highlighted content
     And I should see the link "More solutions"
     When I click "More solutions"
     Then I should be on the advanced search page

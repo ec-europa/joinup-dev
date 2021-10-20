@@ -36,7 +36,7 @@ variant_settings:
           region: second
           configuration:
             id: 'entityqueue_block:highlighted_solution'
-            label: 'Highlighted solution'
+            label: 'Highlighted content'
             provider: entityqueue_block
             label_display: visible
             view_mode: highlighted

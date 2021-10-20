@@ -847,34 +847,34 @@ class SolutionContext extends RawDrupalContext {
   }
 
   /**
-   * Checks the contents of the "Highlighted solution" block.
+   * Checks the contents of the "Highlighted content" block.
    *
    * This is shown on the homepage.
    *
    * @param string $label
    *   The label of the solution that is highlighted on the homepage.
    *
-   * @Then I should see :label as the highlighted solution
+   * @Then I should see :label as the Highlighted content
    */
   public function assertHighlightedSolution(string $label): void {
     $solution = self::getSolutionByName($label);
 
-    $block_element = $this->getSession()->getPage()->find('css', '.block-entityqueue--highlighted-solution');
+    $block_element = $this->getSession()->getPage()->find('css', '.block-entityqueue--highlighted-content');
 
     // Check block title.
     $actual_block_title = $block_element->find('css', 'h2')->getText();
-    Assert::assertEquals('Highlighted solution', $actual_block_title, sprintf('Expected the highlighted solution block to have the title "Highlighted solution" but instead found "%s".', $actual_block_title));
+    Assert::assertEquals('Highlighted content', $actual_block_title, sprintf('Expected the Highlighted content block to have the title "Highlighted content" but instead found "%s".', $actual_block_title));
 
     // Check that the logo is present.
     if ($logo = $solution->getLogoAsFile()) {
       $filename = $logo->getFilename();
       $logo_is_present = self::hasImage($filename, $block_element);
-      Assert::assertTrue($logo_is_present, sprintf('Image with filename "%s" has been found in the highlighted solution block.', $filename));
+      Assert::assertTrue($logo_is_present, sprintf('Image with filename "%s" has been found in the Highlighted content block.', $filename));
     }
 
     // Check title text.
     $actual_title = $block_element->find('css', 'article h2')->getText();
-    Assert::assertEquals($solution->label(), $actual_title, sprintf('Expected the highlighted solution to have the title "%s" but instead found "%s".', $solution->label(), $actual_title));
+    Assert::assertEquals($solution->label(), $actual_title, sprintf('Expected the Highlighted content to have the title "%s" but instead found "%s".', $solution->label(), $actual_title));
 
     // Check that title links to the canonical page of the solution.
     $xpath = '//h2/a[@href = "' . $solution->toUrl()->toString() . '"]';
@@ -886,7 +886,7 @@ class SolutionContext extends RawDrupalContext {
 
     // Check that the correct number of topics are present.
     $topic_elements = $block_element->findAll('css', '.field--name-field-topic .field__item');
-    Assert::assertEquals(count($topics), count($topic_elements), sprintf('Expected %d topics in the "Highlighted solution" section but found %d topics.', count($topics), count($topic_elements)));
+    Assert::assertEquals(count($topics), count($topic_elements), sprintf('Expected %d topics in the "Highlighted content" section but found %d topics.', count($topics), count($topic_elements)));
 
     foreach ($topics as $j => $topic) {
       /** @var \Behat\Mink\Element\NodeElement $topic_element */
@@ -894,11 +894,11 @@ class SolutionContext extends RawDrupalContext {
 
       // Check the title of each topic.
       $actual_topic_title = $topic_element->getText();
-      Assert::assertEquals($topic->label(), $actual_topic_title, sprintf('Expected topic #%d to be "%s" in the "Highlighted solution" section but instead found "%s".', $j + 1, $topic->label(), $actual_topic_title));
+      Assert::assertEquals($topic->label(), $actual_topic_title, sprintf('Expected topic #%d to be "%s" in the "Highlighted content" section but instead found "%s".', $j + 1, $topic->label(), $actual_topic_title));
 
       // Check that each topic links to their canonical page.
       $xpath = '/a[@href = "' . $topic->toUrl()->toString() . '"]';
-      Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" in the "Highlighted solution" section does not link to the canonical topic page.', $actual_topic_title));
+      Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" in the "Highlighted content" section does not link to the canonical topic page.', $actual_topic_title));
     }
 
     // Check that the description is present.

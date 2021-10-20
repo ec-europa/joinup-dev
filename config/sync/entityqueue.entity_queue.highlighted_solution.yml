@@ -5,7 +5,7 @@ dependencies:
   module:
     - rdf_entity
 id: highlighted_solution
-label: 'Highlighted solution'
+label: 'Highlighted content'
 handler: simple
 handler_configuration: {  }
 entity_settings:
@@ -13,6 +13,7 @@ entity_settings:
   handler: 'default:rdf_entity'
   handler_settings:
     target_bundles:
+      collection: collection
       solution: solution
     sort:
       field: _none
