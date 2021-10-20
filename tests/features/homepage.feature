@@ -105,8 +105,8 @@ Feature: Homepage
 
     When I am on the homepage
     Then I should see "Mercury poisoning" as the Highlighted content
-    And I should see the link "More solutions"
-    When I click "More solutions"
+    And I should see the link "Related content"
+    When I click "Related content"
     Then I should be on the advanced search page
     And the "Solution" content checkbox item should be selected
 
