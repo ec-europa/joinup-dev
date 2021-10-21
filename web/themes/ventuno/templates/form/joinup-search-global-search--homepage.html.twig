@@ -12,7 +12,15 @@
 {%
     set search_url = path('view.search.page_1')
 %}
-<h2 class="display-6 mb-4 text-center text-lg-start">{{ 'Find the <strong>interoperability<br>resources</strong> you need'|trans }}</h2>
+{# <h2 class="display-6 mb-4 text-center text-lg-start">{{ 'Find the <strong>interoperability<br>resources</strong> you need'|trans }}</h2> #}
+<div class="row mb-4">
+  <div class="col-12 col-md-6">
+    <img src="{{ directory }}/assets/images/logo.svg" class="img-fluid">
+  </div>
+  <div class="col-12 col-md-6">
+    <p class="mb-0 text-end text-light display-6 fw-bold">welcomes</p>
+  </div>
+</div>
 <div class="search-bar mb-3">
   <label for="search-bar__input" style="display: none">{{ 'Search'|trans }}</label>
   <form action="{{ search_url }}">
@@ -20,8 +28,8 @@
       <input type="hidden" class="search-bar__chip" name="f[]" value="{{ id }}" data-description="{{ filter }}">
     {% endfor %}
     <div class="input-group">
-      <input class="search-bar__input form-control px-4 py-3 shadow" type="text" name="keys" id="search-bar__input" placeholder="{{ 'Start typing to search…'|trans }}">
-      <button type="submit" class="btn btn-light btn-search shadow"></button>
+      <input class="search-bar__input form-control px-4 py-3" type="text" name="keys" id="search-bar__input" placeholder="{{ 'Start typing to search…'|trans }}">
+      <button type="submit" class="btn btn-search"></button>
     </div>
   </form>
 </div>
