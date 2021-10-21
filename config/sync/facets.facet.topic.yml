@@ -8,24 +8,24 @@ dependencies:
   module:
     - search_api
 id: topic
-name: Topic
+name: Topics
 url_alias: topic
-weight: 0
+weight: -3
 min_count: 1
 show_only_one_result: true
 field_identifier: topic
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: dropdown
+  type: facets_form_dropdown
   config:
-    show_numbers: false
     default_option_label: 'Any topic'
-    child_prefix: ' '
-    arbitrary_facet_plugin: _none
+    child_items_prefix: '-'
+    disabled_on_empty: false
+    show_numbers: false
 query_operator: or
 use_hierarchy: true
 expand_hierarchy: true
-enable_parent_when_child_gets_disabled: true
+enable_parent_when_child_gets_disabled: false
 hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
@@ -35,36 +35,36 @@ processor_configs:
     weights:
       sort: -8
     settings:
-      sort: DESC
+      sort: ASC
   aggregated_entity_reference_label:
     processor_id: aggregated_entity_reference_label
     weights:
-      build: -1
+      build: 5
     settings: {  }
   count_limit:
     processor_id: count_limit
     weights:
-      build: 0
+      build: -10
     settings:
       minimum_items: 1
       maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -9
+      sort: -10
     settings:
-      sort: DESC
+      sort: ASC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: -10
+      sort: -8
     settings:
       sort: ASC
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -2
+      build: 5
     settings: {  }
 empty_behavior:
   behavior: none

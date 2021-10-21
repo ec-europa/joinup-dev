@@ -85,7 +85,10 @@ function ventuno_preprocess_page(&$variables) {
   ];
 
   // Generate a link to EU Login.
-  $cas_login_link = Url::fromRoute('cas.login');
+  // Get return URL from current page.
+  $cas_login_link = Url::fromRoute('cas.login', [], [
+    'query' => \Drupal::destination()->getAsArray(),
+  ]);
   $anonymous_links[] = [
     'label' => t('Sign in'),
     'link' => $cas_login_link,
