@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the global search bar.
+ *
+ * Available variables:
+ * - filters: the search filters, to be displayed as chips.
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set search_url = path('view.search.page_1')
+%}
+<h2 class="display-6 mb-4 text-center text-lg-start">{{ 'Find the <strong>interoperability<br>resources</strong> you need'|trans }}</h2>
+{% block content %}
+  <div class="search-bar mb-3">
+    {{ content }}
+  </div>
+{% endblock %}
+<p class="text-center text-lg-start">{% trans %}<span class="d-block d-lg-inline">Need more search options?</span> <span class="d-block d-lg-inline">Use our <a class="text-primary text-decoration-underline" href="{{ search_url }}">advanced search</a></span>{% endtrans %}</p>
