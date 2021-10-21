@@ -48,7 +48,7 @@ Feature: Homepage
     #   page instead.
     When I click "Finance in EU"
     Then I should be on the advanced search page
-    And the option "Finance in EU" from "topic" Slim Select is selected
+    And the "Finance in EU" option from "topic" Slim Select is selected
 
     # There is a "More news" link that for the moment leads to the search page
     # pre-filtered on news articles. In the future this will become a dedicated

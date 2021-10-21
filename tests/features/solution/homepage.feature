@@ -176,5 +176,5 @@ Feature: Solution homepage
     And I should not see the link "Supplier exchange"
     When I click "HR"
     Then the url should match "/search"
-    Then the option "- HR" from "topic" Slim Select is selected
+    Then the "- HR" option from "topic" Slim Select is selected
     Then I should see the following facet summary "HR, Solution"
