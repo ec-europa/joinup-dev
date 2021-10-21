@@ -14,7 +14,7 @@ slick:
 style:
   version: VERSION
   css:
-    theme:
+    base:
       assets/css/main.css: {}
   js:
     assets/js/oe-bcl-joinup.bundle.min.js: { minified: true }

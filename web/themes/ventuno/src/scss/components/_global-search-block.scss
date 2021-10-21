@@ -1,16 +1,21 @@
 .block-joinup-search-global-search {
-  @extend .pt-5;
-  @extend .pb-2;
-  @extend .me-3;
-  @extend .col-lg;
+  padding-top: $spacer * 3; // 48px @extend .pt-5;
+  padding-bottom: $spacer * .5; // 8px @extend .pb-2;
+  @include media-breakpoint-up(lg) {
+    margin-right: $spacer; // 16px @extend .me-3;
+    flex: 1 0 0%; // @extend .col-lg;
+  }
   .search-bar {
     .search-bar__input {
       border-style: none;
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
+      border-top-left-radius: $border-radius-pill;
+      border-bottom-left-radius: $border-radius-pill;
     }
     .btn-search {
       @include font-icon-before("\E805", 1.2rem, inherit, inherit, 0);
+      border-top-right-radius: $border-radius-pill;
+      border-bottom-right-radius: $border-radius-pill;
+      color: $dark;
     }
   }
 }
