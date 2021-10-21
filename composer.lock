@@ -2596,6 +2596,55 @@
             }
         },
         {
+            "name": "drupal/components",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/components.git",
+                "reference": "8.x-2.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/components-8.x-2.4.zip",
+                "reference": "8.x-2.4",
+                "shasum": "9b083c2f845ff2e1a1632efcf24f88cecd7479cc"
+            },
+            "require": {
+                "drupal/core": "^8.7.7 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.4",
+                    "datestamp": "1618861606",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "JohnAlbin",
+                    "homepage": "https://www.drupal.org/user/32095",
+                    "email": "virtually.johnalbin@gmail.com"
+                },
+                {
+                    "name": "RobLoach",
+                    "homepage": "https://www.drupal.org/user/61114"
+                }
+            ],
+            "description": "Registers folders of components defined by your theme or module as Twig namespaces",
+            "homepage": "https://drupal.org/project/components",
+            "support": {
+                "source": "https://git.drupalcode.org/project/components"
+            }
+        },
+        {
             "name": "drupal/config_ignore",
             "version": "dev-3.x",
             "source": {
@@ -10212,32 +10261,32 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Joinup/oe_bootstrap_theme.git",
-                "reference": "1495c0eca8cc9dedfe848dc7bffa4301174b2cd6"
+                "reference": "8396f9271bdc1f6c7f4a2fbfaddfbda42000c508"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Joinup/oe_bootstrap_theme/zipball/1495c0eca8cc9dedfe848dc7bffa4301174b2cd6",
-                "reference": "1495c0eca8cc9dedfe848dc7bffa4301174b2cd6",
+                "url": "https://api.github.com/repos/Joinup/oe_bootstrap_theme/zipball/8396f9271bdc1f6c7f4a2fbfaddfbda42000c508",
+                "reference": "8396f9271bdc1f6c7f4a2fbfaddfbda42000c508",
                 "shasum": ""
             },
             "require": {
-                "drupal/core": "^8.9",
+                "drupal/components": "^2.4",
+                "drupal/core": "^8.9 || ^9.1",
                 "drupal/ui_patterns": "^1.0",
                 "drupal/ui_patterns_settings": "^1.0",
                 "php": ">=7.1"
             },
             "require-dev": {
-                "composer/installers": "~1.5",
-                "drupal-composer/drupal-scaffold": "~2.2",
+                "composer/installers": "^1.11",
                 "drupal/config_devel": "~1.2",
-                "drupal/drupal-extension": "~4.0",
+                "drupal/core-composer-scaffold": "^8.9 || ^9.1",
+                "drupal/drupal-extension": "^4.1",
                 "drupal/styleguide": "^1.0@alpha",
-                "drush/drush": "~9.0@stable",
-                "guzzlehttp/guzzle": "~6.3",
-                "openeuropa/code-review": "~1.0.0-beta2",
-                "openeuropa/drupal-core-require-dev": "^8.9",
-                "openeuropa/task-runner": "~1.0.0-beta5",
-                "phpunit/phpunit": "~6.0"
+                "drush/drush": "^10.3",
+                "openeuropa/code-review": "~1.6",
+                "openeuropa/drupal-core-require-dev": "^8.9 || ^9.1",
+                "openeuropa/task-runner-drupal-project-symlink": "^1.0",
+                "phpspec/prophecy-phpunit": "^1 || ^2"
             },
             "type": "drupal-theme",
             "extra": {
@@ -10256,6 +10305,11 @@
                     "build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
+                },
+                "drupal-scaffold": {
+                    "locations": {
+                        "web-root": "./build"
+                    }
                 },
                 "patches": {
                     "drupal/ui_patterns": {
@@ -10277,9 +10331,6 @@
                 }
             },
             "scripts": {
-                "drupal-scaffold": [
-                    "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-                ],
                 "post-install-cmd": [
                     "./vendor/bin/run drupal:site-setup"
                 ],
@@ -10294,7 +10345,7 @@
             "support": {
                 "source": "https://github.com/Joinup/oe_bootstrap_theme/tree/php-7.1"
             },
-            "time": "2021-07-14T19:54:13+00:00"
+            "time": "2021-10-20T09:35:30+00:00"
         },
         {
             "name": "openeuropa/oe_webtools",
