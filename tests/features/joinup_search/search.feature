@@ -38,7 +38,7 @@ Feature: Global search
     And I should see the "Foam" tile
 
     # Terms are sorted alphabetically
-    And the slim select "topic" should contain the following options:
+    And the Slim Select "topic" should contain the following options:
       # Parent term.
       | Info                      |
       # Child term.
@@ -67,10 +67,10 @@ Feature: Global search
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
-    When I select "Social and Political" from the "topic" slim select
+    When I select "Social and Political" option from the "topic" Slim Select
     And I click Search in facets form
-    Then the option with text "Social and Political" from slim select "topic" is selected
-    And the slim select "topic" should contain the following options:
+    Then the "Social and Political" option from "topic" Slim Select is selected
+    And the Slim Select "topic" should contain the following options:
       | Info                      |
       | - Statistics and Analysis |
       | Social and Political      |
@@ -81,15 +81,20 @@ Feature: Global search
     And I should see the "Dummy news 2" tile
     And I should see the "Dummy news 3" tile
     And I should see the "Dummy news 4" tile
-    Then I remove "Social and Political" from the "topic" slim select
+    Then I unselect "Social and Political" option from the "topic" Slim Select
+
+    #Test multiple topics.
+    When I select "E-inclusion,Demography" options from the "topic" Slim Select
+    And I click Search in facets form
+    And the "- Demography,- E-inclusion" options from "topic" Slim Select are selected
+    Then I unselect "E-inclusion,Demography" options from the "topic" Slim Select
 
     # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
-
-    When I select "Demography" from the "topic" slim select
+    When I select "Demography" option from the "topic" Slim Select
     And I click Search in facets form
-    Then the option with text "- Demography" from slim select "topic" is selected
+    Then the "- Demography" option from "topic" Slim Select is selected
     # The selected option moves to the last position by default.
-    And the slim select "topic" should contain the following options:
+    And the Slim Select "topic" should contain the following options:
       | Info                      |
       | - Statistics and Analysis |
       | Social and Political      |
@@ -114,8 +119,8 @@ Feature: Global search
       | Any location       |
       | Belgium (1)        |
       | European Union (1) |
-    Then the option with text "- Demography" from slim select "topic" is selected
-    And the slim select "topic" should contain the following options:
+    Then the "- Demography" option from "topic" Slim Select is selected
+    And the Slim Select "topic" should contain the following options:
       | Social and Political |
       | - Demography         |
     And I should see the "Molecular cooking collection" tile
@@ -140,7 +145,7 @@ Feature: Global search
       | Collection (1) |
       | News (5)       |
       | Solutions (2)  |
-    And the slim select "topic" should contain the following options:
+    And the Slim Select "topic" should contain the following options:
       | Info                      |
       | - Statistics and Analysis |
       | Social and Political      |
