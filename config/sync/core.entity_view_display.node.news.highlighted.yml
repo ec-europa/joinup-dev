@@ -1,55 +1,65 @@
-uuid: d5d48389-336e-4698-8dd3-df18345169a6
+uuid: 31b72862-7d67-46f5-8bb4-798fe4a2818c
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.highlighted
-    - field.field.node.event.body
-    - field.field.node.event.field_attachment
-    - field.field.node.event.field_comments
-    - field.field.node.event.field_event_agenda
-    - field.field.node.event.field_event_contact_email
-    - field.field.node.event.field_event_coordinates
-    - field.field.node.event.field_event_date
-    - field.field.node.event.field_event_logo
-    - field.field.node.event.field_event_online_location
-    - field.field.node.event.field_event_spatial_coverage
-    - field.field.node.event.field_event_web_url
-    - field.field.node.event.field_keywords
-    - field.field.node.event.field_location
-    - field.field.node.event.field_organisation
-    - field.field.node.event.field_organisation_type
-    - field.field.node.event.field_scope
-    - field.field.node.event.field_shared_in
-    - field.field.node.event.field_short_title
-    - field.field.node.event.field_site_featured
-    - field.field.node.event.field_state
-    - field.field.node.event.field_topic
-    - field.field.node.event.og_audience
-    - node.type.event
+    - field.field.node.news.body
+    - field.field.node.news.field_attachment
+    - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
+    - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_logo
+    - field.field.node.news.field_news_referenced_solution
+    - field.field.node.news.field_news_source_url
+    - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_shared_in
+    - field.field.node.news.field_site_featured
+    - field.field.node.news.field_state
+    - field.field.node.news.field_topic
+    - field.field.node.news.og_audience
+    - node.type.news
     - responsive_image.styles.highlighted_solution
   module:
     - field_delimiter
     - field_formatter_range
+    - field_group
     - layout_builder
     - responsive_image
     - smart_trim
     - template_suggestion
     - user
 third_party_settings:
+  field_group:
+    group_references:
+      children:
+        - field_news_source_url
+      parent_name: ''
+      weight: 19
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: References
+      region: hidden
   layout_builder:
     allow_custom: false
     enabled: false
-id: node.event.highlighted
+id: node.news.highlighted
 targetEntityType: node
-bundle: event
+bundle: news
 mode: highlighted
 content:
   body:
+    label: hidden
     type: smart_trim
     weight: 2
-    region: content
-    label: hidden
     settings:
       trim_length: 200
       trim_type: chars
@@ -66,14 +76,15 @@ content:
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
-  field_event_logo:
+    region: content
+  field_news_logo:
     type: responsive_image
     weight: 0
     region: content
     label: hidden
     settings:
       responsive_image_style: highlighted_solution
-      image_link: ''
+      image_link: content
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
@@ -96,20 +107,12 @@ content:
 hidden:
   field_attachment: true
   field_comments: true
-  field_event_agenda: true
-  field_event_contact_email: true
-  field_event_coordinates: true
-  field_event_date: true
-  field_event_online_location: true
-  field_event_spatial_coverage: true
-  field_event_web_url: true
   field_keywords: true
-  field_location: true
-  field_organisation: true
-  field_organisation_type: true
-  field_scope: true
+  field_news_headline: true
+  field_news_referenced_solution: true
+  field_news_source_url: true
+  field_news_spatial_coverage: true
   field_shared_in: true
-  field_short_title: true
   field_site_featured: true
   field_state: true
   langcode: true

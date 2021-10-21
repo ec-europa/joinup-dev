@@ -1,0 +1,137 @@
+uuid: 5fbb7f17-0be8-4c70-8a5c-ceb806015a8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.highlighted
+    - field.field.node.document.body
+    - field.field.node.document.field_comments
+    - field.field.node.document.field_document_logo
+    - field.field.node.document.field_document_publication_date
+    - field.field.node.document.field_document_spatial_coverage
+    - field.field.node.document.field_file
+    - field.field.node.document.field_keywords
+    - field.field.node.document.field_licence
+    - field.field.node.document.field_shared_in
+    - field.field.node.document.field_short_title
+    - field.field.node.document.field_site_featured
+    - field.field.node.document.field_state
+    - field.field.node.document.field_topic
+    - field.field.node.document.field_type
+    - field.field.node.document.og_audience
+    - node.type.document
+    - responsive_image.styles.highlighted_solution
+  module:
+    - field_delimiter
+    - field_formatter_range
+    - field_group
+    - layout_builder
+    - responsive_image
+    - template_suggestion
+    - text
+    - user
+third_party_settings:
+  field_group:
+    group_categorisation:
+      children:
+        - field_short_title
+        - field_type
+        - field_document_publication_date
+        - field_licence
+      parent_name: ''
+      weight: 5
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Categorisation
+      region: hidden
+    group_attachment:
+      children:
+        - field_file
+      parent_name: ''
+      weight: 7
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Attachment
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: IBVftmfYLkfapLokxuyLrv1me4toJj5yidZu0ixGxQM
+id: node.document.highlighted
+targetEntityType: node
+bundle: document
+mode: highlighted
+content:
+  body:
+    label: hidden
+    type: text_trimmed
+    weight: 2
+    settings:
+      trim_length: 200
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    region: content
+  field_document_logo:
+    type: responsive_image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      responsive_image_style: highlighted_solution
+      image_link: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+  field_topic:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      field_formatter_range:
+        order: 0
+        limit: 2
+        offset: 0
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_comments: true
+  field_document_publication_date: true
+  field_document_spatial_coverage: true
+  field_file: true
+  field_keywords: true
+  field_licence: true
+  field_shared_in: true
+  field_short_title: true
+  field_site_featured: true
+  field_state: true
+  field_type: true
+  langcode: true
+  links: true
+  og_audience: true
+  published_at: true
+  read_more: true
+  report: true
+  share_link: true

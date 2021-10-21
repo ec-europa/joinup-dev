@@ -113,7 +113,7 @@ default:
         Header menu: '#block-joinup-theme-main-menu'
         Header: '.section--featured, .section-header'
         Highlighted event: '.block-entityqueue--highlighted-event'
-        Highlighted content: '.block-entityqueue--highlighted-solution'
+        Highlighted content: '.block-entityqueue--highlighted-content'
         In the spotlight: '.block-views-blockin-the-spotlight-block'
         Left sidebar: '.section--sidebar-left'
         Main solution vertical tab: '#edit-group-main'

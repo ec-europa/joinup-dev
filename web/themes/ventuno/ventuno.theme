@@ -141,19 +141,20 @@ function ventuno_preprocess_page(&$variables) {
  * Implements hook_preprocess_block().
  */
 function ventuno_preprocess_block(&$variables) {
-  if ($variables['derivative_plugin_id'] == 'highlighted_solution') {
-    if (isset($variables['elements']['content']['entities'][0])) {
-      /** @var \Drupal\rdf_entity\RdfInterface $entity */
-      $entity = $variables['elements']['content']['entities'][0]['#rdf_entity'];
+  if ($variables['derivative_plugin_id'] == 'highlighted_content') {
 
-      $topics = $entity->get('field_topic')->getValue();
+    if (isset($variables['elements']['content']['entities'][0])) {
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $variables['elements']['content']['entities'][0]['#node'];
+
+      $topics = $node->get('field_topic')->getValue();
 
       $options = [
         'query' =>
         [
           'f' =>
           [
-            'type:' . $entity->bundle(),
+            'type:' . $node->bundle(),
             'topic:' . reset($topics)["target_id"],
           ],
         ],

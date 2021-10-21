@@ -1,11 +1,11 @@
 {#
 /**
  * @file
- * Themeing for rdf entities.
+ * Themeing for event node highlighted.
  */
 #}
 <article{{ attributes }}>
-  {{ content.field_ar_logo }}
+  {{ content.field_event_logo }}
   {{ content.field_topic }}
   {{ title_prefix }}
   {% if not page and not is_label_hidden %}
@@ -14,5 +14,5 @@
     </h2>
   {% endif %}
   {{ title_suffix }}
-  {{ content|without('field_ar_logo', 'field_topic') }}
+  {{ content|without('field_event_logo', 'field_topic') }}
 </article>

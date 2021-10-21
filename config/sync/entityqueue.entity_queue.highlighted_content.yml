@@ -1,24 +1,25 @@
-uuid: c40d0c80-bf7c-4f00-831e-b77871742309
+uuid: d51790d4-39e1-4b51-b2f3-9f9621ff06e6
 langcode: en
 status: true
 dependencies:
   module:
-    - rdf_entity
-id: highlighted_solution
+    - node
+id: highlighted_content
 label: 'Highlighted content'
 handler: simple
 handler_configuration: {  }
 entity_settings:
-  target_type: rdf_entity
-  handler: 'default:rdf_entity'
+  target_type: node
+  handler: 'default:node'
   handler_settings:
     target_bundles:
-      collection: collection
-      solution: solution
+      document: document
+      event: event
+      news: news
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: event
 queue_settings:
   min_size: 1
   max_size: 1
