@@ -88,7 +88,37 @@ module.exports = {
       from: [
         path.resolve(
           __dirname,
+          "src/images/logo.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
           "src/images/highlighted-event.jpg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/iop-eu-logo.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/homepage-banner.svg"
         ),
       ],
       to: path.resolve(outputFolder, "assets/images"),
