@@ -8,7 +8,7 @@
   {{ pattern('card', {
     'variants': 'horizontal',
     'url': url,
-    'title': label,
+    'title': { 'content': label },
     'content': content|without('field_news_logo'),
     'image': content.field_news_logo,
   }) }}
