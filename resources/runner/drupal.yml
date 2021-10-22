@@ -141,6 +141,18 @@ drupal:
         $settings['file_scan_ignore_directories'] = [
           'node_modules',
           'bower_components',
+          // In some circumstances, the Bootstrap Components Library (BCL) components,
+          // from "OE Bootstrap Theme", located under the theme assets directory
+          // `web/themes/contrib/oe_bootstrap_theme/assets/bcl`, are discovered and used
+          // as Drupal Twig templates. But they shouldn't be used directly, they rather
+          // should be called by a UI Pattern wrapper. For instance, the accordion should
+          // use `web/themes/contrib/oe_bootstrap_theme/templates/patterns/accordion`
+          // rather than `web/themes/contrib/oe_bootstrap_theme/assets/bcl/bcl-accordion`.
+          // This is a known issue with "OE Bootstrap Theme", handled in OEL-522. Until a
+          // fix will be available, in OEL-522, we exclude the `bcl` from file scanning,
+          // as a temporary fix.
+          // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/OEL-522
+          'bcl',
         ];
         $settings['entity_update_batch_size'] = 50;
         $settings['entity_update_backup'] = TRUE;

@@ -5,16 +5,16 @@ dependencies: {  }
 id: node__discussion
 label: 'Content: Discussion'
 tags:
-  schema_social_media_posting_name: '[node:title]'
   schema_social_media_posting_about: '[node:field_keywords]'
   schema_social_media_posting_author: 'a:4:{s:5:"@type";s:6:"Person";s:3:"@id";s:17:"[node:author:url]";s:4:"name";s:26:"[node:author:display-name]";s:3:"url";s:17:"[node:author:url]";}'
-  schema_social_media_posting_shared_content: 'a:6:{s:5:"pivot";s:1:"1";s:5:"@type";s:11:"MediaObject";s:3:"@id";s:34:"[node:field_attachment:entity:url]";s:4:"name";s:35:"[node:field_attachment:entity:name]";s:3:"url";s:34:"[node:field_attachment:entity:url]";s:13:"datePublished";s:52:"[node:field_attachment:entity:created:html_datetime]";}'
   schema_social_media_posting_date_modified: '[node:changed:html_datetime]'
-  schema_social_media_posting_publisher: 'a:4:{s:5:"@type";s:6:"Person";s:3:"@id";s:17:"[node:author:url]";s:4:"name";s:26:"[node:author:display-name]";s:3:"url";s:17:"[node:author:url]";}'
-  schema_social_media_posting_headline: '[node:title]'
-  schema_social_media_posting_type: DiscussionForumPosting
   schema_social_media_posting_date_published: '[node:published:html_datetime]'
+  schema_social_media_posting_description: '[node:summary]'
+  schema_social_media_posting_headline: '[node:title]'
+  schema_social_media_posting_image: 'a:2:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:120:"https://joinup.ec.europa.eu/sites/default/files/styles/logo/public/collection/logo/2019-04/190404-logo-JOINUP-blue-2.png";}'
   schema_social_media_posting_is_accessible_for_free: 'True'
   schema_social_media_posting_main_entity_of_page: '[current-page:url]'
-  schema_social_media_posting_description: '[node:summary]'
-  schema_social_media_posting_image: 'a:2:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:143:"https://joinup.ec.europa.eu/sites/default/files/styles/logo/public/collection/logo/2019-04/190404-logo-JOINUP-blue-2.png";}'
+  schema_social_media_posting_name: '[node:title]'
+  schema_social_media_posting_publisher: 'a:4:{s:5:"@type";s:6:"Person";s:3:"@id";s:17:"[node:author:url]";s:4:"name";s:26:"[node:author:display-name]";s:3:"url";s:17:"[node:author:url]";}'
+  schema_social_media_posting_shared_content: 'a:5:{s:5:"@type";s:11:"MediaObject";s:5:"pivot";s:1:"1";s:4:"name";s:35:"[node:field_attachment:entity:name]";s:3:"url";s:34:"[node:field_attachment:entity:url]";s:13:"datePublished";s:52:"[node:field_attachment:entity:created:html_datetime]";}'
+  schema_social_media_posting_type: DiscussionForumPosting
