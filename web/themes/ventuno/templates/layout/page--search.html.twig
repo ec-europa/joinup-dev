@@ -1,0 +1,203 @@
+{#
+/**
+ * @file
+ * Theme override for the home page.
+ *
+ * This adds a dedicated "About" section which has a particular layout which
+ * would otherwise require 3 additional regions to be added to the theme just
+ * displaying this section on the homepage.
+ *
+ * There is no support for using the Layout API in arbitrary regions, so this
+ * has been hacked together by creating the layout in an unused Page Manager
+ * variant and injecting this in the template.
+ *
+ * Once we have a way to leverage layouts in dedicated regions (such as support
+ * in core or when the Layout Builder Everywhere module is stabilized) we can
+ * replace this overridden template with the Layout Builder + the
+ * `twocolfooter-onecol-67-33` layout from the Joinup Layout module.
+ *
+ * @see https://www.drupal.org/project/drupal/issues/2924058
+ * @see https://www.drupal.org/project/lb_everywhere
+ *
+ * The doctype, html, head and body tags are not in this template. Instead they
+ * can be found in the html.html.twig template in this directory.
+ *
+ * Available variables:
+ *
+ * General utility variables:
+ * - base_path: The base URL path of the Drupal installation. Will usually be
+ *   "/" unless you have installed Drupal in a sub-directory.
+ * - is_front: A flag indicating if the current page is the front page.
+ * - logged_in: A flag indicating if the user is registered and signed in.
+ * - is_admin: A flag indicating if the user has permission to access
+ *   administration pages.
+ *
+ * Site identity:
+ * - front_page: The URL of the front page. Use this instead of base_path when
+ *   linking to the front page. This includes the language domain or prefix.
+ *
+ * Page content (in order of occurrence in the default page.html.twig):
+ * - messages: Status and error messages. Should be displayed prominently.
+ * - node: Fully loaded node, if there is an automatically-loaded node
+ *   associated with the page and the node ID is the second argument in the
+ *   page's path (e.g. node/12345 and node/12345/revisions, but not
+ *   comment/reply/12345).
+ *
+ * Regions:
+ * - page.header: Items for the header region.
+ * - page.featured: Items for the featured content region.
+ * - page.content_top: Items for the region displayed above the main content.
+ * - page.content: The main content of the current page.
+ * - page.content_bottom: Items for the region displayed below the main content.
+ * - page.sidebar: Items for the sidebar.
+ * - page.footer: Items for the footer region.
+ *
+ * @see template_preprocess_page()
+ * @see html.html.twig
+ */
+#}
+
+{{ attach_library('ventuno/searchpage') }}
+
+<div class="layout-container">
+  <div class="section-header">
+    {# Temporary EC header, until this pattern is included in oe_bootstrap. #}
+    <div class="ec__header bcl-header">
+      <nav class="w-100 shadow-sm navbar">
+        <div class="container">
+          <a class="navbar-brand" href="https://ec.europa.eu/info/index_en">
+            <img src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.0.2/ec/images/logo/logo-ec--en.svg" alt="European Commission logo"/>
+          </a>
+        </div>
+      </nav>
+    </div>
+    <header role="banner" class="region-header">
+      {% include directory ~ '/templates/navigation/navbar.html.twig' with {
+        breakpoint: logged_in ? "" : "sm",
+        brand: {
+          src: base_path ~ directory ~ "/src/images/logo.svg",
+          alt: "Joinup logo"|t,
+          link: front_page,
+        },
+        collapse_id: "main-navbar",
+        list_id: "main-navbar-list",
+        items: [
+          {
+            id: logged_in ? "account" : "navbar-toggler",
+            icon: {
+              name: logged_in ? "person-circle" : "justify",
+            },
+            label: logged_in ? user_name : "",
+            links: logged_in ? profile_links : anonymous_links,
+          },
+        ],
+      } %}
+    </header>
+
+    {% if page.header_bottom %}
+      <div class="region-header-bottom">
+        {{ page.header_bottom }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if page.featured %}
+    <div class="region-featured mb-5 py-5">
+      <div class="container">
+        <div class="row">
+          {{ page.featured }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {{ page.content_top }}
+
+  <main role="main">
+
+    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+    <div class="container">
+      <div class="row">
+        {% if page.sidebar %}
+          <aside class="layout-sidebar col-lg-3 joinup-search-filters" role="complementary">
+            {{ page.sidebar }}
+          </aside>
+        {% endif %}
+        <div class="layout-content col-12{% if page.sidebar %} col-lg-8 offset-lg-1{% endif %}">
+          {{ pattern('button', {
+            label: 'Open advanced search',
+            variant: 'secondary',
+            outline: false,
+            size: 'md',
+            show_spinner: false,
+            icon_position: 'before',
+            icon: {
+              name: 'filter',
+              attributes: create_attribute().addClass(["me-2"]),
+            },
+            attributes: create_attribute().addClass(["d-lg-none", "rounded-0", "w-100", "position-fixed", "bottom-0", "start-0"]).setAttribute("data-bs-toggle", "offcanvas").setAttribute("data-bs-target", "#search-offcanvas").setAttribute("aria-controls", "search-offcanvas"),
+          }) }}
+
+          {{ page.content }}
+        </div>{# /.layout-content #}
+
+      </div>
+    </div>
+  </main>
+
+  <div class="about-section">
+    <div class="container">
+      {{ about }}
+    </div>
+  </div>
+
+  {{ page.content_bottom }}
+
+  {% if page.footer %}
+    <footer role="contentinfo" class="page__footer bg-primary">
+      <div class="container text-light">
+        <div class="row py-4 py-lg-5">
+          <!--Joinup logo-->
+          <div class="col-md-12 col-lg-3 column-logo">
+            <p class="joinup-logo"><a href="/" class="joinup-logo-white mb-3"><span class="visually-hidden">{{ 'Joinup'|t }}</span></a></p>
+            <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
+          </div>
+
+          {{ page.footer }}
+
+          <!--European Commission menu-->
+          <div class="col-md-3 col-lg-3 ec-menu">
+            <h3>{{ 'European Commission'|t }}</h3>
+            <ul class="list-unstyled">
+              <li><a href="https://ec.europa.eu/info/about-commissions-new-web-presence_en">{{ 'About the Commission\'s new web presence'|t }}</a></li>
+              <li><a href="https://ec.europa.eu/info/resources-partners_en">{{ 'Resources for partners'|t }}</a></li>
+              <li><a href="https://ec.europa.eu/info/cookies_en">{{ 'Cookies'|t }}</a></li>
+              <li><a href="{{ base_path }}joinup/legal-notice">{{ 'Legal notice'|t }}</a></li>
+              <li><a href="https://ec.europa.eu/info/contact_en">{{ 'Contact'|t }}</a></li>
+              <li><a href="https://ec.europa.eu/info/europa-analytics_en">{{ 'Europa Analytics' }}</a></li>
+            </ul>
+          </div>
+
+          <!--Social menu-->
+          <div class="col-md-3 col-lg-2 social-media">
+            <h3>{{ 'Follow us'|t }}</h3>
+            <ul class="list-unstyled mb-2">
+              <li>
+                <a href="https://ec.europa.eu/newsroom/joinup/newsletter-specific-archive-issue.cfm?newsletter_service_id=877&lang=default">{{ 'Joinup Newsletter'|t }}</a>
+              </li>
+            </ul>
+            <ul class="list-inline social-networks">
+              <li class="list-inline-item">
+                <a href="https://twitter.com/joinup_eu" class="twitter"><span class="visually-hidden">{{ 'Twitter'|t }}</span></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="https://www.linkedin.com/groups/2600644/" class="linkedin"><span class="visually-hidden">{{ 'LinkedIn'|t }}</span></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  {% endif %}
+
+</div>{# /.layout-container #}
