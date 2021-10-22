@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87fa20f9103e219ddd7010099e4fefab",
+    "content-hash": "805bd4efee205c6d0372a8d412d4f5b5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7854,6 +7854,9 @@
                     "build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
+                },
+                "patches_applied": {
+                    "Fix unable to detect a pattern from default theme having same id as the pattern in the base theme @see https://github.com/nuvoleweb/ui_patterns/issues/304": "https://patch-diff.githubusercontent.com/raw/nuvoleweb/ui_patterns/pull/318.diff"
                 }
             },
             "autoload": {
@@ -10140,10 +10143,15 @@
         {
             "name": "openeuropa/oe_bootstrap_theme",
             "version": "0.71.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openeuropa/oe_bootstrap_theme.git",
+                "reference": "acaf97ddaa159dc827622a2ede554336dc2afe63"
+            },
             "dist": {
-                "type": "tar",
-                "url": "https://github.com/openeuropa/oe_bootstrap_theme/releases/download/0.71.0/oe_bootstrap_theme-0.71.0.tar.gz",
-                "reference": "5b7086812085079974d7667d56a69ad0c04f302e",
+                "type": "zip",
+                "url": "https://api.github.com/repos/openeuropa/oe_bootstrap_theme/zipball/acaf97ddaa159dc827622a2ede554336dc2afe63",
+                "reference": "acaf97ddaa159dc827622a2ede554336dc2afe63",
                 "shasum": ""
             },
             "require": {
@@ -10272,7 +10280,7 @@
                 "patches_applied": {
                     "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                     "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
+                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/master...cbee0e9.diff",
                     "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                     "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
                 }
@@ -19617,7 +19625,6 @@
                     "type": "github"
                 }
             ],
-            "abandoned": true,
             "time": "2020-11-30T07:30:19+00:00"
         },
         {
