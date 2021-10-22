@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3280f31799998c56701cd6091d010e45",
+    "content-hash": "774b494385447b2dbc26e86a2121c39c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -8597,7 +8597,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2021-06-30T06:04:10+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -9456,7 +9456,7 @@
                 "patches_applied": {
                     "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                     "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
+                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/1d2c68c...cbee0e9.diff",
                     "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                     "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
                 }
@@ -10758,7 +10758,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",
@@ -15085,7 +15085,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1633781890",
+                    "datestamp": "1633781924",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
