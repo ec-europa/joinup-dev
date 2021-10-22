@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91c10089d16f6fc3230d937ef317d96c",
+    "content-hash": "c9d3f0e0f6a1fd2f8abc70f55bf08a29",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2237,10 +2237,6 @@
                 {
                     "name": "floretan",
                     "homepage": "https://www.drupal.org/user/66163"
-                },
-                {
-                    "name": "nord102",
-                    "homepage": "https://www.drupal.org/user/3471419"
                 }
             ],
             "description": "Limit which text formats are available for each field instance.",
@@ -2282,10 +2278,6 @@
                 "GPL-2.0+"
             ],
             "authors": [
-                {
-                    "name": "gaurav.kapoor",
-                    "homepage": "https://www.drupal.org/user/3495331"
-                },
                 {
                     "name": "mstef",
                     "homepage": "https://www.drupal.org/user/107190"
@@ -3957,7 +3949,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.4",
-                    "datestamp": "1624457496",
+                    "datestamp": "1624457459",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5492,9 +5484,6 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Array to string conversion @see https://www.drupal.org/project/menu_link_destination/issues/3240983": "https://git.drupalcode.org/project/menu_link_destination/-/merge_requests/1.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7344,16 +7333,24 @@
                     "role": "Maintainer"
                 },
                 {
+                    "name": "chrisjlee",
+                    "homepage": "https://www.drupal.org/user/760600"
+                },
+                {
+                    "name": "drywall",
+                    "homepage": "https://www.drupal.org/user/192591"
+                },
+                {
+                    "name": "jsenich",
+                    "homepage": "https://www.drupal.org/user/58871"
+                },
+                {
+                    "name": "markie",
+                    "homepage": "https://www.drupal.org/user/206687"
+                },
+                {
                     "name": "newsignature",
                     "homepage": "https://www.drupal.org/user/765518"
-                },
-                {
-                    "name": "ultimike",
-                    "homepage": "https://www.drupal.org/user/51132"
-                },
-                {
-                    "name": "volkswagenchick",
-                    "homepage": "https://www.drupal.org/user/3332522"
                 }
             ],
             "description": "Provides a more robust alternative to 'summary or trimmed' textfield format.",
@@ -7384,7 +7381,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.8",
-                    "datestamp": "1615222684",
+                    "datestamp": "1615222638",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9374,7 +9371,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2021-06-30T06:04:10+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -15567,6 +15564,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Add a Drush command for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://git.drupalcode.org/project/config_devel/-/merge_requests/4.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -15785,7 +15785,8 @@
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
                 "source": "https://git.drupalcode.org/project/config_update"
-            }
+            },
+            "time": "2020-11-06T21:01:03+00:00"
         },
         {
             "name": "drupal/devel",
@@ -15819,7 +15820,7 @@
             "extra": {
                 "drupal": {
                     "version": "4.1.1",
-                    "datestamp": "1631968537",
+                    "datestamp": "1609419527",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -15999,7 +16000,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1633781890",
+                    "datestamp": "1633781924",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -16174,7 +16175,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1601040759",
+                    "datestamp": "1601040732",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"

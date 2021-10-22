@@ -311,9 +311,6 @@
             "drupal/matomo_reporting_api": {
                 "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
             },
-            "drupal/menu_link_destination": {
-                "Array to string conversion @see https://www.drupal.org/project/menu_link_destination/issues/3240983": "https://git.drupalcode.org/project/menu_link_destination/-/merge_requests/1.diff"
-            },
             "drupal/message_digest": {
                 "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
             },
