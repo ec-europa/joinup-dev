@@ -1,0 +1,71 @@
+// Advanced search filters
+.joinup-search-filters {
+  .offcanvas {
+    box-shadow: none;
+    &::before {
+      width: 100vw;
+      height: 100%;
+      background: $gray-300;
+      content: '';
+      position: absolute;
+      z-index: -10;
+      right: 0;
+    }
+    .offcanvas-header {
+      border-bottom: 1px solid $gray-400;
+    }
+    .form-label,
+    fieldset > legend {
+      text-transform: uppercase;
+      color: $primary;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacer;
+    }
+    .form-item {
+      margin-top: $spacer * 1.5;
+      padding-bottom: $spacer * 1.5;
+      border-bottom: 1px solid $gray-400;
+      @include media-breakpoint-up(lg) {
+        margin-top: $spacer * 2.5;
+        padding-bottom: $spacer * 2.5;
+
+      }
+    }
+  }
+  // @extend .pb-5;
+  // border-bottom: 1px solid rgba($primary, .1);
+  // position: relative;
+  // height: 100%;
+  // > h2 {
+  //   @include font-icon-before("\E803", 1.2rem, $warning);
+  // }
+  // .more-link {
+  //   position: absolute;
+  //   bottom: 1rem;
+  //   @include media-breakpoint-up(md) {
+  //     right: 0;
+  //     top: 12px;
+  //   }
+  //   @include font-icon-after("\E801", 1rem);
+//   article {
+//     .field--name-field-is-logo {
+//       @extend .mb-4;
+//     }
+//     .field--name-field-is-description {
+//       color: $gray-700;
+//     }
+//     .field--name-field-is-solution-type {
+//       color: $gray-500;
+//       @extend .mt-2;
+//       @extend .fs-xs;
+//     }
+//     .field--name-field-topic {
+//       a {
+//         border-radius: $border-radius-pill;
+//         padding-right: $spacer; // 16px
+//         padding-left: $spacer; // 16px
+//       }
+//     }
+//   }
+// }
+}

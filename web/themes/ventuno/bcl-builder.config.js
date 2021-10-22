@@ -45,6 +45,14 @@ module.exports = {
       },
     },
     {
+      entry: path.resolve(outputFolder, "src/scss/searchpage.scss"),
+      dest: path.resolve(outputFolder, "assets/css/searchpage.css"),
+      options: {
+        includePaths,
+        sourceMap: "file",
+      },
+    },
+    {
       entry: path.resolve(outputFolder, "src/scss/overrides/tour.scss"),
       dest: path.resolve(outputFolder, "assets/css/tour.css"),
       options: {

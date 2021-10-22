@@ -1,3 +1,8 @@
+searchpage:
+  css:
+    theme:
+      assets/css/searchpage.css: {}
+
 homepage:
   css:
     theme:
