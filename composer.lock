@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "774b494385447b2dbc26e86a2121c39c",
+    "content-hash": "042f4d52ac827596a5d762696586b402",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -9392,48 +9392,46 @@
         },
         {
             "name": "openeuropa/oe_webtools",
-            "version": "1.7.0",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools.git",
-                "reference": "1d2c68ce382b9d95cddeeef4a44bcd968e689041"
+                "reference": "b95a1bf1bc51f3e3fb7bc2eb81c6a4c881ee670c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/1d2c68ce382b9d95cddeeef4a44bcd968e689041",
-                "reference": "1d2c68ce382b9d95cddeeef4a44bcd968e689041",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/b95a1bf1bc51f3e3fb7bc2eb81c6a4c881ee670c",
+                "reference": "b95a1bf1bc51f3e3fb7bc2eb81c6a4c881ee670c",
                 "shasum": ""
             },
             "require": {
-                "drupal/core": "^8.8",
+                "drupal/core": "^8.9 || ^9",
                 "ext-json": "*",
-                "php": "^7.1"
+                "php": ">=7.3"
             },
             "conflict": {
                 "openeuropa/oe_webtools_location": "*"
             },
             "require-dev": {
                 "composer/installers": "~1.5",
-                "consolidation/annotated-command": "^2.8.2",
-                "consolidation/robo": "~1.4",
-                "drupal-composer/drupal-scaffold": "^2.5.2",
-                "drupal/coder": "8.3.8",
                 "drupal/config_devel": "~1.2",
+                "drupal/core-composer-scaffold": "^8.9 || ^9",
                 "drupal/drupal-extension": "^4.0",
                 "drupal/geocoder": "^3.0",
                 "drupal/geofield": "^1.0",
-                "drupal/json_field": "^1.0@RC",
-                "drush/drush": "~9.0",
+                "drupal/json_field": "~1.0-rc4",
+                "drupaltest/behat-traits": "dev-GH-6",
+                "drush/drush": "~10.3",
                 "nikic/php-parser": "^3.1.5",
                 "openeuropa/behat-transformation-context": "~0.1",
-                "openeuropa/code-review": "~1.0@beta",
-                "openeuropa/drupal-core-require-dev": "^8.7",
-                "openeuropa/oe_media": "^1.0@beta",
-                "openeuropa/oe_multilingual": "~1.2",
-                "openeuropa/task-runner": "~1.0.0-beta5",
+                "openeuropa/code-review": "~1.6",
+                "openeuropa/drupal-core-require-dev": "^8.9 || ^9",
+                "openeuropa/oe_media": "^1.14",
+                "openeuropa/oe_multilingual": "^1.8",
+                "openeuropa/task-runner-drupal-project-symlink": "^1.0",
                 "openeuropa/webtools-geocoding-provider": "~0.1",
-                "phpunit/phpunit": "~6.0",
-                "symfony/dom-crawler": "~3.4"
+                "phpunit/phpunit": "^7 || ^8",
+                "symfony/dom-crawler": "~3.4 || 4.4"
             },
             "type": "drupal-module",
             "extra": {
@@ -9453,12 +9451,16 @@
                         "type:drupal-theme"
                     ]
                 },
+                "drupal-scaffold": {
+                    "locations": {
+                        "web-root": "./build"
+                    }
+                },
                 "patches_applied": {
                     "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                     "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/1d2c68c...cbee0e9.diff",
-                    "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
-                    "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
+                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
+                    "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff"
                 }
             },
             "autoload": {
@@ -9471,7 +9473,7 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa Webtools integration.",
-            "time": "2020-06-22T10:32:56+00:00"
+            "time": "2021-09-27T13:13:28+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
