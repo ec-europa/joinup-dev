@@ -232,6 +232,7 @@ permissions:
   - 'update any simple_block block content'
   - 'update collection_settings meta-entity'
   - 'update discover_topics entityqueue'
+  - 'update highlighted_content entityqueue'
   - 'update highlighted_event entityqueue'
   - 'update highlighted_solution entityqueue'
   - 'update paragraph content iframe'
