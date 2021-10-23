@@ -7,9 +7,7 @@
 {% block content %}
   {{ pattern('card', {
     'variants': 'horizontal',
-    'url': url,
     'title': { 'content': label },
-    'content': content|without('field_is_logo'),
-    'image': content.field_is_logo,
+    'content': content,
   }) }}
 {% endblock %}

@@ -24,12 +24,10 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_spatial_coverage
     - field.field.rdf_entity.asset_release.field_status
     - field.field.rdf_entity.asset_release.field_topic
-    - image.style.logo
     - rdf_entity.rdfentity.asset_release
   module:
     - field_delimiter
     - field_formatter_range
-    - image
     - joinup_html_stripper
     - layout_builder
     - template_suggestion
@@ -47,7 +45,7 @@ mode: search_result_featured
 content:
   changed:
     type: timestamp
-    weight: 4
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -58,7 +56,7 @@ content:
       template_suggestion:
         template_suggestion: ''
   created:
-    weight: 3
+    weight: 2
     label: hidden
     settings:
       date_format: date_only
@@ -117,17 +115,6 @@ content:
     third_party_settings: {  }
     type: link
     region: content
-  field_isr_logo:
-    type: image
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      image_style: logo
-      image_link: content
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: ''
   field_isr_metrics_page:
     weight: 18
     label: above
@@ -160,7 +147,7 @@ content:
     region: content
   field_isr_release_notes:
     type: joinup_html_stripper_stripped
-    weight: 2
+    weight: 1
     label: hidden
     settings:
       trim_length: 200
@@ -216,7 +203,7 @@ content:
     region: content
   field_topic:
     type: entity_reference_label
-    weight: 5
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -233,7 +220,7 @@ content:
   label:
     label: hidden
     type: string
-    weight: 1
+    weight: 0
     settings:
       link_to_entity: false
     third_party_settings:
@@ -249,6 +236,7 @@ hidden:
   field_isr_included_asset: true
   field_isr_is_version_of: true
   field_isr_language: true
+  field_isr_logo: true
   field_isr_owner: true
   field_isr_related_solutions: true
   field_isr_release_number: true

@@ -19,13 +19,11 @@ dependencies:
     - field.field.node.document.field_topic
     - field.field.node.document.field_type
     - field.field.node.document.og_audience
-    - image.style.horizontal_medium_image
     - node.type.document
   module:
     - field_delimiter
     - field_formatter_range
     - field_group
-    - image
     - joinup_html_stripper
     - layout_builder
     - template_suggestion
@@ -37,7 +35,7 @@ third_party_settings:
         - field_licence
         - field_type
       parent_name: ''
-      weight: 17
+      weight: 18
       format_type: html_element
       format_settings:
         id: ''
@@ -54,7 +52,7 @@ third_party_settings:
       children:
         - field_file
       parent_name: ''
-      weight: 18
+      weight: 19
       format_type: html_element
       format_settings:
         id: ''
@@ -80,27 +78,16 @@ content:
   body:
     label: hidden
     type: joinup_html_stripper_stripped
-    weight: 2
+    weight: 1
     settings:
       trim_length: 200
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
     region: content
-  field_document_logo:
-    type: image
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      image_style: horizontal_medium_image
-      image_link: content
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: ''
   field_topic:
     type: entity_reference_label
-    weight: 1
+    weight: 0
     region: content
     label: hidden
     settings:
@@ -116,7 +103,7 @@ content:
         template_suggestion: ''
   published_at:
     type: timestamp
-    weight: 3
+    weight: 2
     region: content
     label: hidden
     settings:
@@ -128,6 +115,7 @@ content:
         template_suggestion: ''
 hidden:
   field_comments: true
+  field_document_logo: true
   field_document_publication_date: true
   field_document_spatial_coverage: true
   field_file: true

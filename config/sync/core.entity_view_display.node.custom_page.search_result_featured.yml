@@ -8,11 +8,9 @@ dependencies:
     - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
-    - image.style.horizontal_medium_image
     - node.type.custom_page
   module:
     - field_group
-    - image
     - layout_builder
     - template_suggestion
     - user
@@ -45,20 +43,9 @@ targetEntityType: node
 bundle: custom_page
 mode: search_result_featured
 content:
-  field_custom_page_logo:
-    type: image
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      image_style: horizontal_medium_image
-      image_link: content
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: ''
   published_at:
     type: timestamp
-    weight: 1
+    weight: 0
     region: content
     label: hidden
     settings:
@@ -70,6 +57,7 @@ content:
         template_suggestion: ''
 hidden:
   field_attachment: true
+  field_custom_page_logo: true
   field_paragraphs_body: true
   langcode: true
   links: true

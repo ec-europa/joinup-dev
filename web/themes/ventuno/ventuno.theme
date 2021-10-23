@@ -226,3 +226,21 @@ function ventuno_smart_trim(string $string, int $length, bool $ellipsis = TRUE):
   $truncate = new TruncateHTML();
   return $truncate->truncateChars($string, $length, $ellipsis ? '…' : '');
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ventuno_preprocess_rdf_entity__search_result_featured(&$variables) {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  $entity = $variables['rdf_entity'];
+  $variables['image'] = $entity instanceof LogoInterface ? $entity->getLogoAsRenderArray() : NULL;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ventuno_preprocess_node__search_result_featured(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+  $variables['image'] = $node instanceof LogoInterface ? $node->getLogoAsRenderArray() : NULL;
+}

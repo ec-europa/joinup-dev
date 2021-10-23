@@ -23,13 +23,11 @@ dependencies:
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_spatial_coverage
     - field.field.rdf_entity.collection.field_topic
-    - image.style.logo
     - rdf_entity.rdfentity.collection
   module:
     - field_delimiter
     - field_formatter_range
     - field_group
-    - image
     - joinup_html_stripper
     - layout_builder
     - template_suggestion
@@ -41,7 +39,7 @@ third_party_settings:
         - field_ar_abstract
         - read_more
       parent_name: ''
-      weight: 9
+      weight: 29
       format_type: html_element
       format_settings:
         element: div
@@ -64,7 +62,7 @@ mode: search_result_featured
 content:
   created:
     type: timestamp
-    weight: 4
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -81,17 +79,6 @@ content:
     label: hidden
     settings:
       trim_length: 200
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: ''
-  field_ar_logo:
-    type: image
-    weight: 3
-    region: content
-    label: hidden
-    settings:
-      image_style: logo
-      image_link: content
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
@@ -121,7 +108,7 @@ content:
     region: content
   last_update:
     type: timestamp
-    weight: 5
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -140,6 +127,7 @@ hidden:
   field_ar_closed: true
   field_ar_contact_information: true
   field_ar_content_creation: true
+  field_ar_logo: true
   field_ar_moderation: true
   field_ar_owner: true
   field_ar_state: true
