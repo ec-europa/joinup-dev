@@ -2,6 +2,9 @@
 .joinup-search-filters {
   .offcanvas {
     box-shadow: none;
+    @include media-breakpoint-up(lg) {
+      z-index: 500; // Avoid sidebar to overlap toolbar tray when logged in
+    }
     &::before {
       width: 100vw;
       height: 100%;
