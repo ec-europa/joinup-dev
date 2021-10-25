@@ -401,3 +401,10 @@ function joinup_search_theme_suggestions_joinup_search_global_search(array $vari
 
   return [];
 }
+
+/**
+ * Implements hook_views_plugins_row_alter().
+ */
+function joinup_search_views_plugins_row_alter(array &$plugins): void {
+  $plugins['search_api']['class'] = '\\Drupal\\joinup_search\\Plugin\\views\\row\\JoinupSearchApiRow';
+}
