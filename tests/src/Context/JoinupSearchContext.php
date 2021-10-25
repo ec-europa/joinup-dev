@@ -307,16 +307,18 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function iSelectAnOptionFromSlimSelect(string $option, string $label): void {
     $facet_id = self::getFacetIdFromAlias($label);
-    $region = $this->getSession()->getPage();
+    $session = $this->getSession();
     $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//select[@data-drupal-selector="' . $facet_id . '"]';
-    $slim_select = $region->find('xpath', $xpath);
+    $slim_select = $session->getPage()->find('xpath', $xpath);
     if (!$slim_select) {
       throw new \Exception("The Slim Select '$label' was not found in the page.");
     }
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
       $slim_select_xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//div[contains(concat(" ", normalize-space(@class), " "), "' . $slim_select->getAttribute('data-ssid') . '")]';
-      $select = $region->find('xpath', $slim_select_xpath);
+      $select = $session->getPage()->waitFor(5, function () use ($session, $slim_select_xpath) {
+        return $session->getPage()->find('xpath', $slim_select_xpath);
+      });
       $select->click();
 
       $element = $select->find('css', ".ss-option:contains('{$option}')");
@@ -342,16 +344,18 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function iRemoveAnOptionFromSlimSelect(string $option, string $label): void {
     $facet_id = self::getFacetIdFromAlias($label);
-    $region = $this->getSession()->getPage();
+    $session = $this->getSession();
     $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//select[@data-drupal-selector="' . $facet_id . '"]';
-    $slim_select = $region->find('xpath', $xpath);
+    $slim_select = $session->getPage()->find('xpath', $xpath);
     if (!$slim_select) {
       throw new \Exception("The Slim Select '$label' was not found in the page.");
     }
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
       $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-form ")]//div[contains(concat(" ", normalize-space(@class), " "), "' . $slim_select->getAttribute('data-ssid') . '")]';
-      $select = $region->find('xpath', $xpath);
+      $select = $session->getPage()->waitFor(5, function () use ($session, $xpath) {
+        return $session->getPage()->find('xpath', $xpath);
+      });
       $select->click();
 
       $element = $select->find('css', ".ss-multi-selected .ss-value:contains('{$option}')");
