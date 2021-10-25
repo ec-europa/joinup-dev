@@ -241,8 +241,9 @@ function ventuno_theme_suggestions_form_element_alter(array &$suggestions, array
  * Implements hook_form_alter().
  */
 function ventuno_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $route_name = \Drupal::routeMatch()->getRouteName();
   // Check if the form contains exposed filter form element.
-  if ($form_id == 'views_exposed_form') {
+  if ($route_name != 'view.search.page_1' && $form_id == 'views_exposed_form') {
     // Here you can define the check for specific view so that
     // it doesn't apply to all views.
     $view = $form_state->get('view');
