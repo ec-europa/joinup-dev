@@ -14,6 +14,7 @@ module:
   ckeditor: 0
   collection: 0
   comment: 0
+  components: 0
   config: 0
   config_ignore: 0
   config_readonly: 0
@@ -108,6 +109,8 @@ module:
   joinup_validation: 0
   joinup_video: 0
   joinup_workflow: 0
+  jquery_ui: 0
+  jquery_ui_accordion: 0
   json_field: 0
   language: 0
   layout_builder: 0
