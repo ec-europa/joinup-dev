@@ -15,6 +15,12 @@
       border-bottom: 1px solid $gray-400;
     }
     .form-label,
+    .fieldset-legend,
+    .form-select,
+    .form-control {
+      font-size: $font-size-sm;
+    }
+    .form-label,
     fieldset > legend {
       text-transform: uppercase;
       color: $primary;
@@ -31,12 +37,12 @@
 
       }
     }
-    .form-select {
-      background-color: transparent;
-      padding: 0;
-      border: none;
-      box-shadow: none;
-      overflow: auto;
+    .fieldset-wrapper {
+      .form-item {
+        margin-top: 0;
+        border-bottom: none;
+        padding-bottom: $spacer * .75;
+      }
     }
   }
 }

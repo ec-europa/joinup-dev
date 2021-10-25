@@ -32,18 +32,6 @@
     'block-' ~ plugin_id|clean_class,
   ]
 %} #}
-{# UMA
-<div{{ attributes.addClass(classes) }}>
-  {{ title_prefix }}
-  {% if label %}
-    <h2{{ title_attributes }}>{{ label }}</h2>
-  {% endif %}
-  {{ title_suffix }}
-  {% block content %}
-    {{ content }}
-  {% endblock %}
-</div> #}
-
 
 {{ pattern('offcanvas', {
   title: {
@@ -60,5 +48,5 @@
   extra_classes_body: 'py-0 p-lg-0',
   extra_classes_header: 'px-lg-0 py-lg-4',
   extra_classes_close: 'd-md-none',
-  attributes: create_attribute().addClass(["bcl-offcanvas", "px-3"]),
+  attributes: create_attribute().addClass(["bcl-offcanvas", "pe-3", "h-100"]),
 }) }}
