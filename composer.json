@@ -106,7 +106,7 @@
         "masterminds/html5": "^2.7",
         "ml/json-ld": "^1.2",
         "neilime/php-css-lint": "1.1.0 as 2.0.0",
-        "openeuropa/oe_bootstrap_theme": "dev-php-7.1",
+        "openeuropa/oe_bootstrap_theme": "0.71.0",
         "openeuropa/oe_webtools": "1.7.0",
         "openeuropa/webtools-geocoding-provider": "~0.1",
         "pear/console_table": "~1.3",
@@ -146,6 +146,7 @@
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.12.12",
         "mikey179/vfsstream": "~1.6",
+        "openeuropa/composer-artifacts": "^0.1.3",
         "openeuropa/task-runner": "dev-php-7.1 as 1.0.0-beta7",
         "pear/http_request2": "~2.4",
         "pfrenssen/phpcs-pre-push": "1.1",
@@ -155,7 +156,7 @@
         "php-task-runner/sparql": "dev-master",
         "phpstan/phpstan-deprecation-rules": "~0.12",
         "phpunit/phpunit": "^7",
-        "slevomat/coding-standard": "~6.4",
+        "slevomat/coding-standard": "~7",
         "symfony/css-selector": "^4.4",
         "symfony/dom-crawler": "^4.4",
         "symfony/phpunit-bridge": "^4.4",
@@ -368,7 +369,7 @@
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                 "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
+                "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/master...cbee0e9.diff",
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
             }
@@ -381,6 +382,14 @@
                 "phpunit/phpunit": {
                     "Fix PHP 7 compatibility": "./tests/phpunit_php7.patch",
                     "Fix PHP 8 compatibility": "./tests/phpunit_php8.patch"
+                }
+            }
+        },
+        "artifacts": {
+            "openeuropa/oe_bootstrap_theme": {
+                "dist": {
+                    "url": "https://github.com/{name}/releases/download/{pretty-version}/{project-name}-{pretty-version}.tar.gz",
+                    "type": "tar"
                 }
             }
         }
@@ -417,11 +426,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/gizra/og.git"
-        },
-        {
-            "_readme": "Temporary repository in which theme assets are committed. Obsolete once we have a functional CI pipeline that allows us to compile the assets on the fly.",
-            "type": "vcs",
-            "url": "https://github.com/Joinup/oe_bootstrap_theme.git"
         },
         {
             "type": "vcs",

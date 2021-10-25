@@ -14,6 +14,7 @@ module:
   ckeditor: 0
   collection: 0
   comment: 0
+  components: 0
   config: 0
   config_ignore: 0
   config_readonly: 0
