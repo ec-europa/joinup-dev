@@ -228,6 +228,25 @@ function ventuno_smart_trim(string $string, int $length, bool $ellipsis = TRUE):
 }
 
 /**
+ * Implements hook_theme_suggestions_alter().
+ */
+function ventuno_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  // Add suggestion based on view mode for user entity.
+  if ($hook == 'user' && !empty($variables['elements']['#view_mode'])) {
+    $original_theme_hook = $variables['theme_hook_original'];
+    $view_mode = $variables['elements']['#view_mode'];
+    $suggestions[] = $original_theme_hook . '__' . str_replace('-', '_', $view_mode);
+  }
+}
+
+/**
+ * Implements hook_preprocess_user().
+ */
+function ventuno_preprocess_user(&$variables) {
+  $variables['full_name'] = $variables['user']->getDisplayName();
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function ventuno_preprocess_rdf_entity__search_result_featured(&$variables) {

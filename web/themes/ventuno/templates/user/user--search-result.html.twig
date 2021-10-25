@@ -1,22 +1,21 @@
 {#
 /**
  * @file
- * Theme override to display a rdf entities.
+  * Theme override to display a user search result.
  */
 #}
-{% block content %}
+{% if content %}
   {{ pattern('card', {
     'variants': 'horizontal',
     'title': {
       attributes: [
         {
           name: "href",
-          value: url,
+          value: path('entity.user.canonical', {'user': user.id}),
         },
       ],
-      'content': label
+      'content': full_name
     },
     'content': content,
-    'image': image,
   }) }}
-{% endblock %}
+{% endif %}

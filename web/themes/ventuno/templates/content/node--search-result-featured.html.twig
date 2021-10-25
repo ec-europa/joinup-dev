@@ -7,7 +7,15 @@
 {% block content %}
   {{ pattern('card', {
     'variants': 'horizontal',
-    'title': { 'content': label },
+    'title': {
+      attributes: [
+        {
+          name: "href",
+          value: url,
+        },
+      ],
+      'content': label
+    },
     'content': content,
     'image': image,
   }) }}
