@@ -770,18 +770,8 @@ display:
             strip_tags: true
             trim: true
             encoding: utf8
-          xls_settings:
-            xls_format: Excel2007
-            metadata:
-              creator: ''
-              last_modified_by: ''
-              title: ''
-              description: ''
-              subject: ''
-              keywords: ''
-              category: ''
-              manager: ''
-              company: ''
+            utf8_bom: '0'
+            use_serializer_encode_only: false
       fields:
         type:
           id: type
@@ -1219,13 +1209,18 @@ display:
       displays:
         manage: manage
         default: '0'
-      path: rdf_entity/%rdf_entity/manage-content/csv
+      path: rdf_entity/%rdf_entity/manage-content/csv1
       filename: content.csv
       display_description: ''
       pager:
         type: none
         options:
           offset: 0
+      automatic_download: false
+      store_in_public_file_directory: false
+      redirect_to_display: none
+      custom_redirect_path: false
+      include_query_params: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -1248,7 +1243,7 @@ display:
       path: rdf_entity/%rdf_entity/manage-content
       menu:
         type: tab
-        title: 'Manage content'
+        title: 'xManage content'
         description: ''
         expanded: false
         parent: ''

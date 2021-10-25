@@ -127,6 +127,15 @@ field_settings:
         - 'entity:rdf_entity/collection'
         - 'entity:rdf_entity/field_isr_is_version_of'
         - 'entity:rdf_entity/og_audience'
+  entity_label:
+    label: Label
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/title'
+        - 'entity:rdf_entity/label'
   field_ad_description:
     label: 'Description » Processed text'
     datasource_id: 'entity:rdf_entity'
@@ -424,7 +433,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - node
       config:
         - field.storage.meta_entity.field_featured
   node_pinned_in:
@@ -489,7 +497,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - rdf_entity
       config:
         - field.storage.meta_entity.field_featured
   rdf_pinned_in:
@@ -854,7 +861,6 @@ processor_settings:
           document: !!float 0
           event: !!float 3
           news: !!float 5
-          newsletter: !!float 0
           video: !!float 0
       'entity:rdf_entity':
         datasource_boost: !!float 0
