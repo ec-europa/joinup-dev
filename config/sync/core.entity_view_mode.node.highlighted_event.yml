@@ -1,0 +1,10 @@
+uuid: f0f4ebec-5d74-4af5-8676-7c741149ec6d
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.highlighted_event
+label: 'Highlighted event'
+targetEntityType: node
+cache: true

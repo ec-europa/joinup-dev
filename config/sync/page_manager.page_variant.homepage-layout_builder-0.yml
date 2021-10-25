@@ -31,18 +31,18 @@ variant_settings:
             context_mapping: {  }
           additional: {  }
           weight: 0
-        204e8ccb-280d-4ee4-b598-74b9f96d6496:
-          uuid: 204e8ccb-280d-4ee4-b598-74b9f96d6496
+        7807ee72-f98e-46bb-80d9-fe1d2b6cd8de:
+          uuid: 7807ee72-f98e-46bb-80d9-fe1d2b6cd8de
           region: second
           configuration:
-            id: 'entityqueue_block:highlighted_solution'
-            label: 'Highlighted solution'
+            id: 'entityqueue_block:highlighted_content'
+            label: 'Highlighted content'
             provider: entityqueue_block
             label_display: visible
             view_mode: highlighted
             context_mapping: {  }
           additional: {  }
-          weight: 0
+          weight: 1
       third_party_settings: {  }
     -
       layout_id: joinup_layout_twocol_60_40
@@ -70,7 +70,7 @@ variant_settings:
             label: 'Highlighted event'
             provider: entityqueue_block
             label_display: visible
-            view_mode: highlighted
+            view_mode: highlighted_event
             context_mapping: {  }
           additional: {  }
           weight: 0

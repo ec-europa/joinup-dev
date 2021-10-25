@@ -90,25 +90,72 @@ Feature: Homepage
       | 3      | alan.jpg    | HR, Statistics and Analysis      | Microgravity    | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
 
   @terms
-  Scenario: A solution can be highlighted on the homepage
-    Given solution:
-      | title         | Mercury poisoning                                                          |
-      | state         | validated                                                                  |
-      | description   | Mercury poisoning is a type of metal poisoning due to exposure to mercury. |
-      | logo          | logo.png                                                                   |
-      | solution type | Interoperability Specification, Networking Service                         |
-      | topic         | Demography, EU and European Policies, HR                                   |
-      | state         | validated                                                                  |
-    And the "Highlighted solution" content listing contains:
-      | type     | label             |
-      | solution | Mercury poisoning |
+  Scenario: A document can be highlighted on the homepage
+    Given collection:
+      | title | Clash of document's   |
+      | state | validated             |
+    And document content:
+      | title        | collection          | topic                                | state     | logo     | body                                                                                                                                                                                            |
+      | Microgravity | Clash of document's | HR, E-justice | validated | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+      | Alliens      | Clash of document's | Statistics and Analysis, E-justice   | validated | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+      | Groundforce  | Clash of document's | Statistics and Analysis, E-justice   | proposed | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+    And the "Highlighted content" content listing contains:
+      | type     | label          |
+      | document | Alliens        |
 
     When I am on the homepage
-    Then I should see "Mercury poisoning" as the highlighted solution
-    And I should see the link "More solutions"
-    When I click "More solutions"
+    Then I should see "Alliens" as the Highlighted content
+    And I should see the link "Related content"
+    When I click "Related content"
     Then I should be on the advanced search page
-    And the "Solution" content checkbox item should be selected
+    And the "Document" content checkbox item should be selected
+    And I should see the "Alliens" tile
+    And I should not see the "Microgravity" tile
+    And I should not see the "Groundforce" tile
+
+  @terms
+  Scenario: A news can be highlighted on the homepage
+    Given collection:
+      | title | Clash of new's   |
+      | state | validated        |
+    And news content:
+      | title             | headline                      | collection     | topic         | state     | publication date     | body                  |
+      | Some title        | Some headline                 | Clash of new's | E-justice     | validated | 2021-04-26T19:09:00Z | Body                  |
+      | Internet medicine | It cures virtually everything | Clash of new's | E-health Dpt. | validated | 2014-02-22T19:26:57Z | Electronic healthcare |
+    And the "Highlighted content" content listing contains:
+      | type | label             |
+      | news | Some title        |
+
+    When I am on the homepage
+    Then I should see "Some title" as the Highlighted content
+    And I should see the link "Related content"
+    When I click "Related content"
+    Then I should be on the advanced search page
+    And the "News" content checkbox item should be selected
+    And I should see the "Some title" tile
+    And I should not see the "Internet medicine" tile
+
+  @terms
+  Scenario: A event can be highlighted on the homepage
+    Given collection:
+      | title | Clash of event's   |
+      | state | validated        |
+    Given event content:
+      | title                 | collection       | topic                    | state     | logo        | body                                                                                                                                                                                  |
+      | Lisbon steak festival | Clash of event's | E-justice                | validated | charles.jpg | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity. |
+      | Oeiras steak festival | Clash of event's | EU and European Policies | validated | charles.jpg | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity. |
+    And the "Highlighted content" content listing contains:
+      | type     | label                 |
+      | event    | Lisbon steak festival |
+
+    When I am on the homepage
+    Then I should see "Lisbon steak festival" as the Highlighted content
+    And I should see the link "Related content"
+    When I click "Related content"
+    Then I should be on the advanced search page
+    And the "Event" content checkbox item should be selected
+    And I should see the "Lisbon steak festival" tile
+    And I should not see the "Oeiras steak festival" tile
 
   Scenario: An event can be highlighted on the homepage
     Given event content:

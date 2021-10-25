@@ -57,9 +57,9 @@ function joinup_event_entity_type_alter(array &$entity_types): void {
 function joinup_event_theme($existing, $type, $theme, $path) {
   return [
     // Use a custom template for the highlighted event on the homepage.
-    'node__event__highlighted' => [
+    'node__event__highlighted_event' => [
       'base hook' => 'node',
-      'template' => 'node--event--highlighted',
+      'template' => 'node--event--highlighted-event',
     ],
   ];
 }
@@ -67,7 +67,7 @@ function joinup_event_theme($existing, $type, $theme, $path) {
 /**
  * Prepares variables for the highlighted event template.
  *
- * Default template: node--event--highlighted.html.twig.
+ * Default template: node--event--highlighted-event.html.twig.
  *
  * The highlighted event is displayed on the homepage and is managed through an
  * entityqueue. It has a number of additional fields (header text and a call to
@@ -81,7 +81,7 @@ function joinup_event_theme($existing, $type, $theme, $path) {
  * @see hook_entity_type_build()
  * @see \Drupal\Core\Field\BaseFieldDefinition::setDisplayConfigurable()
  */
-function template_preprocess_node__event__highlighted(array &$variables) {
+function joinup_event_preprocess_node__event__highlighted_event(array &$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['node'];
 
