@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
@@ -225,4 +226,12 @@ function ventuno_preprocess_rdf_entity__explore_item(&$variables) {
 function ventuno_smart_trim(string $string, int $length, bool $ellipsis = TRUE): string {
   $truncate = new TruncateHTML();
   return $truncate->truncateChars($string, $length, $ellipsis ? '…' : '');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_search_form_facets_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $form['actions']['submit']['#attributes']['class'] = ['mt-3 w-100'];
+  $form['actions']['reset']['#attributes']['class'][] = 'btn btn-outline-brand my-3 w-100';
 }

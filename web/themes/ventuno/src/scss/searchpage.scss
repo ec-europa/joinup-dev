@@ -1,5 +1,5 @@
-// Main CSS
-// Only common styles across the whole website
+// Searchpage CSS
+// Only styles specific to the Searchpage
 
 // Joinup variables
 @import "@openeuropa/bcl-theme-joinup/src/scss/oe-bcl-joinup.scss";
@@ -9,6 +9,4 @@
 @import "mixins/full-width-background-colors";
 
 // Components
-@import "components/navbar";
-@import "components/site-alerts-messages";
-@import "components/footer";
+@import "components/advanced-search-filters";
