@@ -1,0 +1,10 @@
+uuid: 8daca77c-5418-4e11-b78d-feac62d132e4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.dated_listing
+label: 'Dated listing'
+targetEntityType: node
+cache: true

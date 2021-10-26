@@ -1,0 +1,174 @@
+@import "@openeuropa/bcl-bootstrap/scss/functions";
+@import "@openeuropa/bcl-bootstrap/scss/variables";
+@import "@openeuropa/bcl-bootstrap/scss/mixins";
+@import "@openeuropa/bcl-theme-joinup/src/scss/base/variables";
+@import "../mixins/joinup-icons";
+
+
+/* Tab appearance. */
+.toolbar .toolbar-bar .tour-toolbar-tab.toolbar-tab {
+  float: right;
+}
+
+[dir="rtl"] .toolbar .toolbar-bar .tour-toolbar-tab.toolbar-tab {
+  float: left;
+}
+
+.joyride-tip-guide {
+  position: absolute;
+  z-index: 101;
+  top: 0;
+  left: 2.5%;
+  width: 85%;
+  display: none;
+  background-color: $gray-200;
+  filter: drop-shadow(0 0.3rem 0.6rem rgba($black, 0.2)); // Emulate $box-shadow with slight changes
+  border-radius: $border-radius; // .5rem
+
+  @include media-breakpoint-up(md) {
+    left: 0;
+    width: 300px;
+  }
+
+  .joyride-nub {
+    position: absolute;
+    left: $spacer; // 16px
+    display: block;
+    width: 0;
+    height: 0;
+    border: solid $spacer*.75 $gray-200; // 12px
+
+    &.top {
+      top: -$spacer*1.5; // 24px
+      bottom: auto;
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+
+    &.bottom {
+      bottom: -$spacer*1.5; // 24px
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+
+    &.right {
+      top: $spacer; // 16px
+      right: -$spacer*1.5; // 24px
+      bottom: auto;
+      left: auto;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+    }
+
+    &.left {
+      top: $spacer; // 16px
+      left: -$spacer*1.5; // 24px
+      right: auto;
+      bottom: auto;
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+    }
+
+    &.top-right {
+      top: -$spacer*1.5; // 24px
+      right: $spacer; // 16px
+      bottom: auto;
+      left: auto;
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+  }
+
+  .joyride-content-wrapper {
+    position: relative;
+    padding: $spacer $spacer*2.5 $spacer $spacer; // 16px 40px 16px 16px
+
+    // Emulate button link (class="btn btn-link btn-sm")
+    .button {
+      font-weight: $font-weight-base; // 400
+      padding: $spacer*.25 $spacer*.5; // 4px 8px
+      font-size: $font-size-sm; // 0.875rem
+      border-radius: $btn-border-radius-sm; // .2rem
+      color: $link-color; // $brand
+      text-decoration: none;
+    }
+
+    .tour-progress {
+      position: absolute;
+      font-size: $font-size-sm; // 0.875rem
+      color: $gray-500;
+      right: $spacer*.75; // 12px
+      bottom: $spacer*.75; // 12px
+    }
+
+    .joyride-close-tip {
+      position: absolute;
+      @include font-icon-after("\E806", 1.5rem, $primary);
+      font-size: 0;
+      top: $spacer*.75; // 12px
+      right: $spacer*.75; // 12px
+    }
+
+    .tour-tip-label {
+      margin-top: 0;
+      margin-bottom: $spacer*.5; // 8px
+      font-size: $font-size-base; // 16px
+
+      &:empty {
+        margin-bottom: 0;
+      }
+    }
+
+    .tour-tip-body {
+      margin-bottom: $spacer; // 16px
+      color: $primary;
+      font-size: $font-size-sm; // 0.875rem
+    }
+
+    p {
+      margin: 0 0 1.4em;
+    }
+  }
+}
+
+.joyride-timer-indicator-wrap {
+  position: absolute;
+  right: 17px;
+  bottom: 16px;
+  width: 50px;
+  height: 3px;
+}
+
+.joyride-timer-indicator {
+  display: block;
+  width: 0;
+  height: inherit;
+}
+
+.joyride-modal-bg {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.joyride-expose-wrapper {
+  position: absolute;
+  z-index: 102;
+}
+
+.joyride-expose-cover {
+  position: absolute;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+}

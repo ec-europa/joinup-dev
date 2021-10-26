@@ -285,12 +285,30 @@ class JoinupSearchContext extends RawDrupalContext {
    *
    * @Then the option with text :option from select facet :select is selected
    */
-  public function assertSelectFacetOptionSelected($option, $select) {
-    $element = $this->findFacetByAlias($select, NULL, 'select');
+  public function assertSelectFacetOptionSelected(string $option, string $select): void {
+    // What appears as a select list in the frontend is actually output as a
+    // list of links by the Facets module which is ultimately converted into a
+    // select list using JavaScript.
+    // @see https://www.drupal.org/project/facets/issues/2937191
+    $html_tag = $this->browserSupportsJavaScript() ? 'select' : 'ul';
+    $element = $this->findFacetByAlias($select, NULL, $html_tag);
     if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
-    $this->assertSelectedOption($element, $option);
+    if ($this->browserSupportsJavaScript()) {
+      $this->assertSelectedOption($element, $option);
+    }
+    else {
+      $selected_option = $element->find('css', 'a.is-active');
+      if ($selected_option instanceof NodeElement) {
+        $text = $selected_option->getText();
+        // Selected facet options are prefixed with '(-) '. Strip this.
+        $text = preg_replace('/^\(-\) /', '', $text);
+        // Ignore duplicate whitespace.
+        $option = preg_replace('/\s{2,}/', ' ', $option);
+        Assert::assertEquals($option, $text, sprintf('The option "%s" is selected in the "%s" facet, but the option "%s" was expected.', $text, $select, $option));
+      }
+    }
   }
 
   /**

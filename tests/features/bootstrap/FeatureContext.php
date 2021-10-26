@@ -104,22 +104,25 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Assert that certain fields are present on the page.
+   * Assert that certain fields are present on the page or region.
    *
    * @param string $fields
-   *   Fields.
+   *   The labels if the fields that are expected to be present.
+   * @param string $region
+   *   Optional region to search in.
    *
    * @throws \Exception
    *   Thrown when an expected field is not present.
    *
    * @Then (the following )field(s) should be present :fields
+   * @Then I should see the :fields field(s) in the :region region
    */
-  public function assertFieldsPresent(string $fields): void {
+  public function assertFieldsPresent(string $fields, string $region = ''): void {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
-    $page = $this->getSession()->getPage();
+    $region_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
     $not_found = [];
     foreach ($fields as $field) {
-      $is_found = (bool) $this->findAnyFormField($field, $page);
+      $is_found = (bool) $this->findAnyFormField($field, $region_element);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -130,21 +133,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Assert that certain fields are not present on the page.
+   * Assert that certain fields are not present on the page or region.
    *
    * @param string $fields
-   *   Fields.
+   *   The labels if the fields that are expected to be absent.
+   * @param string $region
+   *   Optional region to search in.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
    * @Then (the following )field(s) should not be present :fields
+   * @Then I should not see the :fields field(s) in the :region region
    */
-  public function assertFieldsNotPresent(string $fields): void {
+  public function assertFieldsNotPresent(string $fields, string $region = ''): void {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
-    $page = $this->getSession()->getPage();
+    $region_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
     foreach ($fields as $field) {
-      $is_found = $page->findField($field);
+      $is_found = $region_element->findField($field);
       if ($is_found) {
         throw new \Exception("Field should not be found, but is present: " . $field);
       }
@@ -342,7 +348,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the image :filename
    */
   public function assertImagePresent(string $filename): void {
-    Assert::assertTrue($this->findImageInRegion($filename));
+    Assert::assertTrue($this->hasImage($filename));
   }
 
   /**
@@ -354,7 +360,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I should not see the image :filename
    */
   public function assertImageNotPresent(string $filename): void {
-    Assert::assertFalse($this->findImageInRegion($filename));
+    Assert::assertFalse($this->hasImage($filename));
   }
 
   /**
@@ -369,7 +375,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertImagePresentInRegion(string $filename, string $tile): void {
     $tile = $this->getTileByHeading($tile);
-    Assert::assertTrue($this->findImageInRegion($filename, $tile));
+    Assert::assertTrue($this->hasImage($filename, $tile));
   }
 
   /**
@@ -384,7 +390,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertImageNotPresentInRegion(string $filename, string $tile): void {
     $tile = $this->getTileByHeading($tile);
-    Assert::assertFalse($this->findImageInRegion($filename, $tile));
+    Assert::assertFalse($this->hasImage($filename, $tile));
   }
 
   /**
@@ -1201,14 +1207,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A list of links.
+   * @param string $region
+   *   Optional region to check.
    *
    * @Then I (should )see the following links:
+   * @Then I (should )see the following links in the :region( region):
    */
-  public function assertLinks(TableNode $table): void {
+  public function assertLinks(TableNode $table, string $region = ''): void {
+    $region_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
     $links = $table->getColumn(0);
     $errors = [];
     foreach ($links as $link) {
-      $element = $this->getSession()->getPage()->findLink($link);
+      $element = $region_element->findLink($link);
       if (empty($element)) {
         $errors[] = $link;
       }
@@ -1228,14 +1238,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A list of links.
+   * @param string $region
+   *   Optional region to check.
    *
    * @Then I should not see the following links:
+   * @Then I should not see the following links in the :region( region):
    */
-  public function assertNoLinks(TableNode $table): void {
+  public function assertNoLinks(TableNode $table, string $region = ''): void {
+    $region_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
     $links = $table->getColumn(0);
     $errors = [];
     foreach ($links as $link) {
-      $element = $this->getSession()->getPage()->findLink($link);
+      $element = $region_element->findLink($link);
       if (!empty($element)) {
         $errors[] = $link;
       }
@@ -1632,9 +1646,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function iWaitUntilPageContains(string $text): void {
     $text = addslashes($text);
-    $this->getSession()->wait(60000,
-      "jQuery(':contains(\"$text\")').length > 0"
+    $result = $this->getSession()->wait(60000,
+      'document.evaluate(\'//*[contains(., "' . $text . '")]\', document, null, XPathResult.ANY_TYPE, null).iterateNext()'
     );
+    Assert::assertTrue($result);
   }
 
   /**

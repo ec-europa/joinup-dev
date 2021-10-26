@@ -1,0 +1,40 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display something.
+ *
+ * Available variables:
+ * - foo: Foo variable description.
+ *
+ * @see template_preprocess_explore_block()
+ *
+ * @ingroup themeable
+ */
+#}
+{{ attach_library('ventuno/slick') }}
+
+<div class="explore-block wrapper-class">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    {% for key, tab in data %}
+      <li class="nav-item" role="presentation">
+        <button class="nav-link{% if loop.first %} active{% endif %}" id="{{ key }}-tab" data-bs-toggle="tab" data-bs-target="#{{ key }}" type="button" role="tab" aria-controls="{{ key }}" aria-selected="true">{{ tab.label }}</button>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="tab-content">
+    {% for key, tab in data %}
+      <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ key }}" role="tabpanel" aria-labelledby="{{ key }}-tab">
+        {% if tab.data is not empty %}
+          <div class="tab-data">
+            <span class="append-buttons me-4"></span>
+            <a href="{{ tab.url }}" class="btn btn-secondary mb-2 explore-see-more">{{ 'See more @plural_type'|t({'@plural_type': tab.plural_type}) }}</a>
+            <div class="explore-slider explore-slider-{{ key }} mt-3">
+            {{ tab.data }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

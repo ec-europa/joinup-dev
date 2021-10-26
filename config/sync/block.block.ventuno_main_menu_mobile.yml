@@ -1,0 +1,27 @@
+uuid: fb100a7e-cbcb-4488-bd9f-9c37dcd72da1
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+  theme:
+    - ventuno
+_core:
+  default_config_hash: 91vCyjYgGmzz7etibbaKxMJs1l0ndYXPCJjaOdRQKyM
+id: ventuno_main_menu_mobile
+theme: ventuno
+region: header
+weight: -24
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation mobile'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 1
+  expand_all_items: false
+visibility: {  }

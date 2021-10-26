@@ -7,113 +7,32 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup_front_page\FrontPagePinnedFieldItemList;
-use Drupal\menu_link_content\MenuLinkContentInterface;
-use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
-
 /**
- * Implements hook_entity_base_field_info().
+ * Implements hook_preprocess_HOOK().
+ *
+ * The 'Discover topics' block which is shown on the front page is created using
+ * the Views module. The block includes a 'See more topics' link which opens a
+ * modal dialog with the full list of available topics. Include the necessary JS
+ * so that all users can interact with the modal.
  */
-function joinup_front_page_entity_base_field_info(EntityTypeInterface $entity_type) {
-  if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
-    $fields = [];
-    $fields['front_page_pinned'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('Pinned to the front page'))
-      ->setComputed(TRUE)
-      ->setClass(FrontPagePinnedFieldItemList::class);
-    return $fields;
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function joinup_front_page_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  /** @var \Drupal\system\Entity\Menu $menu */
-  $menu = $form_state->getFormObject()->getEntity();
-  if ($menu->id() !== 'front-page') {
+function joinup_front_page_preprocess_block(&$variables): void {
+  if (!isset($variables['derivative_plugin_id']) || $variables['derivative_plugin_id'] !== 'discover_topics-block') {
     return;
   }
 
-  $form['#title'] = t('Front page pinned items');
-  $form['links']['links']['#empty'] = t('There are no pinned items. Start by pinning an entity to the front page.');
-
-  foreach ($form['links']['links'] as &$link_data) {
-    if (is_array($link_data) && isset($link_data['#item'])) {
-      // The user does not have access to the edit form anyway.
-      unset($link_data['operations']['#links']['edit']);
-
-      // Disallow nesting for all entries.
-      $link_data['#attributes']['class'][] = 'tabledrag-root';
-      $link_data['#attributes']['class'][] = 'tabledrag-leaf';
-    }
-  }
-}
-
-/**
- * Implements hook_entity_view_alter().
- *
- * Adds metadata about whether the entity is pinned to front page, so that
- * contextual links are refreshed when an entity is (un)pinned.
- */
-function joinup_front_page_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
-  if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
-    $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
-    $menu_item = $front_page_helper->getFrontPageMenuItem($entity);
-
-    // Note: the 'entity' contextual link group is added by the Joinup profile.
-    // @see joinup_entity_view_alter()
-    $build['#contextual_links']['entity']['metadata']['is_pinned_to_front_page'] = (int) !empty($menu_item);
-    // The URL to pin entities to the front page is protected against CSRF
-    // attacks, so this needs to vary with the session. We have a dedicated
-    // cache context for this, avoiding the 'session' cache context since this
-    // would mark the entire page as uncacheable, preventing the detection of
-    // regressions in cacheability.
-    $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], [
-      'pinned_to_front_page_csrf',
-    ]);
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_update().
- *
- * Reindexes linked content whenever the front page menu changes. This ensures
- * that content added to the menu will also appear in search results.
- */
-function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $entity) {
-  if ($entity->getMenuName() !== 'front-page') {
-    return;
-  }
-
-  /** @var \Drupal\joinup_menu\JoinupMenuHelperInterface $menu_helper */
-  $menu_helper = \Drupal::service('joinup_menu.menu_helper');
-  $entities = $menu_helper->loadEntitiesFromMenuItems([$entity]);
-  $linked_entity = reset($entities);
-  $linked_entity->original = $linked_entity;
-  ContentEntity::indexEntity($linked_entity);
+  // Load the library.
+  $variables['#attached']['library'][] = 'core/jquery';
+  $variables['#attached']['library'][] = 'core/drupal.dialog.ajax';
 }
 
 /**
  * Implements hook_theme().
  */
-function joinup_front_page_theme($existing, $type, $theme, $path) {
-  $default = [
-    'count' => 0,
-    'description' => NULL,
-  ];
+function joinup_front_page_theme(): array {
   return [
-    'statistics_block' => [
+    'explore_block' => [
       'variables' => [
-        'collection' => $default,
-        'solution' => $default,
-        'content' => $default,
+        'data' => [],
       ],
     ],
   ];

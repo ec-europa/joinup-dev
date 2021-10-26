@@ -1,0 +1,20 @@
+uuid: c431d6ac-f6d0-4be7-80a8-2b7746dd7a6f
+langcode: en
+status: true
+dependencies:
+  theme:
+    - ventuno
+id: ventuno_three_dots_menu
+theme: ventuno
+region: header_bottom
+weight: -21
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: false
+visibility: {  }

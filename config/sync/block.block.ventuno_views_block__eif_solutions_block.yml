@@ -1,0 +1,31 @@
+uuid: ec87cc86-256a-4c1f-b38d-6b9f7166c6c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.eif_solutions
+  module:
+    - joinup_core
+    - views
+  theme:
+    - ventuno
+id: ventuno_views_block__eif_solutions_block
+theme: ventuno
+region: content
+weight: -12
+provider: null
+plugin: 'views_block:eif_solutions-block'
+settings:
+  id: 'views_block:eif_solutions-block'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - eif.solutions
+    negate: false
+    context_mapping: {  }

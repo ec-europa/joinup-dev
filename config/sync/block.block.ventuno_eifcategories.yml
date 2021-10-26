@@ -1,0 +1,26 @@
+uuid: 737c5f5b-63ff-423a-a6de-1373551c9a0f
+langcode: en
+status: true
+dependencies:
+  module:
+    - eif
+  theme:
+    - ventuno
+id: ventuno_eifcategories
+theme: ventuno
+region: content
+weight: -14
+provider: null
+plugin: eif_categories
+settings:
+  id: eif_categories
+  label: 'EIF categories'
+  provider: eif
+  label_display: '0'
+  context_mapping: {  }
+visibility:
+  eif_solutions_page:
+    id: eif_solutions_page
+    eif_solutions: true
+    negate: false
+    context_mapping: {  }

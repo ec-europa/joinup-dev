@@ -1,0 +1,40 @@
+uuid: e3295c71-8e60-4819-a952-7f01ddc4a892
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - joinup_core
+    - joinup_group
+  theme:
+    - ventuno
+_core:
+  default_config_hash: Bmiwhi5TTvDZfWGHU6zaNElRYYnYbbxocXAlqvvIWk8
+id: ventuno_unpublished_content_of_group
+theme: ventuno
+region: content_bottom
+weight: -7
+provider: null
+plugin: entity_unpublished
+settings:
+  id: entity_unpublished
+  label: 'Unpublished content'
+  provider: joinup_core
+  label_display: visible
+  context_mapping:
+    og: '@rdf_entity.rdf_entity_route_context:rdf_entity'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - entity.rdf_entity.canonical
+    negate: false
+    context_mapping: {  }
+  'entity_bundle:rdf_entity':
+    id: 'entity_bundle:rdf_entity'
+    bundles:
+      collection: collection
+      solution: solution
+    negate: false
+    context_mapping:
+      rdf_entity: '@rdf_entity.rdf_entity_route_context:rdf_entity'

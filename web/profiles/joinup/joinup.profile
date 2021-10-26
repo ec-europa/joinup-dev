@@ -252,31 +252,6 @@ function joinup_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for main menu.
- *
- * Sets the active trail for the main menu items based on the current group
- * context.
- */
-function joinup_preprocess_menu__main(&$variables) {
-  $group = \Drupal::service('og.context')->getGroup();
-  if ($group) {
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
-    switch ($group->bundle()) {
-      case 'collection':
-        $variables['items']['views_view:views.collections.page_1']['in_active_trail'] = TRUE;
-        break;
-
-      case 'solution':
-        $variables['items']['views_view:views.solutions.page_1']['in_active_trail'] = TRUE;
-        break;
-    }
-  }
-
-  $variables['#cache']['contexts'][] = 'og_group_context';
-  $variables['#cache']['contexts'][] = 'url.path';
-}
-
-/**
  * Implements hook_entity_view_alter().
  *
  * Adds metadata needed to show relevant contextual links whenever entities are
@@ -292,7 +267,6 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     // proper running order for this hook, so let's make sure that we do not
     // lose any data set by other modules which are supposed to run after us.
     // @see joinup_featured_entity_view_alter()
-    // @see joinup_front_page_entity_view_alter()
     // @see https://www.drupal.org/project/drupal/issues/3120298
     $build['#contextual_links']['entity']['route_parameters']['entity_type'] = $entity->getEntityTypeId();
     $build['#contextual_links']['entity']['route_parameters']['entity'] = $entity->id();

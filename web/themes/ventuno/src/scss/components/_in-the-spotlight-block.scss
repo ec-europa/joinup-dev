@@ -1,0 +1,56 @@
+// In the Spotlight
+.block-views-blockin-the-spotlight-block {
+  @extend .pb-5;
+  height: 100%;
+  border-bottom: 1px solid rgba($primary, .1);
+  > h2 {
+    @include font-icon-before("\E800", 1.2rem, $warning);
+  }
+  .field--name-field-topic {
+    a {
+      border-radius: $border-radius-pill;
+      padding-right: $spacer; // 16px
+      padding-left: $spacer; // 16px
+    }
+  }
+}
+.view-in-the-spotlight {
+  counter-reset: spotlight-counter;
+  .views-row {
+    display: flex;
+    flex-direction: column;
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
+    }
+    .news__logo-wrapper {
+      text-align: center;
+      @include media-breakpoint-up(md) {
+        width: calc(100% / 4 - 33px);
+      }
+      @include media-breakpoint-up(lg) {
+        width: calc(100% / 3 - 33px);
+      }
+    }
+    .news__field-wrapper {
+      @include media-breakpoint-up(md) {
+        width: calc(200% / 3 + 33px);
+      }
+    }
+    .metadata {
+      color: $gray-500;
+      @extend .mt-2;
+      @extend .fs-xs;
+    }
+    &:before {
+      counter-increment: spotlight-counter;
+      content: counter(spotlight-counter,decimal-leading-zero);
+      display: inline-block;
+      font-size: $h3-font-size;
+      font-weight: 700;
+      color: rgba($primary, .3);
+      @extend .pe-3;
+      @extend .mb-2;
+      line-height: 1;
+    }
+  }
+}

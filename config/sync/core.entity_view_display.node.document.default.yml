@@ -12,11 +12,11 @@ dependencies:
     - field.field.node.document.field_file
     - field.field.node.document.field_keywords
     - field.field.node.document.field_licence
-    - field.field.node.document.field_topic
     - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
     - field.field.node.document.field_site_featured
     - field.field.node.document.field_state
+    - field.field.node.document.field_topic
     - field.field.node.document.field_type
     - field.field.node.document.og_audience
     - node.type.document
@@ -181,3 +181,4 @@ hidden:
   links: true
   og_audience: true
   published_at: true
+  read_more: true

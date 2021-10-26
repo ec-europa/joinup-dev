@@ -1,0 +1,33 @@
+uuid: 4e26db0c-1103-4790-b6d7-247ef0855440
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - system
+  theme:
+    - ventuno
+id: ventuno_pagetitle
+theme: ventuno
+region: content
+weight: -26
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - entity.user.canonical
+      - entity.user.edit_form
+    negate: true
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: true
+    context_mapping: {  }

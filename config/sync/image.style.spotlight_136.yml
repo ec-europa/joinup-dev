@@ -1,0 +1,15 @@
+uuid: 90d50b3e-f088-46ee-9454-bcf18ca0ed38
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_136
+label: 'Spotlight 136px'
+effects:
+  3d376545-cfe4-42cf-ad33-b5d9b422afb6:
+    uuid: 3d376545-cfe4-42cf-ad33-b5d9b422afb6
+    id: image_scale
+    weight: 1
+    data:
+      width: 136
+      height: null
+      upscale: false

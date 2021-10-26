@@ -1,0 +1,90 @@
+uuid: 5db127db-657b-4adf-9dd7-8ab9c4890c3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.highlighted_event
+    - field.field.entity_subqueue.highlighted_event.external_url
+    - field.field.entity_subqueue.highlighted_event.header
+    - field.field.entity_subqueue.highlighted_event.link_text
+    - field.field.entity_subqueue.highlighted_event.link_to_external_url
+  module:
+    - entityqueue
+    - field_group
+    - link
+third_party_settings:
+  field_group:
+    group_link:
+      children:
+        - link_text
+        - link_to_external_url
+        - external_url
+      parent_name: ''
+      weight: 2
+      format_type: details
+      region: content
+      format_settings:
+        description: ''
+        open: true
+        id: ''
+        classes: ''
+        required_fields: false
+      label: 'Call to action'
+id: entity_subqueue.highlighted_event.default
+targetEntityType: entity_subqueue
+bundle: highlighted_event
+mode: default
+content:
+  external_url:
+    weight: 6
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  header:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  items:
+    type: entityqueue_dragtable
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      link_to_entity: false
+      link_to_edit_form: true
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
+  link_text:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  link_to_external_url:
+    weight: 5
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  langcode: true

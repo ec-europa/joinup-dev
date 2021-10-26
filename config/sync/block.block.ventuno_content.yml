@@ -1,0 +1,20 @@
+uuid: c08ab28a-9631-4678-acc8-682b292fa6a3
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - ventuno
+id: ventuno_content
+theme: ventuno
+region: content
+weight: -20
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

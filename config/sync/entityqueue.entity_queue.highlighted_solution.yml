@@ -1,0 +1,25 @@
+uuid: c40d0c80-bf7c-4f00-831e-b77871742309
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: highlighted_solution
+label: 'Highlighted solution'
+handler: simple
+handler_configuration: {  }
+entity_settings:
+  target_type: rdf_entity
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      solution: solution
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+queue_settings:
+  min_size: 1
+  max_size: 1
+  act_as_queue: false
+  reverse: false

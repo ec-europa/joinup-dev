@@ -1,0 +1,26 @@
+uuid: d3936e49-d2d7-455f-b773-60840461ff64
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_group
+    - system
+  theme:
+    - ventuno
+id: ventuno_overviewmessage
+theme: ventuno
+region: sidebar
+weight: -17
+provider: null
+plugin: overview_message_block
+settings:
+  id: overview_message_block
+  label: 'Overview message'
+  provider: joinup_group
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: "/collections\n/solutions"
+    negate: false
+    context_mapping: {  }

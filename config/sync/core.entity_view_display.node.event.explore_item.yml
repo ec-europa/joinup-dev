@@ -1,0 +1,190 @@
+uuid: fbd4a53a-faa6-4035-bc12-8e2aea02ccee
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.explore_item
+    - field.field.node.event.body
+    - field.field.node.event.field_attachment
+    - field.field.node.event.field_comments
+    - field.field.node.event.field_event_agenda
+    - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_coordinates
+    - field.field.node.event.field_event_date
+    - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_online_location
+    - field.field.node.event.field_event_spatial_coverage
+    - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_keywords
+    - field.field.node.event.field_location
+    - field.field.node.event.field_organisation
+    - field.field.node.event.field_organisation_type
+    - field.field.node.event.field_scope
+    - field.field.node.event.field_shared_in
+    - field.field.node.event.field_short_title
+    - field.field.node.event.field_site_featured
+    - field.field.node.event.field_state
+    - field.field.node.event.field_topic
+    - field.field.node.event.og_audience
+    - node.type.event
+  module:
+    - layout_builder
+    - layout_discovery
+    - template_suggestion
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          f2446b89-b2e1-46df-a892-917a49160795:
+            uuid: f2446b89-b2e1-46df-a892-917a49160795
+            region: content
+            configuration:
+              id: 'field_block:node:event:body'
+              label: Description
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: joinup_html_stripper_stripped
+                settings:
+                  trim_length: 230
+                third_party_settings:
+                  template_suggestion:
+                    template_suggestion: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: explore-item__description
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+            weight: -9
+          acce4cf6-0d1d-462d-a6f6-445fc1e8113f:
+            uuid: acce4cf6-0d1d-462d-a6f6-445fc1e8113f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:published_at'
+              formatter:
+                type: timestamp
+                label: hidden
+                settings:
+                  date_format: custom
+                  custom_date_format: d/m/Y
+                  timezone: ''
+                third_party_settings:
+                  template_suggestion:
+                    template_suggestion: ''
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: date
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+            weight: -8
+          5bae9701-073f-4f80-93b0-736bf37b025a:
+            uuid: 5bae9701-073f-4f80-93b0-736bf37b025a
+            region: content
+            configuration:
+              id: 'extra_field_block:node:event:read_more'
+              label: 'Read more'
+              provider: layout_builder
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: -7
+        third_party_settings: {  }
+id: node.event.explore_item
+targetEntityType: node
+bundle: event
+mode: explore_item
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  published_at:
+    type: timestamp
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      date_format: custom
+      custom_date_format: m/d/y
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+  read_more:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_attachment: true
+  field_comments: true
+  field_event_agenda: true
+  field_event_contact_email: true
+  field_event_coordinates: true
+  field_event_date: true
+  field_event_logo: true
+  field_event_online_location: true
+  field_event_spatial_coverage: true
+  field_event_web_url: true
+  field_keywords: true
+  field_location: true
+  field_organisation: true
+  field_organisation_type: true
+  field_scope: true
+  field_shared_in: true
+  field_short_title: true
+  field_site_featured: true
+  field_state: true
+  field_topic: true
+  langcode: true
+  og_audience: true
+  report: true
+  share_link: true

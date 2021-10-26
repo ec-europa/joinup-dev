@@ -1,0 +1,27 @@
+uuid: 1acef884-058e-450c-bc67-505d3a3fd838
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.footer
+  module:
+    - system
+  theme:
+    - ventuno
+_core:
+  default_config_hash: IBAuorDvEPLpOEBTV6rOAnCmaW1fezbLLj0dtgQI2G0
+id: ventuno_footer_menu
+theme: ventuno
+region: footer
+weight: -16
+provider: null
+plugin: 'system_menu_block:footer'
+settings:
+  id: 'system_menu_block:footer'
+  label: 'About us'
+  provider: system
+  label_display: visible
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

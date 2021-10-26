@@ -1,0 +1,26 @@
+uuid: cb03f3af-8267-4ee6-b3a9-1325c910e360
+langcode: en
+status: true
+dependencies:
+  module:
+    - oe_webtools_etrans
+  theme:
+    - ventuno
+id: ventuno_webtools_etrans
+theme: ventuno
+region: content
+weight: -25
+provider: null
+plugin: oe_webtools_etrans
+settings:
+  id: oe_webtools_etrans
+  label: 'OpenEuropa Webtools ETrans'
+  provider: oe_webtools_etrans
+  label_display: '0'
+  render_as: button
+  render_to: ''
+  domain: gen
+  delay: 0
+  include: ''
+  exclude: ''
+visibility: {  }

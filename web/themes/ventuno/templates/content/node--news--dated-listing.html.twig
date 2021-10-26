@@ -1,0 +1,19 @@
+{%
+  set classes = [
+    'dated-listing',
+    'node--' ~ node.bundle(),
+  ]
+%}
+<article{{ attributes.addClasses(classes) }}>
+  <div class="dated-listing--date">
+    <span class="date--day">{{ publication_date.j }}</span>
+    <span class="date--month mt-2">{{ publication_date.M }}</span>
+  </div>
+  <div{{ content_attributes.addClass('dated-listing--content') }}>
+    {{ content.field_topic }}
+    <h2{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h2>
+    {{ content.body }}
+  </div>
+</article>

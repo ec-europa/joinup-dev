@@ -1,0 +1,142 @@
+uuid: deca77fb-0b9d-4b7b-b2ed-4d9ca1d8e1e2
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.homepage
+id: homepage-layout_builder-1
+label: 'About section'
+variant: layout_builder
+variant_settings:
+  id: layout_builder
+  uuid: f0c44272-87cd-42b8-8b5b-604857acaeb0
+  label: null
+  weight: 0
+  sections:
+    -
+      layout_id: joinup_layout_twocolfooter_onecol_67_33
+      layout_settings:
+        label: About
+      components:
+        b0ffc367-218e-4407-bb94-bd9682a9552e:
+          uuid: b0ffc367-218e-4407-bb94-bd9682a9552e
+          region: first
+          configuration:
+            id: layout_builder_block
+            label: 'What''s Joinup about?'
+            provider: layout_builder_block
+            label_display: visible
+            text: "<p>The European Commission created Joinup to provide a common venue that enables public administrations, businesses and citizens to share and reuse IT solutions and good practices, and facilitate communication and collaboration on IT projects across Europe.</p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional:
+            component_attributes:
+              block_attributes:
+                id: ''
+                class: about-what
+                style: ''
+                data: ''
+              block_title_attributes:
+                id: ''
+                class: ''
+                style: ''
+                data: ''
+              block_content_attributes:
+                id: ''
+                class: ''
+                style: ''
+                data: ''
+          weight: 0
+        e1eeef2d-dde1-4aa3-af7b-a6709184d497:
+          uuid: e1eeef2d-dde1-4aa3-af7b-a6709184d497
+          region: second
+          configuration:
+            id: layout_builder_block
+            label: 'Who is it for?'
+            provider: layout_builder_block
+            label_display: visible
+            text: '<p>Joinup offers several services that aim to help <strong>e-Government professionals</strong> share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions.</p>'
+            format: content_editor
+            context_mapping: {  }
+          additional:
+            component_attributes:
+              block_attributes:
+                id: ''
+                class: about-who
+                style: ''
+                data: ''
+              block_title_attributes:
+                id: ''
+                class: ''
+                style: ''
+                data: ''
+              block_content_attributes:
+                id: ''
+                class: ''
+                style: ''
+                data: ''
+          weight: 0
+        e82de3d1-2e2f-4244-8ba8-c147ba44d577:
+          uuid: e82de3d1-2e2f-4244-8ba8-c147ba44d577
+          region: two_col_footer
+          configuration:
+            id: layout_builder_block
+            label: 'For fresh start on creating content'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p><a href=\"/collection/joinup/help-videos\">How to video</a>&nbsp;<a href=\"\" data-drupal-tour-link=\"\" class=\"js-tour-start-button\">Guided tour</a>&nbsp;<a href=\"/collection/joinup/faq\">FAQ</a></p>\r\n"
+            format: full_html
+            context_mapping: {  }
+          additional:
+            component_attributes:
+              block_attributes:
+                id: ''
+                class: 'about-how mt-4'
+                style: ''
+                data: ''
+              block_title_attributes:
+                id: ''
+                class: ''
+                style: ''
+                data: ''
+              block_content_attributes:
+                id: ''
+                class: ''
+                style: ''
+                data: ''
+          weight: 0
+        6ab0ceea-4541-4153-8b64-227e02369d30:
+          uuid: 6ab0ceea-4541-4153-8b64-227e02369d30
+          region: third
+          configuration:
+            id: layout_builder_block
+            label: 'New Joinup video'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>{\"preview_thumbnail\":\"/sites/default/files/styles/video_embed_wysiwyg_preview/public/video_thumbnails/3_dx-K0P9JI.jpg?itok=LryC_a1d\",\"video_url\":\"https://youtu.be/3_dx-K0P9JI\",\"settings\":{\"responsive\":true,\"width\":\"854\",\"height\":\"480\",\"autoplay\":false},\"settings_summary\":[\"Embedded Video (Responsive).\"]}</p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional:
+            component_attributes:
+              block_attributes:
+                id: ''
+                class: about-video
+                style: ''
+                data: ''
+              block_title_attributes:
+                id: ''
+                class: ''
+                style: ''
+                data: ''
+              block_content_attributes:
+                id: ''
+                class: ''
+                style: ''
+                data: ''
+          weight: 0
+      third_party_settings: {  }
+page: homepage
+weight: 1
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }

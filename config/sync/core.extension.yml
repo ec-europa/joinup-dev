@@ -14,6 +14,7 @@ module:
   ckeditor: 0
   collection: 0
   comment: 0
+  components: 0
   config: 0
   config_ignore: 0
   config_readonly: 0
@@ -22,6 +23,7 @@ module:
   contextual: 0
   csv_serialization: 0
   ctools: 0
+  curated_content_listing: 0
   custom_page: 0
   dashboard: 0
   datetime: 0
@@ -39,14 +41,18 @@ module:
   embed_block: 0
   entity_legal: 0
   entity_reference_revisions: 0
+  entityqueue: 0
+  entityqueue_block: 0
   error_page: 0
   eu_sic: 0
   eupl: 0
   facets: 0
   field: 0
   field_delimiter: 0
+  field_formatter_range: 0
   field_group: 0
   field_permissions: 0
+  field_ui: 0
   file: 0
   file_url: 0
   filter: 0
@@ -75,11 +81,12 @@ module:
   joinup_front_page: 0
   joinup_group: 0
   joinup_group_content_management: 0
+  joinup_html_stripper: 0
   joinup_invite: 0
+  joinup_layout: 0
   joinup_legal: 0
   joinup_licence: 0
   joinup_material_design: 0
-  joinup_menu: 0
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0
@@ -103,6 +110,9 @@ module:
   jquery_ui_accordion: 0
   json_field: 0
   language: 0
+  layout_builder: 0
+  layout_builder_block: 0
+  layout_builder_component_attributes: 0
   layout_discovery: 0
   link: 0
   linkit: 0
@@ -121,6 +131,7 @@ module:
   moderation: 0
   nio: 0
   node: 0
+  oe_bootstrap_theme_helper: 0
   oe_newsroom_newsletter: 0
   oe_webtools: 0
   oe_webtools_analytics: 0
@@ -134,6 +145,7 @@ module:
   options: 0
   owner: 0
   page_cache: 0
+  page_manager: 0
   paragraphs_jquery_ui_accordion: 0
   paragraphs_type_permissions: 0
   password_policy: 0
@@ -151,6 +163,7 @@ module:
   rdf_taxonomy: 0
   redirect: 0
   redis: 0
+  responsive_image: 0
   rest: 0
   schema_article: 0
   schema_digital_document: 0
@@ -186,10 +199,15 @@ module:
   taxonomy: 0
   template_suggestion: 0
   text: 0
+  theme_rule: 0
   token: 0
   toolbar: 0
+  topic: 0
   tour: 0
   trr: 0
+  ui_patterns: 0
+  ui_patterns_library: 0
+  ui_patterns_settings: 0
   user: 0
   video_embed_field: 0
   video_embed_wysiwyg: 0
@@ -197,6 +215,7 @@ module:
   views_autosubmit: 0
   views_bulk_operations: 0
   views_data_export: 0
+  views_multiple_permissions: 0
   whats_new: 0
   workflow_state_permission: 0
   menu_admin_per_menu: 1
@@ -214,6 +233,8 @@ theme:
   classy: 0
   seven: 0
   joinup_theme: 0
+  ventuno: 0
+  oe_bootstrap_theme: 0
 profile: joinup
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

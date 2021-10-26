@@ -1,0 +1,29 @@
+uuid: 02e4583d-5f4b-4d31-abb0-4357444f493f
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.spatial_coverage
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - ventuno
+id: ventuno_spatial_coverage_facet
+theme: ventuno
+region: sidebar
+weight: -19
+provider: null
+plugin: 'facet_block:spatial_coverage'
+settings:
+  id: 'facet_block:spatial_coverage'
+  label: 'Search page - Geographical coverage facet'
+  provider: facets
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - view.search.page_1
+    negate: false
+    context_mapping: {  }

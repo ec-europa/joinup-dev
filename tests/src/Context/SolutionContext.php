@@ -29,6 +29,7 @@ use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\solution\Entity\SolutionInterface;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -56,6 +57,18 @@ class SolutionContext extends RawDrupalContext {
    * @var \Drupal\rdf_entity\RdfInterface[]
    */
   protected $rdfEntities = [];
+
+  /**
+   * Checks that the user is on the solutions overview page.
+   *
+   * The solutions overview page currently doesn't have a title so our common
+   * practice of checking the page title falls short here.
+   *
+   * @Then I should be on the solutions overview page
+   */
+  public function assertSolutionsOverviewPage(): void {
+    $this->assertSession()->addressEquals($this->locatePath('/solutions'));
+  }
 
   /**
    * Navigates to the add solution form.
@@ -391,13 +404,13 @@ class SolutionContext extends RawDrupalContext {
    * @param string $title
    *   The solution name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\solution\Entity\SolutionInterface
    *   The solution.
    *
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  protected function getSolutionByName($title) {
+  protected function getSolutionByName($title): SolutionInterface {
     return $this->getRdfEntityByLabel($title, 'solution');
   }
 
@@ -831,6 +844,66 @@ class SolutionContext extends RawDrupalContext {
     }
 
     $meta_entity->set('count', (int) $count)->save();
+  }
+
+  /**
+   * Checks the contents of the "Highlighted solution" block.
+   *
+   * This is shown on the homepage.
+   *
+   * @param string $label
+   *   The label of the solution that is highlighted on the homepage.
+   *
+   * @Then I should see :label as the highlighted solution
+   */
+  public function assertHighlightedSolution(string $label): void {
+    $solution = self::getSolutionByName($label);
+
+    $block_element = $this->getSession()->getPage()->find('css', '.block-entityqueue--highlighted-solution');
+
+    // Check block title.
+    $actual_block_title = $block_element->find('css', 'h2')->getText();
+    Assert::assertEquals('Highlighted solution', $actual_block_title, sprintf('Expected the highlighted solution block to have the title "Highlighted solution" but instead found "%s".', $actual_block_title));
+
+    // Check that the logo is present.
+    if ($logo = $solution->getLogoAsFile()) {
+      $filename = $logo->getFilename();
+      $logo_is_present = self::hasImage($filename, $block_element);
+      Assert::assertTrue($logo_is_present, sprintf('Image with filename "%s" has been found in the highlighted solution block.', $filename));
+    }
+
+    // Check title text.
+    $actual_title = $block_element->find('css', 'article h2')->getText();
+    Assert::assertEquals($solution->label(), $actual_title, sprintf('Expected the highlighted solution to have the title "%s" but instead found "%s".', $solution->label(), $actual_title));
+
+    // Check that title links to the canonical page of the solution.
+    $xpath = '//h2/a[@href = "' . $solution->toUrl()->toString() . '"]';
+    Assert::assertNotEmpty($block_element->find('xpath', $xpath), sprintf('Solution "%s" does not link to the canonical page.', $actual_title));
+
+    // Retrieve the topics from the solution, limiting the result to maximum 2
+    // topics.
+    $topics = array_slice($solution->getTopics(), 0, 2);
+
+    // Check that the correct number of topics are present.
+    $topic_elements = $block_element->findAll('css', '.field--name-field-topic .field__item');
+    Assert::assertEquals(count($topics), count($topic_elements), sprintf('Expected %d topics in the "Highlighted solution" section but found %d topics.', count($topics), count($topic_elements)));
+
+    foreach ($topics as $j => $topic) {
+      /** @var \Behat\Mink\Element\NodeElement $topic_element */
+      $topic_element = array_shift($topic_elements);
+
+      // Check the title of each topic.
+      $actual_topic_title = $topic_element->getText();
+      Assert::assertEquals($topic->label(), $actual_topic_title, sprintf('Expected topic #%d to be "%s" in the "Highlighted solution" section but instead found "%s".', $j + 1, $topic->label(), $actual_topic_title));
+
+      // Check that each topic links to their canonical page.
+      $xpath = '/a[@href = "' . $topic->toUrl()->toString() . '"]';
+      Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" in the "Highlighted solution" section does not link to the canonical topic page.', $actual_topic_title));
+    }
+
+    // Check that the description is present.
+    $actual_description = $block_element->find('css', '.field--name-field-is-description')->getText();
+    Assert::assertNotEmpty($actual_description);
   }
 
 }

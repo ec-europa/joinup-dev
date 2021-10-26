@@ -1,0 +1,226 @@
+uuid: 02d3d371-faad-4b52-a138-37aed4ba317f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.explore_item
+    - field.field.rdf_entity.collection.field_ar_abstract
+    - field.field.rdf_entity.collection.field_ar_access_url
+    - field.field.rdf_entity.collection.field_ar_affiliates
+    - field.field.rdf_entity.collection.field_ar_banner
+    - field.field.rdf_entity.collection.field_ar_closed
+    - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
+    - field.field.rdf_entity.collection.field_ar_description
+    - field.field.rdf_entity.collection.field_ar_logo
+    - field.field.rdf_entity.collection.field_ar_moderation
+    - field.field.rdf_entity.collection.field_ar_owner
+    - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
+    - field.field.rdf_entity.collection.field_newsletter
+    - field.field.rdf_entity.collection.field_short_id
+    - field.field.rdf_entity.collection.field_site_featured
+    - field.field.rdf_entity.collection.field_spatial_coverage
+    - field.field.rdf_entity.collection.field_topic
+    - rdf_entity.rdfentity.collection
+  module:
+    - field_group
+    - layout_builder
+    - layout_discovery
+    - smart_trim
+    - template_suggestion
+    - user
+third_party_settings:
+  field_group:
+    group_abstract_wrapper:
+      children:
+        - field_ar_abstract
+        - field_collection_content
+      parent_name: ''
+      weight: 6
+      format_type: html_element
+      format_settings:
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: 'Abstract wrapper'
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          4cb99166-a0e4-4150-85c6-a286132433fb:
+            uuid: 4cb99166-a0e4-4150-85c6-a286132433fb
+            region: content
+            configuration:
+              id: 'field_block:rdf_entity:collection:field_ar_description'
+              label: Description
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: joinup_html_stripper_stripped
+                settings:
+                  trim_length: 230
+                third_party_settings:
+                  template_suggestion:
+                    template_suggestion: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: explore-item__description
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+            weight: 1
+          0fa88de7-8206-43f9-b5c6-55ead1f72ff5:
+            uuid: 0fa88de7-8206-43f9-b5c6-55ead1f72ff5
+            region: content
+            configuration:
+              id: 'field_block:rdf_entity:collection:created'
+              label: 'Authored on'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: timestamp
+                settings:
+                  date_format: custom
+                  custom_date_format: d/m/Y
+                  timezone: ''
+                third_party_settings:
+                  template_suggestion:
+                    template_suggestion: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: date
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+            weight: 2
+          cfb0335f-0df9-4e8c-bafe-65b6909590ae:
+            uuid: cfb0335f-0df9-4e8c-bafe-65b6909590ae
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:rdf_entity:collection:read_more'
+            additional: {  }
+            weight: 3
+        third_party_settings: {  }
+id: rdf_entity.collection.explore_item
+targetEntityType: rdf_entity
+bundle: collection
+mode: explore_item
+content:
+  created:
+    type: timestamp
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  field_ar_description:
+    type: smart_trim
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      trim_length: 500
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: p_wrapper
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    region: content
+  read_more:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  changed: true
+  field_ar_abstract: true
+  field_ar_access_url: true
+  field_ar_affiliates: true
+  field_ar_banner: true
+  field_ar_closed: true
+  field_ar_contact_information: true
+  field_ar_content_creation: true
+  field_ar_logo: true
+  field_ar_moderation: true
+  field_ar_owner: true
+  field_ar_state: true
+  field_collection_content: true
+  field_keywords: true
+  field_newsletter: true
+  field_short_id: true
+  field_site_featured: true
+  field_spatial_coverage: true
+  field_topic: true
+  join_collection: true
+  langcode: true
+  last_update: true
+  members: true
+  og_group: true
+  rdf_entity_field_collection_content_inline_facets: true
+  rdf_entity_field_collection_content_top: true
+  solutions: true

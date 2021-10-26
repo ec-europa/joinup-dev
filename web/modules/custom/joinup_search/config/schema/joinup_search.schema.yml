@@ -1,3 +1,11 @@
+block.settings.joinup_search_global_search:
+  type: block_settings
+  label: 'Global search block'
+  mapping:
+    template_suggestion:
+      type: string
+      label: 'Template suggestion'
+
 facet.widget.config.type:
   type: facet.widget.default_config
   label: 'Search API content listing'

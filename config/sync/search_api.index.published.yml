@@ -3,55 +3,55 @@ langcode: en
 status: true
 dependencies:
   module:
+    - search_api_solr
+    - node
+    - meta_entity
+    - rdf_entity
+    - taxonomy
+    - paragraphs
+    - publication_date
+    - rdf_taxonomy
+    - user
+    - search_api
     - asset_distribution
     - custom_page
     - joinup_search
-    - meta_entity
-    - node
-    - paragraphs
-    - publication_date
-    - rdf_entity
-    - rdf_taxonomy
-    - search_api
-    - search_api_solr
-    - taxonomy
-    - user
   config:
-    - field.storage.meta_entity.count
-    - field.storage.meta_entity.field_featured
-    - field.storage.meta_entity.field_pinned_in
     - field.storage.node.body
-    - field.storage.node.field_event_agenda
-    - field.storage.node.field_event_date
-    - field.storage.node.field_location
-    - field.storage.node.field_news_headline
-    - field.storage.node.field_organisation
-    - field.storage.node.field_paragraphs_body
-    - field.storage.node.field_scope
-    - field.storage.node.field_short_title
-    - field.storage.paragraph.field_body
     - field.storage.rdf_entity.field_ad_description
     - field.storage.rdf_entity.field_ar_abstract
     - field.storage.rdf_entity.field_ar_description
-    - field.storage.rdf_entity.field_ci_name
-    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.taxonomy_term.field_eif_identifier
+    - field.storage.taxonomy_term.field_eif_related_term
+    - field.storage.node.field_event_agenda
+    - field.storage.node.field_event_date
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_is_eif_category
     - field.storage.rdf_entity.field_is_eif_recommendation
-    - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_is_solution_type
-    - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_isr_owner
     - field.storage.rdf_entity.field_isr_release_notes
     - field.storage.rdf_entity.field_licence_description
     - field.storage.rdf_entity.field_licence_spdx_licence
-    - field.storage.rdf_entity.field_owner_name
-    - field.storage.taxonomy_term.field_eif_identifier
-    - field.storage.taxonomy_term.field_eif_related_term
+    - field.storage.node.field_location
+    - field.storage.node.field_news_headline
+    - field.storage.node.field_organisation
+    - field.storage.node.field_scope
+    - field.storage.node.field_short_title
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
+    - field.storage.meta_entity.count
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_owner_name
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_isr_owner
+    - field.storage.meta_entity.field_featured
+    - field.storage.meta_entity.field_pinned_in
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
     - search_api.server.solr_published
 third_party_settings:
   search_api_solr:
@@ -326,10 +326,10 @@ field_settings:
     property_path: 'visit_count:entity:count'
     type: integer
     dependencies:
-      module:
-        - meta_entity
       config:
         - field.storage.meta_entity.count
+      module:
+        - meta_entity
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
@@ -345,8 +345,8 @@ field_settings:
     type: text
     dependencies:
       config:
-        - field.storage.rdf_entity.field_is_contact_information
         - field.storage.rdf_entity.field_ci_name
+        - field.storage.rdf_entity.field_is_contact_information
       module:
         - rdf_entity
   is_field_owner_name:
@@ -367,8 +367,8 @@ field_settings:
     type: text
     dependencies:
       config:
-        - field.storage.rdf_entity.field_isr_contact_information
         - field.storage.rdf_entity.field_ci_name
+        - field.storage.rdf_entity.field_isr_contact_information
       module:
         - rdf_entity
   isr_field_owner_name:
@@ -422,22 +422,21 @@ field_settings:
     property_path: 'featured:entity:field_featured'
     type: string
     dependencies:
-      module:
-        - meta_entity
-        - node
       config:
         - field.storage.meta_entity.field_featured
+      module:
+        - meta_entity
   node_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:node'
     property_path: 'pinned_in:entity:field_pinned_in:entity:id'
     type: string
     dependencies:
+      config:
+        - field.storage.meta_entity.field_pinned_in
       module:
         - meta_entity
         - rdf_entity
-      config:
-        - field.storage.meta_entity.field_pinned_in
   parent:
     label: 'Term Parents'
     datasource_id: 'entity:taxonomy_term'
@@ -487,22 +486,21 @@ field_settings:
     property_path: 'featured:entity:field_featured'
     type: string
     dependencies:
-      module:
-        - meta_entity
-        - rdf_entity
       config:
         - field.storage.meta_entity.field_featured
+      module:
+        - meta_entity
   rdf_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:rdf_entity'
     property_path: 'pinned_in:entity:field_pinned_in:entity:id'
     type: string
     dependencies:
+      config:
+        - field.storage.meta_entity.field_pinned_in
       module:
         - meta_entity
         - rdf_entity
-      config:
-        - field.storage.meta_entity.field_pinned_in
   reverse_eif_related_term_tid:
     label: 'Reverse » Related term » Term ID'
     datasource_id: 'entity:taxonomy_term'
@@ -539,15 +537,6 @@ field_settings:
       fields:
         - 'entity:node/featured:entity:field_featured'
         - 'entity:rdf_entity/featured:entity:field_featured'
-  site_pinned:
-    label: 'Site pinned'
-    property_path: aggregated_field
-    type: boolean
-    configuration:
-      type: union
-      fields:
-        - 'entity:node/front_page_pinned'
-        - 'entity:rdf_entity/front_page_pinned'
   spatial_coverage:
     label: 'Geographical coverage'
     property_path: aggregated_field
@@ -627,7 +616,6 @@ datasource_settings:
         - document
         - event
         - news
-        - newsletter
         - tallinn_report
         - video
     languages:
@@ -654,6 +642,7 @@ datasource_settings:
         - eif_interoperability_layer
         - eif_principle
         - eif_recommendation
+        - topic
     languages:
       default: true
       selected: {  }
@@ -664,6 +653,14 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  aggregated_topic_hierarchy:
+    weights:
+      preprocess_index: -50
+  hierarchy:
+    fields:
+      parent: taxonomy_term-parent
+    weights:
+      preprocess_index: -45
   html_filter:
     all_fields: false
     fields:
@@ -854,7 +851,6 @@ processor_settings:
           document: !!float 0
           event: !!float 3
           news: !!float 5
-          newsletter: !!float 0
           video: !!float 0
       'entity:rdf_entity':
         datasource_boost: !!float 0

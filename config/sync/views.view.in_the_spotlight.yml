@@ -1,0 +1,266 @@
+uuid: ccbdcb8f-aec5-48eb-a4be-c2a116c3cf7a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.numbered_listing
+    - entityqueue.entity_queue.spotlight
+  module:
+    - entityqueue
+    - node
+    - user
+id: in_the_spotlight
+label: 'In the spotlight'
+module: views
+description: ''
+tag: ''
+base_table: node_field_data
+base_field: nid
+display:
+  default:
+    display_plugin: default
+    id: default
+    display_title: Master
+    position: 0
+    display_options:
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_comment: ''
+          query_tags: {  }
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        type: some
+        options:
+          items_per_page: 3
+          offset: 0
+      style:
+        type: default
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
+      fields:
+        rendered_entity:
+          id: rendered_entity
+          table: node
+          field: rendered_entity
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          view_mode: numbered_listing
+          entity_type: node
+          plugin_id: rendered_entity
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+      sorts:
+        entityqueue_relationship:
+          id: entityqueue_relationship
+          table: node_field_data
+          field: entityqueue_relationship
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+            identifier: ''
+          entity_type: node
+          plugin_id: entity_queue_position
+      title: 'In the spotlight'
+      header: {  }
+      footer: {  }
+      empty: {  }
+      relationships:
+        entityqueue_relationship:
+          id: entityqueue_relationship
+          table: node_field_data
+          field: entityqueue_relationship
+          relationship: none
+          group_type: group
+          admin_label: 'Content queue'
+          required: true
+          limit_queue: spotlight
+          entity_type: node
+          plugin_id: entity_queue
+      arguments: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:core.entity_view_display.node.custom_page.default'
+        - 'config:core.entity_view_display.node.custom_page.view_mode_featured'
+        - 'config:core.entity_view_display.node.custom_page.view_mode_tile'
+        - 'config:core.entity_view_display.node.discussion.default'
+        - 'config:core.entity_view_display.node.discussion.digest_message'
+        - 'config:core.entity_view_display.node.discussion.moderation'
+        - 'config:core.entity_view_display.node.discussion.numbered_listing'
+        - 'config:core.entity_view_display.node.discussion.view_mode_featured'
+        - 'config:core.entity_view_display.node.discussion.view_mode_tile'
+        - 'config:core.entity_view_display.node.document.default'
+        - 'config:core.entity_view_display.node.document.digest_message'
+        - 'config:core.entity_view_display.node.document.moderation'
+        - 'config:core.entity_view_display.node.document.numbered_listing'
+        - 'config:core.entity_view_display.node.document.view_mode_featured'
+        - 'config:core.entity_view_display.node.document.view_mode_tile'
+        - 'config:core.entity_view_display.node.event.default'
+        - 'config:core.entity_view_display.node.event.digest_message'
+        - 'config:core.entity_view_display.node.event.explore_item'
+        - 'config:core.entity_view_display.node.event.highlighted'
+        - 'config:core.entity_view_display.node.event.moderation'
+        - 'config:core.entity_view_display.node.event.numbered_listing'
+        - 'config:core.entity_view_display.node.event.view_mode_featured'
+        - 'config:core.entity_view_display.node.event.view_mode_tile'
+        - 'config:core.entity_view_display.node.glossary.default'
+        - 'config:core.entity_view_display.node.glossary.view_mode_tile'
+        - 'config:core.entity_view_display.node.news.dated_listing'
+        - 'config:core.entity_view_display.node.news.default'
+        - 'config:core.entity_view_display.node.news.digest_message'
+        - 'config:core.entity_view_display.node.news.explore_item'
+        - 'config:core.entity_view_display.node.news.moderation'
+        - 'config:core.entity_view_display.node.news.numbered_listing'
+        - 'config:core.entity_view_display.node.news.view_mode_featured'
+        - 'config:core.entity_view_display.node.news.view_mode_tile'
+        - 'config:core.entity_view_display.node.tallinn_report.default'
+        - 'config:core.entity_view_display.node.tallinn_report.view_mode_tile'
+        - 'config:core.entity_view_display.node.video.default'
+        - 'config:core.entity_view_display.node.video.view_mode_featured'
+        - 'config:core.entity_view_display.node.video.view_mode_tile'
+        - 'config:entityqueue.entity_queue.spotlight'
+        - entity_field_info
+        - views_data
+  block:
+    display_plugin: block
+    id: block
+    display_title: Block
+    position: 1
+    display_options:
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:core.entity_view_display.node.custom_page.default'
+        - 'config:core.entity_view_display.node.custom_page.view_mode_featured'
+        - 'config:core.entity_view_display.node.custom_page.view_mode_tile'
+        - 'config:core.entity_view_display.node.discussion.default'
+        - 'config:core.entity_view_display.node.discussion.digest_message'
+        - 'config:core.entity_view_display.node.discussion.moderation'
+        - 'config:core.entity_view_display.node.discussion.numbered_listing'
+        - 'config:core.entity_view_display.node.discussion.view_mode_featured'
+        - 'config:core.entity_view_display.node.discussion.view_mode_tile'
+        - 'config:core.entity_view_display.node.document.default'
+        - 'config:core.entity_view_display.node.document.digest_message'
+        - 'config:core.entity_view_display.node.document.moderation'
+        - 'config:core.entity_view_display.node.document.numbered_listing'
+        - 'config:core.entity_view_display.node.document.view_mode_featured'
+        - 'config:core.entity_view_display.node.document.view_mode_tile'
+        - 'config:core.entity_view_display.node.event.default'
+        - 'config:core.entity_view_display.node.event.digest_message'
+        - 'config:core.entity_view_display.node.event.explore_item'
+        - 'config:core.entity_view_display.node.event.highlighted'
+        - 'config:core.entity_view_display.node.event.moderation'
+        - 'config:core.entity_view_display.node.event.numbered_listing'
+        - 'config:core.entity_view_display.node.event.view_mode_featured'
+        - 'config:core.entity_view_display.node.event.view_mode_tile'
+        - 'config:core.entity_view_display.node.glossary.default'
+        - 'config:core.entity_view_display.node.glossary.view_mode_tile'
+        - 'config:core.entity_view_display.node.news.dated_listing'
+        - 'config:core.entity_view_display.node.news.default'
+        - 'config:core.entity_view_display.node.news.digest_message'
+        - 'config:core.entity_view_display.node.news.explore_item'
+        - 'config:core.entity_view_display.node.news.moderation'
+        - 'config:core.entity_view_display.node.news.numbered_listing'
+        - 'config:core.entity_view_display.node.news.view_mode_featured'
+        - 'config:core.entity_view_display.node.news.view_mode_tile'
+        - 'config:core.entity_view_display.node.tallinn_report.default'
+        - 'config:core.entity_view_display.node.tallinn_report.view_mode_tile'
+        - 'config:core.entity_view_display.node.video.default'
+        - 'config:core.entity_view_display.node.video.view_mode_featured'
+        - 'config:core.entity_view_display.node.video.view_mode_tile'
+        - 'config:entityqueue.entity_queue.spotlight'
+        - entity_field_info
+        - views_data

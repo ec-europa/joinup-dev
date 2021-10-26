@@ -1,0 +1,27 @@
+uuid: ba16ad05-f2e8-485f-a1fb-930304fee00b
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_licence
+    - system
+  theme:
+    - ventuno
+id: ventuno_licencefilterblock
+theme: ventuno
+region: content
+weight: -18
+provider: null
+plugin: licence_filter_block
+settings:
+  id: licence_filter_block
+  label: 'Licence filter block (JLA)'
+  provider: joinup_licence
+  label_display: '0'
+  show_terms: true
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/701805
+    negate: false
+    context_mapping: {  }

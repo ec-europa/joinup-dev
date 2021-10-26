@@ -1,0 +1,30 @@
+uuid: 1dce27fe-78bf-4332-8113-5c37204cb1db
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.discover_topics
+  module:
+    - system
+    - views
+  theme:
+    - ventuno
+id: views_block__discover_topics_block
+theme: ventuno
+region: featured
+weight: -25
+provider: null
+plugin: 'views_block:discover_topics-block'
+settings:
+  id: 'views_block:discover_topics-block'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

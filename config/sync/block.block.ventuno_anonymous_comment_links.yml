@@ -1,0 +1,42 @@
+uuid: 1568adf7-9ebe-429f-84eb-3cf864207b07
+langcode: en
+status: true
+dependencies:
+  config:
+    - simple_block.simple_block.anonymous_comment_links
+  module:
+    - ctools
+    - simple_block
+    - user
+  theme:
+    - ventuno
+id: ventuno_anonymous_comment_links
+theme: ventuno
+region: content
+weight: -19
+provider: null
+plugin: 'simple_block:anonymous_comment_links'
+settings:
+  id: 'simple_block:anonymous_comment_links'
+  label: 'Anonymous comment links'
+  provider: simple_block
+  label_display: '0'
+visibility:
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      discussion: discussion
+      document: document
+      event: event
+      news: news
+      video: video
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

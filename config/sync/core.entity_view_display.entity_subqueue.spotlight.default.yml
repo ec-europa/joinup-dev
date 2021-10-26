@@ -1,0 +1,35 @@
+uuid: 19e0f211-1cc1-4b6f-a794-9e07c4abc46c
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.spotlight
+  module:
+    - field_delimiter
+    - field_formatter_range
+    - template_suggestion
+id: entity_subqueue.spotlight.default
+targetEntityType: entity_subqueue
+bundle: spotlight
+mode: default
+content:
+  items:
+    label: hidden
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    settings:
+      view_mode: numbered_listing
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      field_formatter_range:
+        limit: 0
+        offset: 0
+        order: 0
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  langcode: true
+  title: true

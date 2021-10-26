@@ -1,0 +1,123 @@
+uuid: e528cedb-930d-4b74-adaa-59e0407a8f43
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.numbered_listing
+    - field.field.node.news.body
+    - field.field.node.news.field_attachment
+    - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
+    - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_logo
+    - field.field.node.news.field_news_referenced_solution
+    - field.field.node.news.field_news_source_url
+    - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_shared_in
+    - field.field.node.news.field_site_featured
+    - field.field.node.news.field_state
+    - field.field.node.news.field_topic
+    - field.field.node.news.og_audience
+    - node.type.news
+    - responsive_image.styles.spotlight
+  module:
+    - field_delimiter
+    - field_formatter_range
+    - field_group
+    - layout_builder
+    - responsive_image
+    - smart_trim
+    - template_suggestion
+    - user
+third_party_settings:
+  field_group:
+    group_references:
+      children: {  }
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: References
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: node.news.numbered_listing
+targetEntityType: node
+bundle: news
+mode: numbered_listing
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 2
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: trim
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    region: content
+  field_news_logo:
+    type: responsive_image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      responsive_image_style: spotlight
+      image_link: content
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+  field_topic:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      field_formatter_range:
+        limit: 2
+        offset: 0
+        order: 0
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_attachment: true
+  field_comments: true
+  field_keywords: true
+  field_news_headline: true
+  field_news_referenced_solution: true
+  field_news_source_url: true
+  field_news_spatial_coverage: true
+  field_shared_in: true
+  field_site_featured: true
+  field_state: true
+  langcode: true
+  links: true
+  og_audience: true
+  published_at: true
+  read_more: true
+  report: true
+  share_link: true

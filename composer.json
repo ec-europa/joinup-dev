@@ -30,9 +30,11 @@
         "drupal/email_registration": "^1.1",
         "drupal/embed_block": "^1.0",
         "drupal/entity_legal": "^3.0.0-beta2",
+        "drupal/entityqueue": "^1.2",
         "drupal/error_page": "^1.0",
         "drupal/facets": "1.6.0",
         "drupal/field_delimiter": "^1.1",
+        "drupal/field_formatter_range": "^1.1",
         "drupal/field_group": "^3.1",
         "drupal/field_permissions": "^1.1",
         "drupal/file_url": "~2.0",
@@ -45,6 +47,8 @@
         "drupal/inline_entity_form": "^1.0",
         "drupal/jquery_ui_accordion": "^1.1",
         "drupal/json_field": "^1.0",
+        "drupal/layout_builder_block": "^1.0",
+        "drupal/layout_builder_component_attributes": "^1.2",
         "drupal/linkit": "^5.0-beta11",
         "drupal/matomo": "^1.11",
         "drupal/matomo_reporting_api": "^2.3",
@@ -56,6 +60,7 @@
         "drupal/meta_entity": "^1.0-alpha2",
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
+        "drupal/page_manager": "^4.0@beta",
         "drupal/paragraphs": "^1.12",
         "drupal/paragraphs_jquery_ui_accordion": "^1.4",
         "drupal/password_policy": "^3.0",
@@ -81,12 +86,14 @@
         "drupal/state_machine": "^1.0",
         "drupal/subpathauto": "dev-1.x#fcd7c1c4c49d5ee1648630d92eb9da46e6bf25f0",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
+        "drupal/theme_rule": "^1.0",
         "drupal/token": "~1.7",
         "drupal/video_embed_field": "^2",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_autosubmit": "^1.2",
         "drupal/views_bulk_operations": "^4",
         "drupal/views_data_export": "^1.0",
+        "drupal/views_multiple_permissions": "^1.0",
         "drush/drush": "~10.3",
         "easyrdf/easyrdf": "1.0.0 as 0.9.2",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
@@ -95,6 +102,8 @@
         "jacklmoore/autosize": "dev-master",
         "masterminds/html5": "^2.7",
         "ml/json-ld": "^1.2",
+        "neilime/php-css-lint": "1.1.0 as 2.0.0",
+        "openeuropa/oe_bootstrap_theme": "0.71.0",
         "openeuropa/oe_webtools": "1.7.0",
         "openeuropa/webtools-geocoding-provider": "~0.1",
         "pear/console_table": "~1.3",
@@ -134,6 +143,7 @@
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.12.12",
         "mikey179/vfsstream": "~1.6",
+        "openeuropa/composer-artifacts": "^0.1.3",
         "openeuropa/task-runner": "dev-php-7.1 as 1.0.0-beta7",
         "pear/http_request2": "~2.4",
         "pfrenssen/phpcs-pre-push": "1.1",
@@ -170,7 +180,9 @@
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeFallbackTrait.php",
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeInterface.php",
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeTrait.php",
-            "web/modules/custom/joinup_sparql/src/Driver/Database/joinup_sparql/Connection.php"
+            "web/modules/custom/joinup_sparql/src/Driver/Database/joinup_sparql/Connection.php",
+            "web/modules/custom/topic/src/Entity/TopicReferencingEntityInterface.php",
+            "web/modules/custom/topic/src/Entity/TopicReferencingEntityTrait.php"
         ],
         "psr-4": {
             "Joinup\\": "src"
@@ -260,6 +272,7 @@
                 "Menu link plugins should provide a way for the link to be conditionally hidden @see https://www.drupal.org/project/drupal/issues/2719609": "https://www.drupal.org/files/issues/2719609-2.patch",
                 "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
                 "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
+                "Make the tab active when the fragment is present in URL @see https://www.drupal.org/project/drupal/issues/2752511": "https://www.drupal.org/files/issues/2021-08-04/vertical-tabs-2752511-94-D8.patch",
                 "Use comment access handler instead of hardcoding permissions @see https://www.drupal.org/project/drupal/issues/2879087": "https://www.drupal.org/files/issues/2020-11-08/2879087-106.patch",
                 "Add thread depth configuration to comments @see https://www.drupal.org/project/drupal/issues/2786587": "https://www.drupal.org/files/issues/2020-11-10/2786587-47-unofficial-8.9.x.patch",
                 "Views with a different query plugin created via the UI do not have the correct query plugin ID in the view config @see https://www.drupal.org/project/drupal/issues/2836237": "https://www.drupal.org/files/issues/2021-01-28/2836237-38.patch",
@@ -267,16 +280,22 @@
                 "Views exposed sort identifiers are not configurable @see https://www.drupal.org/project/drupal/issues/2897638": "https://www.drupal.org/files/issues/2020-09-06/2897638-33-8.9.x.patch",
                 "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch",
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
+                "CSS aggregation fails on many variations of @import @see https://www.drupal.org/project/drupal/issues/2936067": "https://www.drupal.org/files/issues/2021-10-06/2936067-73-backport.patch",
                 "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
                 "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2019-12-03/3008254-19-8.8.x.patch",
                 "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
+                "Contextual links of reusable content blocks are not displayed when rendering entities built via Layout Builder @see https://www.drupal.org/project/drupal/issues/3020876": "https://git.drupalcode.org/project/drupal/-/merge_requests/501.diff",
                 "EntityConstraintValidationList::findByCode is inconsistent @see https://www.drupal.org/project/drupal/issues/3126654": "https://www.drupal.org/files/issues/2020-04-10/find_by_code_override-3126654-D8-4.patch",
                 "Cannot implement a custom user cancellation method @see https://www.drupal.org/project/drupal/issues/3135592": "https://www.drupal.org/files/issues/2020-05-11/3135592-3.patch",
                 "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch",
-                "Make the tab active when the fragment is present in URL @see https://www.drupal.org/project/drupal/issues/2752511": "https://www.drupal.org/files/issues/2021-08-04/vertical-tabs-2752511-94-D8.patch"
+                "Toolbar menu theme override omits the 'menu_name' variable @see https://www.drupal.org/project/drupal/issues/3227370": "https://www.drupal.org/files/issues/2021-08-09/3227370-3.patch"
+            },
+            "drupal/entityqueue": {
+                "Missing config schema for EntityQueueDragtableWidget @see Missing config schema for EntityQueueDragtableWidget": "https://git.drupalcode.org/project/entityqueue/-/merge_requests/3.diff"
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                "Configurable dropdown child prefix. @see https://www.drupal.org/project/facets/issues/3214662": "https://git.drupalcode.org/project/facets/-/merge_requests/20.diff",
                 "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch"
             },
             "drupal/honeypot": {
@@ -312,7 +331,8 @@
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                 "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                 "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch",
-                "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff"
+                "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff",
+                "Duplicate dependencies @see https://www.drupal.org/project/search_api/issues/3111635": "https://www.drupal.org/files/issues/2020-02-08/3111635-8--fix_duplicate_dependencies.patch"
             },
             "drupal/site_alert": {
                 "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-26/3118800-44.patch"
@@ -337,10 +357,13 @@
             "drupal/views_autosubmit": {
                 "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
             },
+            "openeuropa/oe_bootstrap_theme": {
+                "Preserve link attributes in navigation menus @see https://github.com/openeuropa/oe_bootstrap_theme/pull/38": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_bootstrap_theme/pull/38.diff"
+            },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                 "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
+                "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/master...cbee0e9.diff",
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
             }
@@ -353,6 +376,14 @@
                 "phpunit/phpunit": {
                     "Fix PHP 7 compatibility": "./tests/phpunit_php7.patch",
                     "Fix PHP 8 compatibility": "./tests/phpunit_php8.patch"
+                }
+            }
+        },
+        "artifacts": {
+            "openeuropa/oe_bootstrap_theme": {
+                "dist": {
+                    "url": "https://github.com/{name}/releases/download/{pretty-version}/{project-name}-{pretty-version}.tar.gz",
+                    "type": "tar"
                 }
             }
         }

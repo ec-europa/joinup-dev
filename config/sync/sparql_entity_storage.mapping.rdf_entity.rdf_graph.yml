@@ -44,10 +44,6 @@ base_fields_mapping:
     value:
       predicate: ''
       format: ''
-  front_page_pinned:
-    value:
-      predicate: ''
-      format: ''
   content_translation_source:
     value:
       predicate: ''

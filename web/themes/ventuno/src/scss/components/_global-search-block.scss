@@ -1,0 +1,16 @@
+.block-joinup-search-global-search {
+  @extend .pt-5;
+  @extend .pb-2;
+  @extend .me-3;
+  @extend .col-lg;
+  .search-bar {
+    .search-bar__input {
+      border-style: none;
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+    }
+    .btn-search {
+      @include font-icon-before("\E805", 1.2rem, inherit, inherit, 0);
+    }
+  }
+}

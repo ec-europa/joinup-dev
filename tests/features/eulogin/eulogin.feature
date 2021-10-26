@@ -10,7 +10,7 @@ Feature: Log in through EU Login
       | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
 
     # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
@@ -59,7 +59,7 @@ Feature: Log in through EU Login
       | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
 
     # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
@@ -148,7 +148,7 @@ Feature: Log in through EU Login
     And I should see the link "EU Login"
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     Then I should see the heading "Sign in to continue"
     And I fill in "E-mail address" with "007@mi6.eu"
     When I fill in "Password" with "shaken_not_stirred"
@@ -156,7 +156,6 @@ Feature: Log in through EU Login
 
     Then I should see the success message "You have been logged in."
     And I should not see the link "Sign in"
-    But the response should contain "user-profile-icon.png"
 
     # The profile entries are overwritten, except the username.
     And the user jb007_local should have the following data in their user profile:
@@ -178,7 +177,7 @@ Feature: Log in through EU Login
       | other_user | 007.changed@mi6.eu |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "007.changed@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
@@ -192,7 +191,7 @@ Feature: Log in through EU Login
       | jb007    | uniq@example.com | shaken_not_stirred | James      | Bond      | jb007_local    |
 
     When I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "uniq@example.com"
     And I fill in "Password" with "shaken_not_stirred"
@@ -218,7 +217,7 @@ Feature: Log in through EU Login
       | jclocal  | dragonne | jcvd@gmail.com | JC         | VD          |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     And I fill in "E-mail address" with "muscles@brussels.be"
     And I fill in "Password" with "dragon12"
     And I press the "Log in" button
@@ -240,7 +239,7 @@ Feature: Log in through EU Login
     And I click "Sign out"
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     And I fill in "E-mail address" with "muscles@brussels.be"
     And I fill in "Password" with "dragon12"
     And I press the "Log in" button
@@ -266,7 +265,7 @@ Feature: Log in through EU Login
 
     # User with full profile data.
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     When I fill in "E-mail address" with "f@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -291,7 +290,7 @@ Feature: Log in through EU Login
     # User with partial profile data.
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     When I fill in "E-mail address" with "p@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -317,7 +316,7 @@ Feature: Log in through EU Login
     # User with no profile data.
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     When I fill in "E-mail address" with "n@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -394,7 +393,7 @@ Feature: Log in through EU Login
       | joe      | joe.cas@example.com | 123      |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     When I fill in "E-mail address" with "joe.cas@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -451,7 +450,7 @@ Feature: Log in through EU Login
 
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
     And I fill in "E-mail address" with "Joe_Case_Insensitive@example.com"
     And I fill in "Password" with "123"
     When I press the "Log in" button

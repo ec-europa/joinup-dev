@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Template for a node shown in the 'numbered listing' view mode.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    node.bundle|clean_class,
+    node.bundle|clean_class ~ '--' ~ view_mode|clean_class,
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  {% block content %}
+    <div class="row">
+      <div class="news__logo-wrapper mb-3">
+        {{ logo }}
+      </div>
+      <div class="news__field-wrapper">
+        {{ content.field_topic }}
+        <h2{{ title_attributes }}>
+          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+        </h2>
+        {{ content.body }}
+        <div class="metadata">
+          <span class="date pe-3">{{ date }}</span>
+          <span class="type">{{ type }}</span>
+        </div>
+      </div>
+    </div>
+  {% endblock %}
+</article>

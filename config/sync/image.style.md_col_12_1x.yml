@@ -1,0 +1,15 @@
+uuid: 2b0a52ca-4002-4e14-9ed4-e306243b7d68
+langcode: en
+status: true
+dependencies: {  }
+name: md_col_12_1x
+label: md-col-12-1x
+effects:
+  d505117d-174c-4055-8f91-9a57a7f0d632:
+    uuid: d505117d-174c-4055-8f91-9a57a7f0d632
+    id: image_scale
+    weight: 1
+    data:
+      width: 698
+      height: null
+      upscale: false

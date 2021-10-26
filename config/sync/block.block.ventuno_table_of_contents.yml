@@ -1,0 +1,48 @@
+uuid: c6c509d4-8fdc-44f0-9775-a83a58f783a9
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_page
+    - joinup_core
+    - node
+    - og
+  theme:
+    - ventuno
+id: ventuno_table_of_contents
+theme: ventuno
+region: content_bottom
+weight: -17
+provider: null
+plugin: 'custom_page_toc:navigation'
+settings:
+  id: 'custom_page_toc:navigation'
+  label: 'Table of contents'
+  provider: custom_page
+  label_display: '1'
+  level: 1
+  depth: 0
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'
+  node_type:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_route:
+    id: request_route
+    routes:
+      - entity.node.canonical
+    negate: false
+    context_mapping: {  }

@@ -1,0 +1,35 @@
+name: Ventuno
+description: Custom theme for Joinup.
+package: Custom
+type: theme
+core_version_requirement: ^8 || ^9
+php: 7.1
+base theme: oe_bootstrap_theme
+
+libraries:
+  - ventuno/style
+
+libraries-override:
+  oe_bootstrap_theme/style: false
+  joinup_layout/twocol_60_40:
+    css:
+      theme:
+        layouts/twocol-60-40/twocol_60_40.css: false
+  joinup_layout/twocolfooter_onecol_67_33:
+    css:
+      theme:
+        layouts/twocolfooter-onecol-67-33/twocolfooter_onecol_67_33.css: false
+  tour/tour-styling:
+    css:
+      component:
+        css/tour.module.css: assets/css/tour.css
+
+regions:
+  header: Header
+  header_bottom: 'Header bottom'
+  featured: Featured
+  sidebar: Sidebar
+  content_top: 'Content top'
+  content: Content
+  content_bottom: 'Content bottom'
+  footer: Footer

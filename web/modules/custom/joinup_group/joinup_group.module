@@ -70,6 +70,31 @@ function joinup_group_entity_bundle_field_info_alter(array &$fields, EntityTypeI
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for the main menu.
+ *
+ * Sets the active trail for the main menu items based on the current group
+ * context.
+ */
+function joinup_group_preprocess_menu__main(&$variables) {
+  $group = \Drupal::service('og.context')->getGroup();
+  if ($group) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
+    switch ($group->bundle()) {
+      case 'collection':
+        $variables['items']['views_view:views.collections.page_1']['in_active_trail'] = TRUE;
+        break;
+
+      case 'solution':
+        $variables['items']['views_view:views.solutions.page_1']['in_active_trail'] = TRUE;
+        break;
+    }
+  }
+
+  $variables['#cache']['contexts'][] = 'og_group_context';
+  $variables['#cache']['contexts'][] = 'url.path';
+}
+
+/**
  * Implements hook_preprocess_page().
  *
  * Adds the current og group context as attribute on the page wrapper.

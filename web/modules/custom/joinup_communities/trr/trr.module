@@ -35,7 +35,9 @@ function trr_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entit
       }
     }
 
-    $fields['field_is_test_resource_type']->addConstraint('SolutionTestResourceType');
+    if (isset($fields['field_is_test_resource_type'])) {
+      $fields['field_is_test_resource_type']->addConstraint('SolutionTestResourceType');
+    }
   }
 }
 

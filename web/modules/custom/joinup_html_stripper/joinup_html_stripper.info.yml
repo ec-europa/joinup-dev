@@ -1,0 +1,12 @@
+name: Joinup HTML stripper
+type: module
+description: Field formatter that strips all HTML, tailored for use in Joinup.
+package: Joinup
+core_version_requirement: ^8 || ^9
+php: 7.1
+
+dependencies:
+  - drupal:field
+  - drupal:filter
+  - drupal:text
+  - smart_trim:smart_trim

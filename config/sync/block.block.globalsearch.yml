@@ -1,0 +1,27 @@
+uuid: 1ef39009-13ab-424a-a4cf-50cca466b674
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_search
+    - system
+  theme:
+    - ventuno
+id: globalsearch
+theme: ventuno
+region: featured
+weight: -26
+provider: null
+plugin: joinup_search_global_search
+settings:
+  id: joinup_search_global_search
+  label: 'Global search'
+  provider: joinup_search
+  label_display: '0'
+  template_suggestion: homepage
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

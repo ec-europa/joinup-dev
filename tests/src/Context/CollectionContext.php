@@ -7,6 +7,8 @@ namespace Drupal\joinup\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -19,10 +21,10 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -115,13 +117,13 @@ class CollectionContext extends RawDrupalContext {
    * @param string $title
    *   The collection title.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\collection\Entity\CollectionInterface
    *   The collection.
    *
    * @throws \InvalidArgumentException
    *   Thrown when a collection with the given title does not exist.
    */
-  protected function getCollectionByName(string $title): RdfInterface {
+  protected function getCollectionByName(string $title): CollectionInterface {
     return $this->getRdfEntityByLabel($title, 'collection');
   }
 
@@ -268,13 +270,13 @@ class CollectionContext extends RawDrupalContext {
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\collection\Entity\CollectionInterface
    *   A new collection entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  protected function createCollection(array $values): RdfInterface {
+  protected function createCollection(array $values): CollectionInterface {
     // Add images.
     $image_fields = ['field_ar_banner', 'field_ar_logo'];
     foreach ($image_fields as $field_name) {
@@ -680,12 +682,15 @@ class CollectionContext extends RawDrupalContext {
   /**
    * Creates the standard 'Joinup' collection.
    *
+   * @return \Drupal\collection\Entity\CollectionInterface
+   *   The 'Joinup' collection.
+   *
    * @BeforeScenario @joinup_collection&&@api
    *
    * @see joinup_collection.module
    */
-  public function createJoinupCollection(): void {
-    $this->createCollection([
+  public function createJoinupCollection(): CollectionInterface {
+    return $this->createCollection([
       'id' => JoinupCollectionHelper::getCollectionId(),
       'label' => 'Joinup',
       'field_ar_state' => 'validated',
@@ -723,6 +728,52 @@ class CollectionContext extends RawDrupalContext {
     if ($actual_navigator !== $expected_navigator) {
       throw new ExpectationFailedException("Expected navigator '{$expected_navigator}' but found '{$actual_navigator}'.");
     }
+  }
+
+  /**
+   * Sets a random collection on content that requires one.
+   *
+   * Some tests deal with collection content but don't care about which
+   * collection the content belongs to. It is tedious to manually define a
+   * collection and link it to the content for every single test. If it is
+   * omitted in the definition of the test we assign an existing collection, or
+   * if none exist we assign the "Joinup" collection. This ensures data
+   * integrity and prevents form validation errors.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
+   *   An object containing the entity properties and fields that are to be used
+   *   for creating the node as properties on the object.
+   *
+   * @BeforeNodeCreate
+   */
+  public function provideCollection(BeforeNodeCreateScope $scope) {
+    $node = $scope->getEntity();
+
+    // Only deal with collection content.
+    $collection_content_bundles = array_merge(['custom_page'], CommunityContentHelper::BUNDLES);
+    if (!in_array($node->type, $collection_content_bundles, TRUE)) {
+      return;
+    }
+
+    // Skip if a collection or solution has been defined.
+    if (!empty($node->collection) || !empty($node->solution)) {
+      return;
+    }
+
+    // Use an existing published collection if one is available.
+    foreach ($this->collections as $candidate_collection) {
+      if ($candidate_collection instanceof CollectionInterface && $candidate_collection->isPublished()) {
+        $collection = $candidate_collection;
+        break;
+      }
+    }
+
+    // If no suitable candidate is found, use the default "Joinup" collection.
+    if (empty($collection)) {
+      $collection = $this->createJoinupCollection();
+    }
+
+    $node->collection = $collection->label();
   }
 
 }

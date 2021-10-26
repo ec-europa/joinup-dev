@@ -1,0 +1,11 @@
+twocol_60_40:
+  version: VERSION
+  css:
+    theme:
+      layouts/twocol-60-40/twocol_60_40.css: {}
+
+twocolfooter_onecol_67_33:
+  version: VERSION
+  css:
+    theme:
+      layouts/twocolfooter-onecol-67-33/twocolfooter_onecol_67_33.css: {}

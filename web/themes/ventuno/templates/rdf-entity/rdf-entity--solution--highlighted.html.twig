@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Themeing for rdf entities.
+ */
+#}
+<article{{ attributes }}>
+  {{ content.field_is_logo }}
+  {{ content.field_topic }}
+  {{ title_prefix }}
+  {% if not page and not is_label_hidden %}
+    <h2{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h2>
+  {% endif %}
+  {{ title_suffix }}
+  {{ content|without('field_is_logo', 'field_topic') }}
+</article>

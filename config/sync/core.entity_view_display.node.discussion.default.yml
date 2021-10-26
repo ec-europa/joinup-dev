@@ -7,11 +7,11 @@ dependencies:
     - field.field.node.discussion.body
     - field.field.node.discussion.field_attachment
     - field.field.node.discussion.field_keywords
-    - field.field.node.discussion.field_topic
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_site_featured
     - field.field.node.discussion.field_state
+    - field.field.node.discussion.field_topic
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
@@ -130,3 +130,4 @@ hidden:
   field_site_featured: true
   langcode: true
   published_at: true
+  read_more: true

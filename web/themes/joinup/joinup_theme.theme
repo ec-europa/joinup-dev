@@ -520,11 +520,14 @@ function joinup_theme_preprocess_menu(&$variables) {
   }
   $variables['#cache']['contexts'][] = 'user.photo';
 
-  // Set login text instead of image.
+  // Set login text instead of image on the homepage.
+  $login_text_routes = [
+    'page_manager.page_view_homepage_homepage-layout_builder-0',
+  ];
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
 
-  if ($route_name === 'joinup_front_page.homepage' && $user->isAnonymous()) {
+  if (in_array($route_name, $login_text_routes) && $user->isAnonymous()) {
     $variables['has_sign_in_text'] = TRUE;
   }
 }

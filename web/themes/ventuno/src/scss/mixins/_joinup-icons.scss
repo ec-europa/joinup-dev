@@ -1,0 +1,96 @@
+// Joinup Fontello icons Mixin
+@font-face {
+  font-family: "joinup-icons";
+  src: url("../fonts/joinup-icons/joinup-icons.woff2") format("woff2"),
+      url("../fonts/joinup-icons/joinup-icons.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@mixin font-icon-defaults {
+  font-family: "joinup-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+}
+
+@mixin font-icon-before(
+  $code,
+  $size: inherit,
+  $color: "",
+  $lh: 1,
+  $margin: 0 8px 0 0
+) {
+  &::before {
+    content: "#{$code}";
+    @include font-icon-defaults;
+
+    @if $size != "" {
+      font-size: $size;
+    }
+
+    @if $color != "" {
+      color: $color;
+    }
+
+    line-height: $lh;
+    margin: $margin;
+    text-decoration: none;
+  }
+}
+
+@mixin font-icon-after(
+  $code,
+  $size: inherit,
+  $color: "",
+  $lh: 1,
+  $margin: 0 0 0 8px
+) {
+  &::after {
+    content: "#{$code}";
+    @include font-icon-defaults;
+
+    @if $size != "" {
+      font-size: $size;
+    }
+
+    @if $color != "" {
+      color: $color;
+    }
+
+    line-height: $lh;
+    margin: $margin;
+  }
+}
+
+/**
+ * Show icons only, hide button labels.
+ */
+@mixin icon-only {
+  display: inline-block;
+  visibility: hidden;
+  &::before,
+  &::after {
+    visibility: visible;
+  }
+
+  //IE11.
+  @media all and (-ms-high-contrast:none) {
+    visibility: visible;
+    text-indent: -999rem;
+    width: 1.4rem;
+    overflow: hidden;
+    float: left;
+    &::before,
+    &::after {
+      position: absolute;
+      overflow: hidden;
+      text-indent: 999rem;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+uuid: 4588c082-a2e2-4e3b-a848-020898572aca
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - joinup_user
+  theme:
+    - ventuno
+_core:
+  default_config_hash: K15zkMgDnwRG7Pa_FNbxbX6j3w5gp2vEDtuQ0hwiRYs
+id: ventuno_unpublished_content_of_user
+theme: ventuno
+region: content_bottom
+weight: -8
+provider: null
+plugin: user_unpublished
+settings:
+  id: user_unpublished
+  label: 'My unpublished content'
+  provider: joinup_core
+  label_display: visible
+  context_mapping:
+    user_route: '@joinup_user.user_route_context:user_route'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - entity.user.canonical
+    negate: false
+    context_mapping: {  }

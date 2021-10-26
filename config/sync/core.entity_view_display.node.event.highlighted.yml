@@ -1,0 +1,86 @@
+uuid: d5d48389-336e-4698-8dd3-df18345169a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.highlighted
+    - field.field.node.event.body
+    - field.field.node.event.field_attachment
+    - field.field.node.event.field_comments
+    - field.field.node.event.field_event_agenda
+    - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_coordinates
+    - field.field.node.event.field_event_date
+    - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_online_location
+    - field.field.node.event.field_event_spatial_coverage
+    - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_keywords
+    - field.field.node.event.field_location
+    - field.field.node.event.field_organisation
+    - field.field.node.event.field_organisation_type
+    - field.field.node.event.field_scope
+    - field.field.node.event.field_shared_in
+    - field.field.node.event.field_short_title
+    - field.field.node.event.field_site_featured
+    - field.field.node.event.field_state
+    - field.field.node.event.field_topic
+    - field.field.node.event.og_audience
+    - node.type.event
+  module:
+    - joinup_core
+    - layout_builder
+    - template_suggestion
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: node.event.highlighted
+targetEntityType: node
+bundle: event
+mode: highlighted
+content:
+  field_event_date:
+    weight: 0
+    label: hidden
+    settings:
+      timezone_override: ''
+      separator: to
+      default_format: d/m/Y
+      day_diff_format: d
+      month_diff_format: d/m
+      year_diff_format: d/m/Y
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    type: daterange_condensed
+    region: content
+hidden:
+  body: true
+  field_attachment: true
+  field_comments: true
+  field_event_agenda: true
+  field_event_contact_email: true
+  field_event_coordinates: true
+  field_event_logo: true
+  field_event_online_location: true
+  field_event_spatial_coverage: true
+  field_event_web_url: true
+  field_keywords: true
+  field_location: true
+  field_organisation: true
+  field_organisation_type: true
+  field_scope: true
+  field_shared_in: true
+  field_short_title: true
+  field_site_featured: true
+  field_state: true
+  field_topic: true
+  langcode: true
+  links: true
+  og_audience: true
+  published_at: true
+  read_more: true
+  report: true
+  share_link: true

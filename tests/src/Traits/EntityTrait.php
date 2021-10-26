@@ -91,6 +91,7 @@ trait EntityTrait {
       'solution' => 'rdf_entity',
       'spdx licence' => 'rdf_entity',
       'tallinn report' => 'node',
+      'topic' => 'taxonomy_term',
     ];
   }
 

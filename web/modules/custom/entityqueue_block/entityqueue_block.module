@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Entityqueue Block module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_theme().
+ */
+function entityqueue_block_theme() {
+  return [
+    // Normally theme suggestion templates are only picked up when they are in
+    // themes. We explicitly define a theme suggestion here so that the block
+    // template in the templates/ folder is picked up.
+    'block__entityqueue_block' => [
+      'render element' => 'elements',
+      'base hook' => 'block',
+    ],
+  ];
+}

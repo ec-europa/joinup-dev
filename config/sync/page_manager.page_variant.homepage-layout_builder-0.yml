@@ -1,0 +1,99 @@
+uuid: 072fdcb3-436c-4081-8d65-12d72adb4f75
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.homepage
+id: homepage-layout_builder-0
+label: 'Layout Builder'
+variant: layout_builder
+variant_settings:
+  id: layout_builder
+  uuid: c6b4a07e-d959-4562-a8a9-96a8c2a46ae9
+  label: null
+  weight: 0
+  sections:
+    -
+      layout_id: joinup_layout_twocol_60_40
+      layout_settings:
+        label: 'Spotlight and highlighted solution'
+      components:
+        26488b6d-5ac8-4c62-a3dc-137f6dced5c5:
+          uuid: 26488b6d-5ac8-4c62-a3dc-137f6dced5c5
+          region: first
+          configuration:
+            id: 'views_block:in_the_spotlight-block'
+            label: ''
+            provider: views
+            label_display: visible
+            views_label: ''
+            items_per_page: none
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        204e8ccb-280d-4ee4-b598-74b9f96d6496:
+          uuid: 204e8ccb-280d-4ee4-b598-74b9f96d6496
+          region: second
+          configuration:
+            id: 'entityqueue_block:highlighted_solution'
+            label: 'Highlighted solution'
+            provider: entityqueue_block
+            label_display: visible
+            view_mode: highlighted
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+    -
+      layout_id: joinup_layout_twocol_60_40
+      layout_settings:
+        label: 'News and events'
+      components:
+        52bba3fe-70ac-478a-9bda-2bbb24a9a8a1:
+          uuid: 52bba3fe-70ac-478a-9bda-2bbb24a9a8a1
+          region: first
+          configuration:
+            id: 'views_block:latest_news-block'
+            label: ''
+            provider: views
+            label_display: visible
+            views_label: ''
+            items_per_page: none
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        7cc83b30-0be3-4f89-940b-3e7f72d7b16d:
+          uuid: 7cc83b30-0be3-4f89-940b-3e7f72d7b16d
+          region: second
+          configuration:
+            id: 'entityqueue_block:highlighted_event'
+            label: 'Highlighted event'
+            provider: entityqueue_block
+            label_display: visible
+            view_mode: highlighted
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+    -
+      layout_id: layout_onecol
+      layout_settings:
+        label: Explore
+      components:
+        1fed7729-7ac7-48e1-82a3-d915f3545d9c:
+          uuid: 1fed7729-7ac7-48e1-82a3-d915f3545d9c
+          region: content
+          configuration:
+            id: joinup_front_page_explore_block
+            label: Explore
+            provider: joinup_front_page
+            label_display: visible
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+page: homepage
+weight: 0
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }

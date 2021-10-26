@@ -1,0 +1,10 @@
+block.settings.entityqueue_block:
+  type: block_settings
+  label: 'Entityqueue block settings'
+  mapping:
+    entityqueue:
+      type: string
+      label: 'The machine name of the entityqueue shown in the block.'
+    view_mode:
+      type: string
+      label: 'The view mode to use for rendering the entities in the queue.'

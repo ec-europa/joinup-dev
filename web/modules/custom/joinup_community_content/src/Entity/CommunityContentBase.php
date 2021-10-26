@@ -8,7 +8,6 @@ use Drupal\collection\Entity\NodeCollectionContentTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_core\Entity\OutdatedContentTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
-use Drupal\joinup_front_page\Entity\PinnableToFrontpageTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeTrait;
@@ -16,6 +15,7 @@ use Drupal\joinup_stats\Entity\VisitCountAwareInterface;
 use Drupal\joinup_stats\Entity\VisitCountAwareTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\node\Entity\Node;
+use Drupal\topic\Entity\TopicReferencingEntityTrait;
 
 /**
  * Base class for community content entities.
@@ -32,7 +32,7 @@ abstract class CommunityContentBase extends Node implements CommunityContentInte
   use NodeCollectionContentTrait;
   use OutdatedContentTrait;
   use PinnableGroupContentTrait;
-  use PinnableToFrontpageTrait;
+  use TopicReferencingEntityTrait;
   use VisitCountAwareTrait;
 
   /**

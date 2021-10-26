@@ -13,10 +13,10 @@ dependencies:
     - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
-    - field.field.node.news.field_topic
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_site_featured
     - field.field.node.news.field_state
+    - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - image.style.logo
     - node.type.news
@@ -165,3 +165,4 @@ hidden:
   links: true
   og_audience: true
   published_at: true
+  read_more: true

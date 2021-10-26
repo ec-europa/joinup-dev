@@ -1,0 +1,27 @@
+uuid: 289fa91b-3c82-4939-ab24-b0247fabadf5
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+  theme:
+    - ventuno
+_core:
+  default_config_hash: YbwsPoFoqCMnBXGAo4u6Z_SMksbwJx1qVtFKpfv4U34
+id: ventuno_main_menu
+theme: ventuno
+region: header
+weight: -25
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 1
+  expand_all_items: false
+visibility: {  }

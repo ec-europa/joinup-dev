@@ -1,0 +1,30 @@
+uuid: ee05cb3a-bc42-4cd3-8915-b1418dec79d5
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.event_date
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - ventuno
+id: ventuno_eventdate
+theme: ventuno
+region: sidebar
+weight: -18
+provider: null
+plugin: 'facet_block:event_date'
+settings:
+  id: 'facet_block:event_date'
+  label: 'Event date'
+  provider: facets
+  label_display: '0'
+  block_id: eventdate
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - view.content_overview.page_1
+    negate: false
+    context_mapping: {  }

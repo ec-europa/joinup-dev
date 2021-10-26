@@ -1,0 +1,6 @@
+name: Topic
+type: module
+description: Contains custom code related to the Topic vocabulary.
+package: Joinup
+core_version_requirement: ^8 || ^9
+php: 7.1

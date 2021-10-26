@@ -1,0 +1,57 @@
+// Latest News
+.block-views-blocklatest-news-block {
+  position: relative;
+  @extend .mb-5;
+  > h2 {
+    @include font-icon-before("\E804", 1.2rem, $warning);
+  }
+  .more-link {
+    position: absolute;
+    bottom: -2rem;
+    @include media-breakpoint-up(md) {
+      right: 0;
+      top: 12px;
+    }
+    @include font-icon-after("\E801", 1rem);
+  }
+  .view-latest-news  {
+    article {
+      display: flex;
+      flex-direction: row;
+      .dated-listing--date {
+        color: rgba($primary, .3);
+        text-align: center;
+        display: flex;
+        flex-flow: column;
+        @extend .pe-3;
+        line-height: 1;
+        text-transform: uppercase;
+        font-weight: 700;
+        .date--day {
+          font-size: $h3-font-size;
+        }
+        .date--month {
+          line-height: 1.4;
+          font-size: $h5-font-size; 
+        }
+      }
+      .dated-listing--content {
+        h2 {
+          font-size: $font-size-base;
+          @extend .fw-medium;
+          line-height: $line-height-base;
+          a {
+            color: $gray-900;
+          }
+        }
+      }
+    }
+  }
+  .field--name-field-topic {
+    a {
+      border-radius: $border-radius-pill;
+      padding-right: $spacer; // 16px
+      padding-left: $spacer; // 16px
+    }
+  }
+}

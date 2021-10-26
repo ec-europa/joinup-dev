@@ -20,8 +20,12 @@ default:
         - Drupal\joinup\Context\CustomPageContext
         - Drupal\joinup\Context\DrupalContext
         - Drupal\joinup\Context\EifContext
+        - Drupal\joinup\Context\EntityQueueContext
         - Drupal\joinup\Context\EuplContext
+        - Drupal\joinup\Context\HeaderContext
+        - Drupal\joinup\Context\HomepageContext
         - Drupal\joinup\Context\Isa2AnalyticsContext
+        - Drupal\joinup\Context\JoinupCollectionContext
         - Drupal\joinup\Context\JoinupCommunityContentContext
         - Drupal\joinup\Context\JoinupContext
         - Drupal\joinup\Context\JoinupCoreContext
@@ -30,7 +34,6 @@ default:
         - Drupal\joinup\Context\JoinupEuLoginContext
         - Drupal\joinup\Context\JoinupEventContext
         - Drupal\joinup\Context\JoinupFeaturedContext
-        - Drupal\joinup\Context\JoinupFrontPageContext
         - Drupal\joinup\Context\JoinupGroupContext
         - Drupal\joinup\Context\JoinupInviteContext
         - Drupal\joinup\Context\JoinupLegalContext
@@ -99,12 +102,19 @@ default:
         Comment: '.comments-section'
         Content listing field filter form: '.field--name-field-content-listing'
         Contact information inline form: '#edit-field-ar-contact-information-wrapper'
-        Content: '.section--content-middle'
+        Content: '.section--content-middle, main .layout-content'
         Cookie consent banner: '#cookie-consent-banner'
+        Discover topics block: '.block-views-blockdiscover-topics-block'
         Entity actions: '.block-joinup-local-tasks-block'
-        Footer: '.section--footer'
+        Explore block: '.block-joinup-front-page-explore-block'
+        Featured: '.region-featured'
+        Footer: '.section--footer, footer'
+        Hamburger menu: 'nav.joinup-navbar ul.navbar-nav ul.accordion-list'
         Header menu: '#block-joinup-theme-main-menu'
-        Header: '.section--featured'
+        Header: '.section--featured, .section-header'
+        Highlighted event: '.block-entityqueue--highlighted-event'
+        Highlighted solution: '.block-entityqueue--highlighted-solution'
+        In the spotlight: '.block-views-blockin-the-spotlight-block'
         Left sidebar: '.section--sidebar-left'
         Main solution vertical tab: '#edit-group-main'
         Management solution vertical tab: '#edit-group-management'
@@ -114,6 +124,7 @@ default:
         Modal content: '#drupal-modal'
         Modal title: '.ui-dialog-title'
         My unpublished content area: '.block-user-unpublished'
+        Navigation bar: 'nav.joinup-navbar'
         Navigation menu block: '#block-navigation'
         Navigation menu: 'div.navigation-menu ul'
         Page title: 'div.page__title-wrapper'
@@ -122,17 +133,17 @@ default:
         Primary menu: '.region-primary-menu'
         Related solutions: '.field--name-field-is-related-solutions'
         SevenHeader: '.region-header'
+        Statistics: '#block-statistics, #block-ventuno-statistics'
         Table of contents: '#block-table-of-contents'
         Table of contents outline: '#block-toc-outline'
         Unpublished content area: '.block-entity-unpublished'
-        Statistics: '#block-statistics'
       drupal:
         drupal_root: ${joinup.site_dir}
       selectors:
         message_selector: '.alert, .messages'
-        error_message_selector: '.alert.alert--error, .messages.message--error'
+        error_message_selector: '.alert.alert--error, .messages.messages--error'
         success_message_selector: '.alert.alert--status, .messages.messages--status'
-        warning_message_selector: '.alert.alert--warning, .messages.message--warning'
+        warning_message_selector: '.alert.alert--warning, .messages.messages--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
         autoload: false

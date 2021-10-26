@@ -1,0 +1,9 @@
+name: Entityqueue block
+type: module
+description: Provides a block type that displays the content of an entityqueue.
+package: Joinup
+core_version_requirement: ^8 || ^9
+php: 7.1
+dependencies:
+  - 'drupal:block'
+  - 'entityqueue:entityqueue'

@@ -1,0 +1,225 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the Ventuno theme.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Menu\MenuLinkTreeElement;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Url;
+use Drupal\collection\Entity\CollectionInterface;
+use Drupal\joinup_bundle_class\LogoInterface;
+use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\smart_trim\Truncate\TruncateHTML;
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Adds a theme suggestion for the menus rendered in the footer, so they can be
+ * styled in the same way.
+ */
+function ventuno_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
+  if (in_array($variables['menu_name'], ['footer', 'support'])) {
+    $suggestions[] = 'menu__region_footer';
+  }
+}
+
+/**
+ * Implements hook_preprocess_rdf_entity().
+ */
+function ventuno_preprocess_rdf_entity(&$variables) {
+  // Workaround for incorrect rendering of RDF entity label.
+  // @see https://www.drupal.org/project/rdf_entity/issues/3209500
+  $variables['label'] = $variables['rdf_entity']->label();
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function ventuno_preprocess_page(&$variables) {
+  // Retrieve the Joinup version and link to display in the footer.
+  // @todo Move this into a block.
+  /** @var \Drupal\joinup_core\JoinupVersionInterface $joinup_version */
+  $joinup_version = \Drupal::service('joinup_core.joinup_version');
+  $variables['version'] = $joinup_version->getVersion();
+  $variables['version_url'] = $joinup_version->getUrl();
+
+  // Export the user name to display in the header.
+  $variables['user_name'] = \Drupal::currentUser()->getDisplayName();
+
+  // Export the user account menu in the format expected by the header template.
+  /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree */
+  $menu_link_tree = \Drupal::service('menu.link_tree');
+  $tree = $menu_link_tree->load('account', new MenuTreeParameters());
+  $manipulators = [
+    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+  ];
+  $tree = $menu_link_tree->transform($tree, $manipulators);
+  $tree = array_filter($tree, function (MenuLinkTreeElement $element): bool {
+    // Hide inaccessible links, as well as the 'EU Login info' link. This link
+    // is only intended for anonymous users.
+    // @see joinup_eulogin_preprocess_menu()
+    return $element->link->isEnabled() && $element->link->getPluginId() !== 'joinup_eulogin.eu_login_info';
+  });
+  $variables['profile_links'] = array_map(function (MenuLinkTreeElement $element): array {
+    return [
+      'link' => $element->link->getUrlObject(),
+      'label' => $element->link->getTitle(),
+    ];
+  }, $tree);
+
+  // Populate the links shown to anonymous users.
+  $anonymous_links = [];
+
+  // Add a link to the homepage, only to be shown in the hamburger menu.
+  $anonymous_links[] = [
+    'label' => t('Home'),
+    'link' => Url::fromRoute('<front>'),
+    'hide_on_desktop' => TRUE,
+  ];
+
+  // Generate a link to EU Login.
+  $cas_login_link = Url::fromRoute('cas.login');
+  $anonymous_links[] = [
+    'label' => t('Sign in'),
+    'link' => $cas_login_link,
+  ];
+  $variables['anonymous_links'] = $anonymous_links;
+
+  // Generate a link button that opens the "Get started" popover.
+  $popover = [
+    'cta' => [
+      // Even though the link claims to lead to an account creation form, we are
+      // linking to the EU Login portal. Account creation is not handled inside
+      // the Joinup domain.
+      'link' => $cas_login_link,
+      'attributes' => 'tabindex="0"',
+      'text' => t('Create an account'),
+    ],
+    'description' => t('As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, and access all other features available on the platform.'),
+  ];
+  $anonymous_links[] = [
+    'label' => t('Get started'),
+    'popover' => $popover,
+  ];
+
+  // Generate a link to the About page of the Joinup collection, to show as the
+  // "About us" link in the hamburger menu for anonymous users.
+  try {
+    $joinup_collection = Rdf::load(JoinupCollectionHelper::getCollectionId());
+    if (!$joinup_collection instanceof CollectionInterface) {
+      throw new Exception();
+    }
+    $url = $joinup_collection->toUrl('about-page');
+    $anonymous_links[] = [
+      'label' => t('About us'),
+      'link' => $url,
+      'hide_on_desktop' => TRUE,
+    ];
+  }
+  catch (Exception $e) {
+    // The Joinup collection could not be loaded or the link to the About page
+    // could not be generated. This should not crash the page since the
+    // collection is considered to be optional. It is for example possible for a
+    // project to reuse the Joinup open source code without hosting a "Joinup"
+    // collection.
+    // However in scope of the Ventuno theme the About Us link is considered
+    // to be an important element, so we log a warning to alert the webmaster
+    // that corrective action is required.
+    \Drupal::logger('ventuno')->warning('"About us" link could not be rendered because the Joinup collection is not defined or doesn\'t have an About page.');
+  }
+
+  $variables['anonymous_links'] = $anonymous_links;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Exposes the About section which is defined as a variant of the homepage in
+ * Page Manager as a variable. This section is using a Layout but needs to be
+ * rendered outside the main content region which is controlled by Page Manager.
+ */
+function ventuno_preprocess_page__home(&$variables) {
+  /** @var \Drupal\page_manager\Entity\PageVariant $about_section_variant */
+  $about_section_variant = \Drupal::entityTypeManager()->getStorage('page_variant')->load('homepage-layout_builder-1');
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('page_variant');
+  $variables['about'] = $view_builder->view($about_section_variant);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ventuno_preprocess_node__numbered_listing(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+
+  // Trim the label text.
+  $variables['label'] = ventuno_smart_trim($node->getTitle(), 65);
+
+  // Expose the logo if it exists.
+  if ($node instanceof LogoInterface) {
+    $field_name = $node->getLogoFieldName();
+    if (!empty($variables['content'][$field_name])) {
+      $variables['logo'] = $variables['content'][$field_name];
+    }
+  }
+
+  // Provide date using the date format that is standardized site wide.
+  /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+  $date_formatter = \Drupal::service('date.formatter');
+  $variables['date'] = $date_formatter->format($node->getCreatedTime(), 'date_only');
+
+  // Provide the content type.
+  $variables['type'] = $node->type->entity->label();
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Trim the labels of the items in the Explore block on the homepage down to a
+ * manageable size.
+ */
+function ventuno_preprocess_node__explore_item(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+
+  // Trim the label text.
+  $variables['label'] = ventuno_smart_trim($node->getTitle(), 74);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Trim the labels of the items in the Explore block on the homepage down to a
+ * manageable size.
+ */
+function ventuno_preprocess_rdf_entity__explore_item(&$variables) {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  $entity = $variables['rdf_entity'];
+
+  // Trim the label text.
+  $variables['label'] = ventuno_smart_trim($entity->label(), 74);
+}
+
+/**
+ * Performs smart trimming on the provided string.
+ *
+ * @param string $string
+ *   The string to trim.
+ * @param int $length
+ *   The maximum length to trim the string to.
+ * @param bool $ellipsis
+ *   Whether to append an ellipsis. Defaults to TRUE.
+ *
+ * @return string
+ *   The trimmed string.
+ */
+function ventuno_smart_trim(string $string, int $length, bool $ellipsis = TRUE): string {
+  $truncate = new TruncateHTML();
+  return $truncate->truncateChars($string, $length, $ellipsis ? '…' : '');
+}

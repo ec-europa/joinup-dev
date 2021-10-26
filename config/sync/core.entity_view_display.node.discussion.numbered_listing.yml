@@ -1,0 +1,87 @@
+uuid: 5da45585-f96e-4785-8a52-3c9e8a7b996d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.numbered_listing
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
+    - field.field.node.discussion.field_replies
+    - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
+    - field.field.node.discussion.field_state
+    - field.field.node.discussion.field_topic
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - field_delimiter
+    - field_formatter_range
+    - layout_builder
+    - smart_trim
+    - template_suggestion
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: MH5IsqzkjyHQwMAIhBMkvdrrpJeonD3UC7kQpOvXJX0
+id: node.discussion.numbered_listing
+targetEntityType: node
+bundle: discussion
+mode: numbered_listing
+content:
+  body:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: trim
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    type: smart_trim
+    region: content
+  field_topic:
+    weight: 0
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      field_formatter_range:
+        limit: 2
+        offset: 0
+        order: 0
+      template_suggestion:
+        template_suggestion: comma_separated
+    type: entity_reference_label
+    region: content
+hidden:
+  field_attachment: true
+  field_keywords: true
+  field_replies: true
+  field_shared_in: true
+  field_site_featured: true
+  field_state: true
+  flag_subscribe_discussions: true
+  invite_link: true
+  langcode: true
+  links: true
+  og_audience: true
+  published_at: true
+  read_more: true
+  report: true
+  share_link: true

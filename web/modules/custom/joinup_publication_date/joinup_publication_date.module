@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Joinup Publication Date module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
+
+/**
+ * Implements hook_preprocess_HOOK() for node templates.
+ *
+ * Exposes the publication date in various formats in node templates.
+ */
+function joinup_publication_date_preprocess_node(&$variables) {
+  $node = $variables['node'] ?? NULL;
+  if ($node instanceof EntityPublicationTimeInterface) {
+    $publication_time = $node->getPublicationTime();
+    if ($publication_time) {
+      foreach (['Y', 'M', 'j'] as $format) {
+        $variables['publication_date'][$format] = date($format, $publication_time);
+      }
+    }
+  }
+}
