@@ -17,18 +17,13 @@
     @include font-icon-after("\E801", 1rem);
   }
   article {
-    .field--name-field-is-logo {
+    .logo {
       @extend .mb-4;
     }
-    .field--name-field-is-description {
+    .description {
       color: $gray-700;
     }
-    .field--name-field-is-solution-type {
-      color: $gray-500;
-      @extend .mt-2;
-      @extend .fs-xs;
-    }
-    .field--name-field-topic {
+    .topics {
       a {
         border-radius: $border-radius-pill;
         padding-right: $spacer; // 16px
