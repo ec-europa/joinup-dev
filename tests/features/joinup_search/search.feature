@@ -315,15 +315,14 @@ Feature: Global search
     Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
-    # @todo Enable when this ticket is implemented ISAICP-6575.
-    # When I enter "Jenessa" in the search bar and press enter
-    # Then the page should show the tiles "Jenessa Carlyle"
-    # When I enter "freeman" in the search bar and press enter
-    # Then the page should show the tiles "Ulysses Freeman"
-    # When I enter "clyffco" in the search bar and press enter
-    # Then the page should show the tiles "Jenessa Carlyle"
-    # When I enter "Omero+snc" in the search bar and press enter
-    # Then the page should show the tiles "Ulysses Freeman"
+     When I enter "Jenessa" in the search bar and press enter
+     Then the page should show the tiles "Jenessa Carlyle"
+     When I enter "freeman" in the search bar and press enter
+     Then the page should show the tiles "Ulysses Freeman"
+     When I enter "clyffco" in the search bar and press enter
+     Then the page should show the tiles "Jenessa Carlyle"
+     When I enter "Omero+snc" in the search bar and press enter
+     Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Advanced search
     # An advanced search link is shown in the header, except on the search page.
@@ -372,8 +371,7 @@ Feature: Global search
       | Chickens are small birds          |
       | Bird spotting                     |
       | Best place to find an exotic bird |
-      # @todo Enable when this ticket is implemented ISAICP-6575.
-      # | Bird Birdman                      |
+      | Bird Birdman                      |
 
   @clearStaticCache
   Scenario: Solutions and/or releases are found by their distribution keyword.
@@ -595,20 +593,19 @@ Feature: Global search
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=relevance"
 
-    # @todo Enable when this ticket is implemented ISAICP-6575.
-    # When I select "Creation Date" from "Sort by"
-    # And I should see the following tiles in the correct order:
-    #   | Absolutely nonesense               |
-    #   | Relativity news: Relativity theory |
-    #   | Relativity is the word             |
-    # And I should be on "/search?keys=Relativity&sort_by=creation-date"
-    #
-    # When I select "Last Updated Date" from "Sort by"
-    # And I should see the following tiles in the correct order:
-    #   | Relativity is the word             |
-    #   | Relativity news: Relativity theory |
-    #   | Absolutely nonesense               |
-    # And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
+     When I select "Creation Date" from "Sort by"
+     And I should see the following tiles in the correct order:
+       | Absolutely nonesense               |
+       | Relativity news: Relativity theory |
+       | Relativity is the word             |
+     And I should be on "/search?keys=Relativity&sort_by=creation-date"
+
+     When I select "Last Updated Date" from "Sort by"
+     And I should see the following tiles in the correct order:
+       | Relativity is the word             |
+       | Relativity news: Relativity theory |
+       | Absolutely nonesense               |
+     And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
 
   @javascript
   Scenario: Anonymous user can find facets summary
