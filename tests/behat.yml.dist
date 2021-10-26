@@ -132,6 +132,7 @@ default:
         Plus button menu: 'div.add-content-menu'
         Primary menu: '.region-primary-menu'
         Related solutions: '.field--name-field-is-related-solutions'
+        Search bar: 'div.search-bar'
         SevenHeader: '.region-header'
         Statistics: '#block-statistics, #block-ventuno-statistics'
         Table of contents: '#block-table-of-contents'

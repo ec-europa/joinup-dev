@@ -1,0 +1,32 @@
+uuid: 29b2c3a6-e0e5-4b77-9d02-1d7b52ce0511
+langcode: en
+status: true
+dependencies:
+  module:
+    - facets_form
+    - joinup_core
+  theme:
+    - ventuno
+id: facetform_viewsearch
+theme: ventuno
+region: sidebar
+weight: 0
+provider: null
+plugin: 'facets_form:search_api:views_page__search__page_1'
+settings:
+  id: 'facets_form:search_api:views_page__search__page_1'
+  label: 'Facet form: View Search, display Page'
+  provider: facets_form
+  label_display: '0'
+  button:
+    label:
+      submit: Search
+      reset: 'Clear filters'
+  facets: {  }
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - view.search.page_1
+    negate: false
+    context_mapping: {  }

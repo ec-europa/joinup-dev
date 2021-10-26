@@ -272,4 +272,7 @@ settings:
   responsive_image_style:
     handler: 'default:responsive_image_style'
     handler_settings: {  }
+  facets_summary:
+    handler: 'default:facets_summary'
+    handler_settings: {  }
 field_type: dynamic_entity_reference

@@ -33,6 +33,7 @@
         "drupal/entityqueue": "^1.2",
         "drupal/error_page": "^1.0",
         "drupal/facets": "1.6.0",
+        "drupal/facets_form": "dev-1.x",
         "drupal/field_delimiter": "^1.1",
         "drupal/field_formatter_range": "^1.1",
         "drupal/field_group": "^3.1",
@@ -91,6 +92,7 @@
         "drupal/video_embed_field": "^2",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_autosubmit": "^1.2",
+        "drupal/views_block_area": "^1.0@beta",
         "drupal/views_bulk_operations": "^4",
         "drupal/views_data_export": "^1.0",
         "drupal/views_multiple_permissions": "^1.0",
@@ -356,6 +358,9 @@
             },
             "drupal/views_autosubmit": {
                 "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
+            },
+            "drupal/views_block_area": {
+                "Views block area missing schema @see https://www.drupal.org/project/views_block_area/issues/3157188": "https://www.drupal.org/files/issues/2020-07-06/views_block_area-missing_schema-3157188-2.patch"
             },
             "openeuropa/oe_bootstrap_theme": {
                 "Preserve link attributes in navigation menus @see https://github.com/openeuropa/oe_bootstrap_theme/pull/38": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_bootstrap_theme/pull/38.diff"

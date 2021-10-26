@@ -1,0 +1,43 @@
+uuid: 0a4c553f-2c75-4e3c-9d41-68bc0043edd9
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.search
+  module:
+    - search_api
+id: search_facets_summary
+name: 'Search facets summary'
+facets:
+  spatial_coverage:
+    checked: true
+    label: 'Geographic coverage'
+    separator: ', '
+    weight: 0
+    show_count: false
+  topic:
+    checked: true
+    label: Topic
+    separator: ', '
+    weight: 0
+    show_count: false
+  type:
+    checked: true
+    label: Type
+    separator: ', '
+    weight: 0
+    show_count: false
+  group:
+    checked: true
+    label: Collection/Solution
+    separator: ', '
+    weight: 0
+    show_count: false
+facet_source_id: 'search_api:views_page__search__page_1'
+processor_configs:
+  hide_when_not_rendered:
+    processor_id: hide_when_not_rendered
+    weights:
+      build: '45'
+    settings: {  }
