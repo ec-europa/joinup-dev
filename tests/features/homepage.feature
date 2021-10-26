@@ -48,7 +48,7 @@ Feature: Homepage
     #   page instead.
     When I click "Finance in EU"
     Then I should be on the advanced search page
-    And the "Finance in EU" option from "topic" Slim Select is selected
+    And the option with text "- Finance in EU" from select "Topics" is selected
 
     # There is a "More news" link that for the moment leads to the search page
     # pre-filtered on news articles. In the future this will become a dedicated
@@ -203,7 +203,7 @@ Feature: Homepage
     And I should see the link "E-justice" in the "Discover topics block"
     When I click "E-justice"
     Then I should be on the advanced search page
-    And the option with text "E-justice" from select facet "topic" is selected
+    And the "E-justice" option from "topic" Slim Select is selected
 
     # See more topics modal.
     When I am on the homepage
@@ -231,7 +231,7 @@ Feature: Homepage
       | Social and Political |
     When I click "E-health Dpt." in the "Modal content"
     Then I should be on the advanced search page
-    And the option with text "E-health Dpt." from select facet "topic" is selected
+    And the "E-health Dpt." option from "topic" Slim Select is selected
     And the page should show the tiles "Internet medicine"
 
     Examples:
