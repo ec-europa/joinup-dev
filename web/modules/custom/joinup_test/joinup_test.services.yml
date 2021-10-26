@@ -1,0 +1,6 @@
+services:
+  joinup_test.event_subscriber:
+    class: Drupal\joinup_test\EventSubscriber\JoinupTestSubscriber
+    arguments: ['@path.matcher', '@state', '@messenger']
+    tags:
+      - { name: event_subscriber }

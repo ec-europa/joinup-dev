@@ -242,11 +242,9 @@
     }
   }
 
-  // Temporary fix for the demo. This styles should come from the theme and already be available
+  // Temporary fix. This won't be required as from BCL v0.9.0 update
   .btn-light,
   .btn-light:hover {
-    background-color: $white;
-    border-color: $white;
     color: $primary;
   }
 }
