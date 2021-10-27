@@ -1,24 +1,26 @@
-uuid: 1ef39009-13ab-424a-a4cf-50cca466b674
+uuid: 07af8993-33e3-4053-bbf7-324d21a6f1a2
 langcode: en
 status: true
 dependencies:
+  config:
+    - views.view.search
   module:
-    - joinup_search
     - system
+    - views
   theme:
     - ventuno
-id: globalsearch
+id: exposed_search
 theme: ventuno
 region: featured
-weight: -26
+weight: -25
 provider: null
-plugin: joinup_search_global_search
+plugin: 'views_exposed_filter_block:search-page_1'
 settings:
-  id: joinup_search_global_search
-  label: 'Global search'
-  provider: joinup_search
+  id: 'views_exposed_filter_block:search-page_1'
+  label: ''
+  provider: views
   label_display: '0'
-  template_suggestion: homepage
+  views_label: ''
 visibility:
   request_path:
     id: request_path
