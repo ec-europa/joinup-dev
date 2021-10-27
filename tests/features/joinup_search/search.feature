@@ -648,3 +648,33 @@ Feature: Global search
     And I should see the following facet summary "Collection, News"
     Then I should remove the following facet summary "News"
     And the page should show only the tiles "Radio cooking collection"
+
+  @terms @javascript
+  Scenario: Show first three search results as featured
+    Given collection:
+      | title | Mice in space |
+      | state | validated     |
+    And document content:
+      | title        | collection    | topic                                  | state     | logo     | body                                                                                                                                                                                            |
+      | Microgravity | Mice in space | HR, Statistics and Analysis, E-justice | validated | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+    And event content:
+      | title           | collection    | topic                    | state     | logo        | body                                                                                                                                                                                  |
+      | Stay at the ISS | Mice in space | EU and European Policies | validated | charles.jpg | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity. |
+    And news content:
+      | title                 | body                                       | collection     | topic                   | spatial coverage | state     | logo        |
+      | Muscle atrophy        | Researchers from the University of Tsukuba | Mice in space  | Finance in EU           | Luxembourg       | validated | blaise.jpg  |
+      | El Cabo da Roca       | The best in town                           | Mice in space  | Statistics and Analysis | Luxembourg       | validated | charles.jpg |
+      | Funny news 1          | Dummy body                                 | Mice in space  | HR                      | Luxembourg       | validated | ada.png     |
+      | Funny news 2          | Dummy body                                 | Mice in space  | E-inclusion             | Luxembourg       | validated | alan.jpg    |
+      | Funny news 3          | Dummy body                                 | Mice in space  | E-inclusion             | Luxembourg       | validated | charles.jpg |
+      | Funny news 4          | Dummy body                                 | Mice in space  | HR                      | Luxembourg       | validated | ada.png     |
+      | Funny news 5          | Dummy body                                 | Mice in space  | HR                      | Luxembourg       | validated | ada.png     |
+      | Dummy news 1          | Dummy body                                 | Mice in space  | Statistics and Analysis | Luxembourg       | validated | charles.jpg |
+      | Dummy news 2          | Dummy body                                 | Mice in space  | E-inclusion             | Luxembourg       | validated | alan.jpg    |
+      | Dummy news 3          | Dummy body                                 | Mice in space  | Statistics and Analysis | Luxembourg       | validated | ada.png     |
+      | Dummy news 4          | Dummy body                                 | Mice in space  | E-inclusion             | Luxembourg       | validated | charles.jpg |
+
+    When I visit the search page
+    Then I should see the 3 tiles with image
+    Then I click "Go to next page"
+    Then I should see the 0 tiles with image
