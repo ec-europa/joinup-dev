@@ -23,6 +23,7 @@
         "drupal/config_readonly": "^1.0",
         "drupal/core": "~8.9",
         "drupal/core-composer-scaffold": "~8.9",
+        "drupal/default_content": "^2.0@alpha",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "~2.0",
         "drupal/dynamic_entity_reference": "~2.0",

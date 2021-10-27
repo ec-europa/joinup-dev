@@ -1,21 +1,21 @@
-uuid: d6b3e8ba-af9b-417a-a18e-861ab66e1292
+uuid: eefc933f-d7e0-4283-940b-0bf08b427977
 langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.support
+    - system.menu.footer-help-and-support
   module:
     - system
   theme:
     - ventuno
-id: help_and_support_footer
+id: helpandsupport
 theme: ventuno
 region: footer
-weight: 0
+weight: -26
 provider: null
-plugin: 'system_menu_block:support'
+plugin: 'system_menu_block:footer-help-and-support'
 settings:
-  id: 'system_menu_block:support'
+  id: 'system_menu_block:footer-help-and-support'
   label: 'Help and support'
   provider: system
   label_display: visible

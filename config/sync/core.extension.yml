@@ -28,6 +28,7 @@ module:
   dashboard: 0
   datetime: 0
   datetime_range: 0
+  default_content: 0
   diff: 0
   digital_size_formatter: 0
   dpsi: 0
@@ -61,6 +62,7 @@ module:
   geocoder_field: 0
   geocoder_geofield: 0
   geofield: 0
+  hal: 0
   help: 0
   honeypot: 0
   iframe: 0
@@ -72,6 +74,7 @@ module:
   joinup_collection: 0
   joinup_community_content: 0
   joinup_core: 0
+  joinup_default_content: 0
   joinup_discussion: 0
   joinup_document: 0
   joinup_eulogin: 0

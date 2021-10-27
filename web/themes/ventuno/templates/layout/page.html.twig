@@ -42,8 +42,37 @@
 #}
 <div class="layout-container">
   <div class="section-header">
+    {# Temporary EC header, until this pattern is included in oe_bootstrap. #}
+    <div class="ec__header bcl-header">
+      <nav class="w-100 shadow-sm navbar">
+        <div class="container">
+          <a class="navbar-brand" href="https://ec.europa.eu/info/index_en">
+            <img src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.0.2/ec/images/logo/logo-ec--en.svg" alt="European Commission logo"/>
+          </a>
+        </div>
+      </nav>
+    </div>
     <header role="banner" class="region-header">
-      {{ page.header }}
+      {% include directory ~ '/templates/navigation/navbar.html.twig' with {
+        breakpoint: logged_in ? "" : "sm",
+        brand: {
+          src: base_path ~ directory ~ "/src/images/logo.svg",
+          alt: "Joinup logo"|t,
+          link: front_page,
+        },
+        collapse_id: "main-navbar",
+        list_id: "main-navbar-list",
+        items: [
+          {
+            id: logged_in ? "account" : "navbar-toggler",
+            icon: {
+              name: logged_in ? "person-circle" : "justify",
+            },
+            label: logged_in ? user_name : "",
+            links: logged_in ? profile_links : anonymous_links,
+          },
+        ],
+      } %}
     </header>
 
     {% if page.header_bottom %}
@@ -89,38 +118,12 @@
             <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
           </div>
 
-          {{ page.footer }}
-
-          <!--European Commission menu-->
-          <div class="col-md-3 col-lg-3 ec-menu">
-            <h3>{{ 'European Commission'|t }}</h3>
-            <ul class="list-unstyled">
-              <li><a href="https://ec.europa.eu/info/about-commissions-new-web-presence_en">{{ 'About the Commission\'s new web presence'|t }}</a></li>
-              <li><a href="https://ec.europa.eu/info/resources-partners_en">{{ 'Resources for partners'|t }}</a></li>
-              <li><a href="https://ec.europa.eu/info/cookies_en">{{ 'Cookies'|t }}</a></li>
-              <li><a href="{{ base_path }}joinup/legal-notice">{{ 'Legal notice'|t }}</a></li>
-              <li><a href="https://ec.europa.eu/info/contact_en">{{ 'Contact'|t }}</a></li>
-              <li><a href="https://ec.europa.eu/info/europa-analytics_en">{{ 'Europa Analytics' }}</a></li>
-            </ul>
+          {{ page.footer|without('followus', 'socialmedia') }}
+          <div class="col-md-3 col-lg-2 column-follow-us">
+            {{ page.footer.followus }}
+            {{ page.footer.socialmedia }}
           </div>
 
-          <!--Social menu-->
-          <div class="col-md-3 col-lg-2 social-media">
-            <h3>{{ 'Follow us'|t }}</h3>
-            <ul class="list-unstyled mb-2">
-              <li>
-                <a href="https://ec.europa.eu/newsroom/joinup/newsletter-specific-archive-issue.cfm?newsletter_service_id=877&lang=default">{{ 'Joinup Newsletter'|t }}</a>
-              </li>
-            </ul>
-            <ul class="list-inline social-networks">
-              <li class="list-inline-item">
-                <a href="https://twitter.com/joinup_eu" class="twitter"><span class="visually-hidden">{{ 'Twitter'|t }}</span></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="https://www.linkedin.com/groups/2600644/" class="linkedin"><span class="visually-hidden">{{ 'LinkedIn'|t }}</span></a>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </footer>
