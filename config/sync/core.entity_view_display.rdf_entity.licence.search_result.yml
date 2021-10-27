@@ -12,9 +12,9 @@ dependencies:
     - rdf_entity.rdfentity.licence
   module:
     - field_group
+    - joinup_html_stripper
     - layout_builder
     - template_suggestion
-    - text
     - user
 third_party_settings:
   field_group:
@@ -23,8 +23,8 @@ third_party_settings:
         - field_licence_legal_type
         - field_licence_spdx_licence
         - spdx_licence_id
-        - spdx_see_also
         - spdx_licence_text
+        - spdx_see_also
       parent_name: ''
       weight: 3
       format_type: html_element
@@ -50,9 +50,12 @@ content:
   field_licence_description:
     weight: 1
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
+    settings:
+      trim_length: 200
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    type: joinup_html_stripper_stripped
     region: content
   label:
     label: hidden
