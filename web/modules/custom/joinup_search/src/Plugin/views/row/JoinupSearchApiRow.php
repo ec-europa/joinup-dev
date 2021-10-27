@@ -38,9 +38,8 @@ class JoinupSearchApiRow extends SearchApiRow {
           return '';
         }
       }
-
-      return $parent;
     }
+    return $parent;
   }
 
 }
