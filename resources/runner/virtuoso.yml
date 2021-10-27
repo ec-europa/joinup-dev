@@ -12,10 +12,10 @@ isql:
   bin: /usr/bin/isql-vt
 
 sparql:
-  host: ${env.SPARQL_HOST}
-  port: ${env.SPARQL_PORT}
-  user: ${env.SPARQL_USER}
-  password: ${env.SPARQL_PASSWORD}
+  host: ${env.DRUPAL_SPARQL_HOSTNAME}
+  port: ${env.DRUPAL_SPARQL_PORT}
+  user: ${env.DRUPAL_SPARQL_USER}
+  password: ${env.DRUPAL_SPARQL_PASSWORD}
 
 commands:
 
