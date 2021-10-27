@@ -305,10 +305,10 @@ class JoinupSearchContext extends RawDrupalContext {
    *
    * @When I select :option option(s) from the :label Slim Select
    */
-  public function iSelectOptionsFromSlimSelect(string $option, string $label): void {
-    $slim_select = $this->findSlimSelect($label);
+  public function selectOptionsFromSlimSelect(string $option, string $label): void {
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
+      $slim_select = $this->findSlimSelect($label);
       // Open Slim Select dropdown.
       $slim_select->click();
 
@@ -334,9 +334,9 @@ class JoinupSearchContext extends RawDrupalContext {
    * @When I unselect :option option(s) from the :label Slim Select
    */
   public function removeOptionsFromSlimSelect(string $option, string $label): void {
-    $slim_select = $this->findSlimSelect($label);
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
+      $slim_select = $this->findSlimSelect($label);
       // Open Slim Select dropdown.
       $slim_select->click();
 
@@ -639,15 +639,20 @@ class JoinupSearchContext extends RawDrupalContext {
 
     $session = $this->getSession();
     $xpath = "//*[@data-drupal-selector='{$mappings[$label]}']";
-    $slim_select = $session->getPage()->find('xpath', $xpath);
+    $select = $session->getPage()->find('xpath', $xpath);
+    if (!$select) {
+      throw new ElementNotFoundException($session->getDriver(), "The Select '$label' was not found in the page.");
+    }
+
+    $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "' . $select->getAttribute('data-ssid') . '")]';
+    $slim_select = $session->getPage()->waitFor(5, function () use ($session, $xpath) {
+      return $session->getPage()->find('xpath', $xpath);
+    });
     if (!$slim_select) {
       throw new ElementNotFoundException($session->getDriver(), "The Slim Select '$label' was not found in the page.");
     }
 
-    $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "' . $slim_select->getAttribute('data-ssid') . '")]';
-    return $session->getPage()->waitFor(5, function () use ($session, $xpath) {
-      return $session->getPage()->find('xpath', $xpath);
-    });
+    return $slim_select;
   }
 
   /**
