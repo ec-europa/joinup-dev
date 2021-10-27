@@ -306,12 +306,13 @@ class JoinupSearchContext extends RawDrupalContext {
    * @When I select :option option(s) from the :label Slim Select
    */
   public function selectOptionsFromSlimSelect(string $option, string $label): void {
+    $select_ssid = $this->findHiddenSelect($label);
+
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
-      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($label) {
-        return $this->findSlimSelect($label);
+      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+        return $this->findSlimSelect($select_ssid, $label);
       });
-
       // Open Slim Select dropdown.
       $slim_select->click();
 
@@ -337,10 +338,12 @@ class JoinupSearchContext extends RawDrupalContext {
    * @When I unselect :option option(s) from the :label Slim Select
    */
   public function removeOptionsFromSlimSelect(string $option, string $label): void {
+    $select_ssid = $this->findHiddenSelect($label);
+
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
-      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($label) {
-        return $this->findSlimSelect($label);
+      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+        return $this->findSlimSelect($select_ssid, $label);
       });
       // Open Slim Select dropdown.
       $slim_select->click();
@@ -461,7 +464,8 @@ class JoinupSearchContext extends RawDrupalContext {
    * @Then the :option options from :label Slim Select are selected
    */
   public function optionWithTextFromSlimSelectIsSelected(string $option, string $label): void {
-    $slim_select = $this->findSlimSelect($label);
+    $select_ssid = $this->findHiddenSelect($label);
+    $slim_select = $this->findSlimSelect($select_ssid, $label);
 
     $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "ss-option-selected")]';
     $elements = $slim_select->findAll('xpath', $xpath);
@@ -545,7 +549,8 @@ class JoinupSearchContext extends RawDrupalContext {
    * @Then the Slim Select :label should contain the following options:
    */
   public function assertSlimSelectOptionsAsList(string $label, TableNode $table) {
-    $slim_select = $this->findSlimSelect($label);
+    $select_ssid = $this->findHiddenSelect($label);
+    $slim_select = $this->findSlimSelect($select_ssid, $label);
 
     $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "ss-option")]';
     $results = $slim_select->findAll('xpath', $xpath);
@@ -620,17 +625,17 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
-   * Find Slim Select element in page.
+   * Find hidden select element in page.
    *
    * @param string $label
-   *   The label of Slim Select.
+   *   The label of hidden select.
    *
-   * @return \Behat\Mink\Element\NodeElement
-   *   Slim Select element.
+   * @return string
+   *   Hidden select ssid.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
-  protected function findSlimSelect(string $label): NodeElement {
+  protected function findHiddenSelect(string $label): string {
     \assert(method_exists($this, 'browserSupportsJavaScript'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');
     \assert($this->browserSupportsJavaScript(), 'A fallback method to select a material design radio button has not yet been implemented for non-JS browsers.');
 
@@ -649,10 +654,27 @@ class JoinupSearchContext extends RawDrupalContext {
       throw new ElementNotFoundException($session->getDriver(), "The Select '$label' was not found in the page.");
     }
 
-    $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "' . $select->getAttribute('data-ssid') . '")]';
-    $slim_select = $session->getPage()->waitFor(5, function () use ($session, $xpath) {
-      return $session->getPage()->find('xpath', $xpath);
-    });
+    return $select->getAttribute('data-ssid');
+  }
+
+  /**
+   * Find Slim Select element in page.
+   *
+   * @param string $ssid
+   *   The ssid of hidden select.
+   * @param string $label
+   *   The label of Slim Select.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   Slim Select element.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  protected function findSlimSelect(string $ssid, string $label): NodeElement {
+    $session = $this->getSession();
+    $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "' . $ssid . '")]';
+    $slim_select = $session->getPage()->find('xpath', $xpath);
+
     if (!$slim_select) {
       throw new ElementNotFoundException($session->getDriver(), "The Slim Select '$label' was not found in the page.");
     }
