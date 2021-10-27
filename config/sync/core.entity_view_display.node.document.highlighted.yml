@@ -20,24 +20,24 @@ dependencies:
     - field.field.node.document.field_type
     - field.field.node.document.og_audience
     - node.type.document
-    - responsive_image.styles.highlighted_solution
+    - responsive_image.styles.highlighted_content
   module:
     - field_delimiter
     - field_formatter_range
     - field_group
+    - joinup_html_stripper
     - layout_builder
     - responsive_image
     - template_suggestion
-    - text
     - user
 third_party_settings:
   field_group:
     group_categorisation:
       children:
-        - field_short_title
-        - field_type
         - field_document_publication_date
         - field_licence
+        - field_short_title
+        - field_type
       parent_name: ''
       weight: 5
       format_type: html_element
@@ -81,7 +81,7 @@ mode: highlighted
 content:
   body:
     label: hidden
-    type: text_trimmed
+    type: joinup_html_stripper_stripped
     weight: 2
     settings:
       trim_length: 200
@@ -95,7 +95,7 @@ content:
     region: content
     label: hidden
     settings:
-      responsive_image_style: highlighted_solution
+      responsive_image_style: highlighted_content
       image_link: ''
     third_party_settings:
       template_suggestion:

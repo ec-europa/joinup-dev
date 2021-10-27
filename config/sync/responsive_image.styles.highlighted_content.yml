@@ -20,8 +20,8 @@ dependencies:
     - image.style.xxl_col_5_2x
   theme:
     - ventuno
-id: highlighted_solution
-label: 'Highlighted solution'
+id: highlighted_content
+label: 'Highlighted content'
 image_style_mappings:
   -
     breakpoint_id: ventuno.xl

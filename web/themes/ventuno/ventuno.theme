@@ -15,6 +15,7 @@ use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\topic\Entity\TopicReferencingEntityInterface;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -147,26 +148,27 @@ function ventuno_preprocess_block(&$variables) {
       /** @var \Drupal\node\NodeInterface $node */
       $node = $variables['elements']['content']['entities'][0]['#node'];
 
-      $topics = $node->get('field_topic')->getValue();
-
-      $options = [
-        'query' =>
-        [
-          'f' =>
+      $topics = $node instanceof TopicReferencingEntityInterface ? $node->getTopics() : [];
+      if ($topics) {
+        $options = [
+          'query' =>
           [
-            'type:' . $node->bundle(),
-            'topic:' . reset($topics)["target_id"],
+            'f' =>
+            [
+              'type:' . $node->bundle(),
+              'topic:' . reset($topics)->tid->value,
+            ],
           ],
-        ],
-      ];
-      $variables['related_content'] = [
-        '#type' => 'link',
-        '#title' => t('Related content'),
-        '#url' => Url::fromRoute('view.search.page_1', [], $options),
-        '#attributes' => [
-          'class' => ['more-link'],
-        ],
-      ];
+        ];
+        $variables['related_content'] = [
+          '#type' => 'link',
+          '#title' => t('Related content'),
+          '#url' => Url::fromRoute('view.search.page_1', [], $options),
+          '#attributes' => [
+            'class' => ['more-link'],
+          ],
+        ];
+      }
     }
   }
 }

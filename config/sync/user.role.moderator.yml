@@ -234,7 +234,6 @@ permissions:
   - 'update discover_topics entityqueue'
   - 'update highlighted_content entityqueue'
   - 'update highlighted_event entityqueue'
-  - 'update highlighted_solution entityqueue'
   - 'update paragraph content iframe'
   - 'update paragraph content json_map'
   - 'update site alerts'

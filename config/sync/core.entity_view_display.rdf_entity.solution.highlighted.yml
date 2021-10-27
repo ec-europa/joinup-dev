@@ -46,7 +46,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_status
     - field.field.rdf_entity.solution.field_topic
     - rdf_entity.rdfentity.solution
-    - responsive_image.styles.highlighted_solution
+    - responsive_image.styles.highlighted_content
   module:
     - field_delimiter
     - field_formatter_range
@@ -109,7 +109,7 @@ content:
     region: content
     label: hidden
     settings:
-      responsive_image_style: highlighted_solution
+      responsive_image_style: highlighted_content
       image_link: content
     third_party_settings:
       template_suggestion:
