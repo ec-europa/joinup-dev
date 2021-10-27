@@ -308,7 +308,10 @@ class JoinupSearchContext extends RawDrupalContext {
   public function selectOptionsFromSlimSelect(string $option, string $label): void {
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
-      $slim_select = $this->findSlimSelect($label);
+      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($label) {
+        return $this->findSlimSelect($label);
+      });
+
       // Open Slim Select dropdown.
       $slim_select->click();
 
@@ -336,7 +339,9 @@ class JoinupSearchContext extends RawDrupalContext {
   public function removeOptionsFromSlimSelect(string $option, string $label): void {
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
-      $slim_select = $this->findSlimSelect($label);
+      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($label) {
+        return $this->findSlimSelect($label);
+      });
       // Open Slim Select dropdown.
       $slim_select->click();
 
