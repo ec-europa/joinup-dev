@@ -189,12 +189,12 @@ drupal:
           'driver' => 'mysql',
         ];
         $databases['sparql_default']['default'] = [
-          'host' => getenv('SPARQL_HOST'),
-          'port' => getenv('SPARQL_PORT'),
+          'host' => getenv('DRUPAL_SPARQL_HOSTNAME'),
+          'port' => getenv('DRUPAL_SPARQL_PORT'),
           'namespace' => 'Drupal\\joinup_sparql\\Driver\\Database\\joinup_sparql',
           'driver' => 'sparql',
         ];
-        $settings['joinup']['sparql_public_endpoint'] = getenv('SPARQL_PUBLIC_ENDPOINT');
+        $settings['joinup']['sparql_public_endpoint'] = getenv('DRUPAL_SPARQL_PUBLIC_ENDPOINT');
       Permissions: |
         $settings['skip_permissions_hardening'] = TRUE;
       Stage File Proxy: |

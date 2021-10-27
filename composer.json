@@ -143,7 +143,7 @@
         "php-task-runner/sparql": "dev-master",
         "phpstan/phpstan-deprecation-rules": "~0.12",
         "phpunit/phpunit": "^7",
-        "slevomat/coding-standard": "~6.4",
+        "slevomat/coding-standard": "~7",
         "symfony/css-selector": "^4.4",
         "symfony/dom-crawler": "^4.4",
         "symfony/phpunit-bridge": "^4.4",
