@@ -1,0 +1,80 @@
+// Site alerts
+.site-alert {
+  @extend .container;
+  & > div {
+    padding: $spacer*1.5 $spacer;
+    border-radius: $border-radius;
+    margin-bottom: $spacer * 2;
+  }
+  .severity-low {
+    background-color: $brand;
+    .text {
+      @include font-icon-before("\E81A", 2rem, $white);
+    }
+  }
+  .severity-medium {
+    background-color: $warning;
+    .text {
+      @include font-icon-before("\E807", 2rem, $white);
+    }
+  }
+  .severity-high {
+    background-color: $danger;
+    .text {
+      @include font-icon-before("\E810", 2rem, $white);
+    }
+  }
+}
+
+// Status messages
+.messages {
+  padding: $spacer*1.5 $spacer;
+  border-radius: $border-radius;
+  margin-bottom: $spacer * 2;
+  .messages__list {
+    margin-bottom: 0;
+    padding-left: $spacer;
+  }
+  &.messages--status {
+    background-color: $success;
+    .text {
+      @include font-icon-before("\E81A", 2rem, $white);
+    }
+  }
+  &.messages--warning {
+    background-color: $warning;
+    .text {
+      @include font-icon-before("\E807", 2rem, $white);
+    }
+  }
+  &.messages--error {
+    background-color: $danger;
+    .text {
+      @include font-icon-before("\E810", 2rem, $white);
+    }
+  }
+}
+
+.site-alert,
+.messages {
+  .text {
+    color: $white;
+    position: relative;
+    padding-left: $spacer * 2.5;
+    a {
+      text-decoration: underline;
+      &:link,
+      &:visited {
+        color: $white;
+      }
+      &:hover {
+        text-decoration: unset;
+      }
+    }
+    &:before {
+      position: absolute;
+      left: -0.2rem;
+      top: calc(50% - 1rem);
+    }
+  }
+}

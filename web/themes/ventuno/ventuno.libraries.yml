@@ -1,10 +1,7 @@
-style:
-  version: VERSION
+homepage:
   css:
     theme:
-      assets/css/styles.css: {}
-  js:
-    assets/js/popovers.js: {}
+      assets/css/homepage.css: {}
 
 slick:
   js:
@@ -13,3 +10,12 @@ slick:
   css:
     theme:
       assets/css/slick.css: { minified: true }
+
+style:
+  version: VERSION
+  css:
+    theme:
+      assets/css/main.css: {}
+  js:
+    assets/js/oe-bcl-joinup.bundle.min.js: { minified: true }
+    assets/js/popovers.js: { minified: false }

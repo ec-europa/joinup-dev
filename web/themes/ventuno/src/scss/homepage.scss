@@ -1,4 +1,7 @@
-// Override Bootstrap variables
+// Homepage CSS
+// Only styles specific to the Homepage
+
+// Joinup variables
 @import "@openeuropa/bcl-theme-joinup/src/scss/oe-bcl-joinup.scss";
 
 // Custom Joinup mixins
@@ -6,16 +9,15 @@
 @import "mixins/full-width-background-colors";
 
 // Components
-@import "components/navbar";
-@import "components/header";
+@import "components/about-block";
+@import "components/discover-topics-block";
 @import "components/homepage";
 @import "components/in-the-spotlight-block";
 @import "components/latest-news-block";
+@import "components/navbar";
 @import "components/highlighted-solution-block";
 @import "components/highlighted-event-block";
-@import "components/discover-topics-block";
 @import "components/global-search-block";
-@import "components/about-block";
 @import "components/explore-block";
 @import "components/footer";
-@import "components/tour";
+@import "components/site-alerts-messages";
