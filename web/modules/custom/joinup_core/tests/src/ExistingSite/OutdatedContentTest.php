@@ -35,7 +35,7 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
       ->set('node.news', 10)
       ->save();
 
-    $this->now = new \DateTime('now', new \DateTimeZone(date_default_timezone_get()));
+    $this->now = new \DateTime('now', new \DateTimeZone('UTC'));
 
     /** @var \Drupal\collection\Entity\CollectionInterface $collection */
     $collection = $this->createRdfEntity([
@@ -47,8 +47,7 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
       'type' => 'discussion',
       'og_audience' => $collection,
       'published_at' => (clone $this->now)
-        ->sub(new \DateInterval('P3YM'))
-        ->sub(new \DateInterval('PT1M'))
+        ->sub(new \DateInterval('P3YT1M'))
         ->getTimestamp(),
     ]);
     /** @var \Drupal\joinup_document\Entity\DocumentInterface $document */
