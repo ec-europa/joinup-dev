@@ -46,7 +46,10 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
     $discussion = $this->createNode([
       'type' => 'discussion',
       'og_audience' => $collection,
-      'published_at' => (clone $this->now)->sub(new \DateInterval('P3YT1M'))->getTimestamp(),
+      'published_at' => (clone $this->now)
+        ->sub(new \DateInterval('P3YM'))
+        ->sub(new \DateInterval('PT1M'))
+        ->getTimestamp(),
     ]);
     /** @var \Drupal\joinup_document\Entity\DocumentInterface $document */
     $document = $this->createNode([
