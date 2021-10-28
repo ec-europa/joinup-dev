@@ -313,7 +313,6 @@ class JoinupSearchContext extends RawDrupalContext {
       $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
         return $this->findSlimSelect($select_ssid, $label);
       });
-      // Open Slim Select dropdown.
       $slim_select->click();
 
       $element = $slim_select->find('css', ".ss-option:contains('{$option}')");
@@ -342,10 +341,10 @@ class JoinupSearchContext extends RawDrupalContext {
 
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
-      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
-        return $this->findSlimSelect($select_ssid, $label);
+      $slim_select_xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $select_ssid . '")]';
+      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($slim_select_xpath) {
+        return $this->getSession()->getPage()->find('xpath', $slim_select_xpath);
       });
-      // Open Slim Select dropdown.
       $slim_select->click();
 
       $element = $slim_select->find('css', ".ss-multi-selected .ss-value:contains('{$option}')");
@@ -672,7 +671,7 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   protected function findSlimSelect(string $ssid, string $label): NodeElement {
     $session = $this->getSession();
-    $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "' . $ssid . '")]';
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $ssid . '")]';
     $slim_select = $session->getPage()->find('xpath', $xpath);
 
     if (!$slim_select) {
