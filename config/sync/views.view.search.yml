@@ -70,7 +70,7 @@ display:
       style:
         type: default
         options:
-          row_class: ''
+          row_class: tile
           default_row_class: false
           uses_fields: false
       row:
