@@ -15,6 +15,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\TestingEntitiesTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
@@ -524,8 +525,10 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    * @Then I should see :label as the Highlighted content
    */
   public function assertHighlightedContent(string $label): void {
-    /** @var \Drupal\custom_page\Entity\CustomPageInterface $content */
     $content = self::getNodeByTitle($label);
+
+    // Only community content can be highlighted.
+    Assert::assertInstanceOf(CommunityContentInterface::class, $content);
 
     $block_element = $this->getSession()->getPage()->find('css', '.block-entityqueue--highlighted-content');
 
