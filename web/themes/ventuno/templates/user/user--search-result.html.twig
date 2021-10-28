@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+  * Theme override to display a user search result.
+ */
+#}
+{% if content %}
+  {{ pattern('card', {
+    'variants': 'horizontal',
+    'title': {
+      attributes: [
+        {
+          name: "href",
+          value: path('entity.user.canonical', {'user': user.id}),
+        },
+      ],
+      'content': full_name
+    },
+    'content': content,
+  }) }}
+{% endif %}

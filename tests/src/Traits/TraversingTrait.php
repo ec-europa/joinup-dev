@@ -237,10 +237,10 @@ trait TraversingTrait {
     $result = [];
     // @todo The `.listing__item--tile` selector is part of the original Joinup
     //   theme and can be removed once we have fully migrated to the new theme.
-    foreach ($regionObj->findAll('css', '.listing__item--tile, article.tile') as $element) {
+    foreach ($regionObj->findAll('css', '.listing__item--tile, .card, article.tile') as $element) {
       // @todo The `.listing__title` selector is part of the original Joinup
       //   theme and can be removed once we migrated to the new theme.
-      $title_element = $element->find('css', ' .listing__title, h2 a');
+      $title_element = $element->find('css', ' .listing__title, .card-title, h2 a');
       // Some tiles don't have a title, like the one to create a new collection
       // in the collections page.
       if ($title_element) {
@@ -294,7 +294,7 @@ trait TraversingTrait {
     // @todo This can be removed once we are fully migrated to the new theme.
     $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
     // That have a heading with the specified text.
-    $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ")][normalize-space()="' . $heading . '"]]';
+    $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ") or contains(concat(" ", normalize-space(@class), " "), " card-title ")][normalize-space()="' . $heading . '"]]';
 
     $item = $this->getSession()->getPage()->find('xpath', $xpath);
 

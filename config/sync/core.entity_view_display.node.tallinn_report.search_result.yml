@@ -1,0 +1,229 @@
+uuid: 640a9d19-7edc-4c57-bb05-d63baa8883da
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result
+    - field.field.node.tallinn_report.field_tallinn_action_1
+    - field.field.node.tallinn_report.field_tallinn_action_10
+    - field.field.node.tallinn_report.field_tallinn_action_11
+    - field.field.node.tallinn_report.field_tallinn_action_12
+    - field.field.node.tallinn_report.field_tallinn_action_13
+    - field.field.node.tallinn_report.field_tallinn_action_14
+    - field.field.node.tallinn_report.field_tallinn_action_15
+    - field.field.node.tallinn_report.field_tallinn_action_16
+    - field.field.node.tallinn_report.field_tallinn_action_17
+    - field.field.node.tallinn_report.field_tallinn_action_18
+    - field.field.node.tallinn_report.field_tallinn_action_19
+    - field.field.node.tallinn_report.field_tallinn_action_2
+    - field.field.node.tallinn_report.field_tallinn_action_20
+    - field.field.node.tallinn_report.field_tallinn_action_21
+    - field.field.node.tallinn_report.field_tallinn_action_22
+    - field.field.node.tallinn_report.field_tallinn_action_23
+    - field.field.node.tallinn_report.field_tallinn_action_24
+    - field.field.node.tallinn_report.field_tallinn_action_25
+    - field.field.node.tallinn_report.field_tallinn_action_3
+    - field.field.node.tallinn_report.field_tallinn_action_4
+    - field.field.node.tallinn_report.field_tallinn_action_5
+    - field.field.node.tallinn_report.field_tallinn_action_6
+    - field.field.node.tallinn_report.field_tallinn_action_7
+    - field.field.node.tallinn_report.field_tallinn_action_8
+    - field.field.node.tallinn_report.field_tallinn_action_9
+    - field.field.node.tallinn_report.og_audience
+    - node.type.tallinn_report
+  module:
+    - layout_builder
+    - tallinn
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: qHzX86R6h5_Ts2E4exQ4benbPyNsPCmB9Z6yCmvWPys
+id: node.tallinn_report.search_result
+targetEntityType: node
+bundle: tallinn_report
+mode: search_result
+content:
+  field_tallinn_action_1:
+    type: tallinn_entry
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_10:
+    type: tallinn_entry
+    weight: 9
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_11:
+    type: tallinn_entry
+    weight: 10
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_12:
+    type: tallinn_entry
+    weight: 11
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_13:
+    type: tallinn_entry
+    weight: 12
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_14:
+    type: tallinn_entry
+    weight: 13
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_15:
+    type: tallinn_entry
+    weight: 14
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_16:
+    type: tallinn_entry
+    weight: 15
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_17:
+    type: tallinn_entry
+    weight: 16
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_18:
+    type: tallinn_entry
+    weight: 17
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_19:
+    type: tallinn_entry
+    weight: 18
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_2:
+    type: tallinn_entry
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_20:
+    type: tallinn_entry
+    weight: 19
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_21:
+    type: tallinn_entry
+    weight: 20
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_22:
+    type: tallinn_entry
+    weight: 21
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_23:
+    type: tallinn_entry
+    weight: 22
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_24:
+    type: tallinn_entry
+    weight: 23
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_25:
+    type: tallinn_entry
+    weight: 24
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_3:
+    type: tallinn_entry
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_4:
+    type: tallinn_entry
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_5:
+    type: tallinn_entry
+    weight: 4
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_6:
+    type: tallinn_entry
+    weight: 5
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_7:
+    type: tallinn_entry
+    weight: 6
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_8:
+    type: tallinn_entry
+    weight: 7
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_9:
+    type: tallinn_entry
+    weight: 8
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true
+  links: true
+  og_audience: true
+  published_at: true
+  report: true

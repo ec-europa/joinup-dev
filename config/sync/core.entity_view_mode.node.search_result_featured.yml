@@ -1,0 +1,10 @@
+uuid: 421465b2-ed59-47b6-b18c-0a5717b50000
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.search_result_featured
+label: 'Search result item (featured)'
+targetEntityType: node
+cache: true

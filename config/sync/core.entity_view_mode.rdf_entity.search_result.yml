@@ -1,0 +1,10 @@
+uuid: bd9593d3-b380-48a2-9960-6ce2b22298d8
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.search_result
+label: 'Search result item'
+targetEntityType: rdf_entity
+cache: true
