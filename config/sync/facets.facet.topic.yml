@@ -12,7 +12,7 @@ name: Topics
 url_alias: topic
 weight: -3
 min_count: 1
-show_only_one_result: true
+show_only_one_result: false
 field_identifier: topic
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
@@ -30,12 +30,6 @@ hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
-  active_widget_order:
-    processor_id: active_widget_order
-    weights:
-      sort: -8
-    settings:
-      sort: ASC
   aggregated_entity_reference_label:
     processor_id: aggregated_entity_reference_label
     weights:
@@ -48,12 +42,6 @@ processor_configs:
     settings:
       minimum_items: 1
       maximum_items: null
-  count_widget_order:
-    processor_id: count_widget_order
-    weights:
-      sort: -10
-    settings:
-      sort: ASC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:

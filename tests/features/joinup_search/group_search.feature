@@ -234,7 +234,7 @@ Feature: Search inside groups
     Then the page should not contain any chips
 
     When I select "Inclined foundations" from the "collection/solution" select facet form
-    And I click Search in facets form
+    And I press "Search"
     Then the option with text "Inclined foundations (6)" from select facet form "collection/solution" is selected
     And I should see 6 tiles
 
@@ -244,7 +244,7 @@ Feature: Search inside groups
     # The filter facets summary shouldn't remain active when doing another search.
     When I enter "ground" in the search bar and press enter
     Then I select "Inclined foundations" from the "collection/solution" select facet form
-    And I click Search in facets form
+    And I press "Search"
     And I should see 2 tiles
     When I open the search bar by clicking on the search icon
     And I should see the following facet summary "Inclined foundations"

@@ -6,6 +6,7 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\KeyboardInteractionTrait;
@@ -292,6 +293,71 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
+   * Clicks a Slim Select item in facet form.
+   *
+   * @param string $option
+   *   The option to select.
+   * @param string $label
+   *   The select label.
+   *
+   * @throws \Exception
+   *   Thrown when the facet or the link inside the facet is not found.
+   *
+   * @When I select :option option(s) from the :label Slim Select
+   */
+  public function selectOptionsFromSlimSelect(string $option, string $label): void {
+    $select_ssid = $this->findHiddenSelect($label);
+
+    $options = $this->explodeCommaSeparatedStepArgument($option);
+    foreach ($options as $option) {
+      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+        return $this->findSlimSelect($select_ssid, $label);
+      });
+      $slim_select->click();
+
+      $element = $slim_select->find('css', ".ss-option:contains('{$option}')");
+      if (!$element) {
+        throw new ElementNotFoundException($this->getSession()->getDriver(), "The Slim Select element '$option' was not found in the page.");
+      }
+      $element->click();
+    }
+  }
+
+  /**
+   * Remove a Slim Select item in facet form.
+   *
+   * @param string $option
+   *   The option to select.
+   * @param string $label
+   *   The select label.
+   *
+   * @throws \Exception
+   *   Thrown when the facet or the link inside the facet is not found.
+   *
+   * @When I unselect :option option(s) from the :label Slim Select
+   */
+  public function removeOptionsFromSlimSelect(string $option, string $label): void {
+    $select_ssid = $this->findHiddenSelect($label);
+
+    $options = $this->explodeCommaSeparatedStepArgument($option);
+    foreach ($options as $option) {
+      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+        return $this->findSlimSelect($select_ssid, $label);
+      });
+      $slim_select->click();
+
+      $element = $slim_select->find('css', ".ss-multi-selected .ss-value:contains('{$option}')");
+      if (!$element) {
+        throw new ElementNotFoundException($this->getSession()->getDriver(), "The Slim Select element '$option' was not found in the page.");
+      }
+      $element->find('css', '.ss-value-delete')->click();
+
+      // Close Slim Select dropdown.
+      $slim_select->click();
+    }
+  }
+
+  /**
    * Clicks in more facet items in an inline facet form.
    *
    * @param string $select
@@ -382,6 +448,38 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
+   * Asserts a Slim Selected option in facets form.
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $label
+   *   Title of the select field.
+   *
+   * @throws \Exception
+   *    Throws an exception when the select is not found in page.
+   *
+   * @Then the :option option from :label Slim Select is selected
+   * @Then the :option options from :label Slim Select are selected
+   */
+  public function optionWithTextFromSlimSelectIsSelected(string $option, string $label): void {
+    $select_ssid = $this->findHiddenSelect($label);
+    $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+      return $this->findSlimSelect($select_ssid, $label);
+    });
+
+    $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "ss-option-selected")]';
+    $elements = $slim_select->findAll('xpath', $xpath);
+
+    $actual_options = [];
+    foreach ($elements as $element) {
+      $actual_options[] = strip_tags($element->getHtml());
+    }
+    $expected_options = $this->explodeCommaSeparatedStepArgument($option);
+
+    Assert::assertSame($expected_options, $actual_options);
+  }
+
+  /**
    * Asserts the list of available options in a select facet.
    *
    * @param string $select
@@ -434,6 +532,44 @@ class JoinupSearchContext extends RawDrupalContext {
   public function assertSelectFacetFormOptionsAsList($select, TableNode $table) {
     $element = $this->findFacetByAlias($select, NULL, 'select', TRUE);
     $this->assertSelectAvailableOptions($element, $table);
+  }
+
+  /**
+   * Asserts the list of available options in a Slim Select element.
+   *
+   * @param string $label
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws \Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the Slim Select :label should contain the following options:
+   */
+  public function assertSlimSelectOptionsAsList(string $label, TableNode $table) {
+    $select_ssid = $this->findHiddenSelect($label);
+    $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+      return $this->findSlimSelect($select_ssid, $label);
+    });
+
+    $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "ss-option")]';
+    $results = $slim_select->findAll('xpath', $xpath);
+
+    $actual_options = [];
+    foreach ($results as $result) {
+      $actual_options[] = strip_tags($result->getHtml());
+    }
+    $rows = $table->getColumn(0);
+
+    // Ignore duplicated whitespace.
+    $strip_multiple_spaces = function (string $option): string {
+      return preg_replace("/\s{2,}/", " ", $option);
+    };
+    $expected_options = array_map($strip_multiple_spaces, $rows);
+
+    Assert::assertSame($expected_options, $actual_options);
   }
 
   /**
@@ -491,17 +627,61 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
-   * Facets form action buttons.
+   * Find hidden select element in page.
    *
-   * @param string $name
-   *   The label of the input.
+   * @param string $label
+   *   The label of hidden select.
    *
-   * @Given I click :name in facets form
+   * @return string
+   *   Hidden select ssid.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
-  public function iClickActionsInFacetsForm(string $name) {
-    $region = $this->getSession()->getPage();
-    $element = $region->find('xpath', "//input[@value='{$name}']");
-    $element->click();
+  protected function findHiddenSelect(string $label): string {
+    \assert(method_exists($this, 'browserSupportsJavaScript'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');
+    \assert($this->browserSupportsJavaScript(), 'A fallback method to select a material design radio button has not yet been implemented for non-JS browsers.');
+
+    $mappings = [
+      'topic' => 'edit-topic',
+    ];
+
+    if (!isset($mappings[$label])) {
+      throw new \Exception("No Slim Select id mapping found for '$label'.");
+    }
+
+    $session = $this->getSession();
+    $xpath = "//*[@data-drupal-selector='{$mappings[$label]}']";
+    $select = $session->getPage()->find('xpath', $xpath);
+    if (!$select) {
+      throw new ElementNotFoundException($session->getDriver(), "The Select '$label' was not found in the page.");
+    }
+
+    return $select->getAttribute('data-ssid');
+  }
+
+  /**
+   * Find Slim Select element in page.
+   *
+   * @param string $ssid
+   *   The ssid of hidden select.
+   * @param string $label
+   *   The label of Slim Select.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   Slim Select element.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   */
+  protected function findSlimSelect(string $ssid, string $label): NodeElement {
+    $session = $this->getSession();
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $ssid . '")]';
+    $slim_select = $session->getPage()->find('xpath', $xpath);
+
+    if (!$slim_select) {
+      throw new ElementNotFoundException($session->getDriver(), "The Slim Select '$label' was not found in the page.");
+    }
+
+    return $slim_select;
   }
 
   /**
