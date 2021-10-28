@@ -10,10 +10,10 @@ Feature: Curated content listings
     And I click "Curated content listings"
     Then I should see the heading "Curated content listings"
     And I should see the following links:
-      | Discover topics      |
-      | Highlighted event    |
+      | Discover topics     |
+      | Highlighted event   |
       | Highlighted content |
-      | In the spotlight     |
+      | In the spotlight    |
     When I click "Discover topics"
     Then I should see the heading "Update curated content listing Discover topics"
     And I should see the button "Add item"
