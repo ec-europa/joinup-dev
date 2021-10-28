@@ -51,9 +51,9 @@ dependencies:
     - field_delimiter
     - field_formatter_range
     - field_group
+    - joinup_html_stripper
     - layout_builder
     - responsive_image
-    - smart_trim
     - template_suggestion
     - user
 third_party_settings:
@@ -83,26 +83,15 @@ bundle: solution
 mode: highlighted
 content:
   field_is_description:
-    type: smart_trim
-    weight: 3
-    region: content
     label: hidden
+    type: joinup_html_stripper_stripped
+    weight: 2
     settings:
       trim_length: 200
-      trim_type: chars
-      trim_suffix: ''
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
-      trim_options:
-        text: true
-        trim_zero: false
-      wrap_output: false
-      more_link: false
-      summary_handler: full
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
+    region: content
   field_is_logo:
     type: responsive_image
     weight: 0
