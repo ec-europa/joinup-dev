@@ -676,5 +676,5 @@ Feature: Global search
 
     When I visit the search page
     Then I should see the 3 tiles with image
-    Then I click "Go to next page"
+    When I click "Go to page 2"
     Then I should see the 0 tiles with image
