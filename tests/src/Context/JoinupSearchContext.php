@@ -341,9 +341,8 @@ class JoinupSearchContext extends RawDrupalContext {
 
     $options = $this->explodeCommaSeparatedStepArgument($option);
     foreach ($options as $option) {
-      $slim_select_xpath = '//div[contains(concat(" ", normalize-space(@class), " "), "' . $select_ssid . '")]';
-      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($slim_select_xpath) {
-        return $this->getSession()->getPage()->find('xpath', $slim_select_xpath);
+      $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+        return $this->findSlimSelect($select_ssid, $label);
       });
       $slim_select->click();
 
@@ -464,7 +463,9 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function optionWithTextFromSlimSelectIsSelected(string $option, string $label): void {
     $select_ssid = $this->findHiddenSelect($label);
-    $slim_select = $this->findSlimSelect($select_ssid, $label);
+    $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+      return $this->findSlimSelect($select_ssid, $label);
+    });
 
     $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "ss-option-selected")]';
     $elements = $slim_select->findAll('xpath', $xpath);
@@ -549,7 +550,9 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function assertSlimSelectOptionsAsList(string $label, TableNode $table) {
     $select_ssid = $this->findHiddenSelect($label);
-    $slim_select = $this->findSlimSelect($select_ssid, $label);
+    $slim_select = $this->getSession()->getPage()->waitFor(5, function () use ($select_ssid, $label) {
+      return $this->findSlimSelect($select_ssid, $label);
+    });
 
     $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), "ss-option")]';
     $results = $slim_select->findAll('xpath', $xpath);
