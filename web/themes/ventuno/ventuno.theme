@@ -15,6 +15,8 @@ use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\topic\Entity\TopicInterface;
+use Drupal\topic\Entity\TopicReferencingEntityInterface;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -135,6 +137,43 @@ function ventuno_preprocess_page(&$variables) {
   }
 
   $variables['anonymous_links'] = $anonymous_links;
+}
+
+/**
+ * Implements hook_preprocess_block() for the highlighted content block.
+ *
+ * Add a link to related content in the Highlighted Content block which is shown
+ * on the homepage. This will lead to the search page with the results filtered
+ * by the first referenced topic. If no topics are referenced the link will be
+ * hidden.
+ */
+function ventuno_preprocess_block__entityqueue_block__highlighted_content(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['elements']['content']['entities'][0]['#node'] ?? NULL;
+
+  if ($node instanceof TopicReferencingEntityInterface) {
+    $topics = $node->getTopics();
+    $topic = reset($topics);
+
+    if ($topic instanceof TopicInterface) {
+      $options = [
+        'query' => [
+          'f' => [
+            'type:' . $node->bundle(),
+            'topic:' . $topic->id(),
+          ],
+        ],
+      ];
+      $variables['related_content'] = [
+        '#type' => 'link',
+        '#title' => t('Related content'),
+        '#url' => Url::fromRoute('view.search.page_1', [], $options),
+        '#attributes' => [
+          'class' => ['more-link'],
+        ],
+      ];
+    }
+  }
 }
 
 /**

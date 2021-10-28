@@ -15,6 +15,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\TestingEntitiesTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
@@ -511,6 +512,69 @@ class JoinupCommunityContentContext extends RawDrupalContext {
         Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" for article "%s" does not link to the canonical topic page.', $actual_topic_title, $actual_title));
       }
     }
+  }
+
+  /**
+   * Checks the contents of the "Highlighted content" block.
+   *
+   * This is shown on the homepage.
+   *
+   * @param string $label
+   *   The label of the community content that is highlighted on the homepage.
+   *
+   * @Then I should see :label as the Highlighted content
+   */
+  public function assertHighlightedContent(string $label): void {
+    $content = self::getNodeByTitle($label);
+
+    // Only community content can be highlighted.
+    Assert::assertInstanceOf(CommunityContentInterface::class, $content);
+
+    $block_element = $this->getSession()->getPage()->find('css', '.block-entityqueue--highlighted-content');
+
+    // Check block title.
+    $actual_block_title = $block_element->find('css', 'h2')->getText();
+    Assert::assertEquals('Highlighted content', $actual_block_title, sprintf('Expected the Highlighted content block to have the title "Highlighted content" but instead found "%s".', $actual_block_title));
+
+    // Check that the logo is present.
+    if ($logo = $content->getLogoAsFile()) {
+      $filename = $logo->getFilename();
+      $logo_is_present = self::hasImage($filename, $block_element);
+      Assert::assertTrue($logo_is_present, sprintf('Image with filename "%s" has been found in the Highlighted content block.', $filename));
+    }
+
+    // Check title text.
+    $actual_title = $block_element->find('css', 'article h2')->getText();
+    Assert::assertEquals($content->label(), $actual_title, sprintf('Expected the Highlighted content to have the title "%s" but instead found "%s".', $content->label(), $actual_title));
+
+    // Check that title links to the canonical page of the content.
+    $xpath = '//h2/a[@href = "' . $content->toUrl()->toString() . '"]';
+    Assert::assertNotEmpty($block_element->find('xpath', $xpath), sprintf('%s "%s" does not link to the canonical page.', $content->getType(), $actual_title));
+
+    // Retrieve the topics from the content, limiting the result to maximum 2
+    // topics.
+    $topics = array_slice($content->getTopics(), 0, 2);
+
+    // Check that the correct number of topics are present.
+    $topic_elements = $block_element->findAll('css', '.field--name-field-topic .field__item');
+    Assert::assertEquals(count($topics), count($topic_elements), sprintf('Expected %d topics in the "Highlighted content" section but found %d topics.', count($topics), count($topic_elements)));
+
+    foreach ($topics as $j => $topic) {
+      /** @var \Behat\Mink\Element\NodeElement $topic_element */
+      $topic_element = array_shift($topic_elements);
+
+      // Check the title of each topic.
+      $actual_topic_title = $topic_element->getText();
+      Assert::assertEquals($topic->label(), $actual_topic_title, sprintf('Expected topic #%d to be "%s" in the "Highlighted content" section but instead found "%s".', $j + 1, $topic->label(), $actual_topic_title));
+
+      // Check that each topic links to their canonical page.
+      $xpath = '/a[@href = "' . $topic->toUrl()->toString() . '"]';
+      Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" in the "Highlighted content" section does not link to the canonical topic page.', $actual_topic_title));
+    }
+
+    // Check that the description is present.
+    $actual_description = $block_element->find('css', '.field--name-body')->getText();
+    Assert::assertNotEmpty($actual_description);
   }
 
 }

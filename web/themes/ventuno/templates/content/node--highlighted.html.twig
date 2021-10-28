@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Template for a highlighted node.
+ *
+ * This is used in the "Highlighted content" block on the homepage.
+ */
+#}
+<article{{ attributes }}>
+  <div class="logo">{{ node.getLogoAsRenderArray('highlighted') }}</div>
+  <div class="topics">{{ content.field_topic }}</div>
+  {{ title_prefix }}
+  {% if not page and not is_label_hidden %}
+    <h2{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h2>
+  {% endif %}
+  {{ title_suffix }}
+  <div class="description">{{ content.body }}</div>
+</article>

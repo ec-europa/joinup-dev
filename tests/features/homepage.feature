@@ -90,25 +90,34 @@ Feature: Homepage
       | 3      | alan.jpg    | HR, Statistics and Analysis      | Microgravity    | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
 
   @terms
-  Scenario: A solution can be highlighted on the homepage
-    Given solution:
-      | title         | Mercury poisoning                                                          |
-      | state         | validated                                                                  |
-      | description   | Mercury poisoning is a type of metal poisoning due to exposure to mercury. |
-      | logo          | logo.png                                                                   |
-      | solution type | Interoperability Specification, Networking Service                         |
-      | topic         | Demography, EU and European Policies, HR                                   |
-      | state         | validated                                                                  |
-    And the "Highlighted solution" content listing contains:
-      | type     | label             |
-      | solution | Mercury poisoning |
+  Scenario Outline: Community content be highlighted on the homepage
+    Given collection:
+      | title | Clash of documents |
+      | state | validated          |
+    And <type> content:
+      | title        | collection         | topic                              | state     | logo     | body                                                                                                                                                                                            |
+      | Microgravity | Clash of documents | HR, E-justice                      | validated | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+      | Aliens       | Clash of documents | Statistics and Analysis, E-justice | validated | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+      | Groundforce  | Clash of documents | Statistics and Analysis, E-justice | proposed  | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+    And the "Highlighted content" content listing contains:
+      | type   | label  |
+      | <type> | Aliens |
 
     When I am on the homepage
-    Then I should see "Mercury poisoning" as the highlighted solution
-    And I should see the link "More solutions"
-    When I click "More solutions"
+    Then I should see "Aliens" as the Highlighted content
+    And I should see the link "Related content"
+    When I click "Related content"
     Then I should be on the advanced search page
-    And the "Solution" content checkbox item should be selected
+    And the <label> content checkbox item should be selected
+    And I should see the "Aliens" tile
+    And I should not see the "Microgravity" tile
+    And I should not see the "Groundforce" tile
+
+    Examples:
+      | type     | label    |
+      | document | Document |
+      | news     | News     |
+      | event    | Event    |
 
   Scenario: An event can be highlighted on the homepage
     Given event content:

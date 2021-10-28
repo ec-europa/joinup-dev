@@ -41,7 +41,9 @@
   {% endif %}
   {{ title_suffix }}
   {% block content %}
-    <a href="{{ path('view.search.page_1', {}, {query: {f: ['type:solution']}}) }}" class="more-link">{{ 'More solutions'|t }}</a>
+    {% if related_content %}
+      {{ related_content }}
+    {% endif %}
     {{ content }}
   {% endblock %}
 </div>

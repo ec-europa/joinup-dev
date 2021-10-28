@@ -10,10 +10,10 @@ Feature: Curated content listings
     And I click "Curated content listings"
     Then I should see the heading "Curated content listings"
     And I should see the following links:
-      | Discover topics      |
-      | Highlighted event    |
-      | Highlighted solution |
-      | In the spotlight     |
+      | Discover topics     |
+      | Highlighted event   |
+      | Highlighted content |
+      | In the spotlight    |
     When I click "Discover topics"
     Then I should see the heading "Update curated content listing Discover topics"
     And I should see the button "Add item"
@@ -27,19 +27,19 @@ Feature: Curated content listings
     And I am on the homepage
     Then I should not see any contextual links in the "In the spotlight" region
     And I should not see any contextual links in the "Highlighted event" region
-    And I should not see any contextual links in the "Highlighted solution" region
+    And I should not see any contextual links in the "Highlighted content" region
 
     Given I am logged in as an "authenticated user"
     And I am on the homepage
     Then I should not see any contextual links in the "In the spotlight" region
     And I should not see any contextual links in the "Highlighted event" region
-    And I should not see any contextual links in the "Highlighted solution" region
+    And I should not see any contextual links in the "Highlighted content" region
 
     Given I am logged in as a "moderator"
     And I am on the homepage
     Then I should see the contextual link "Update curated content" in the "In the spotlight" region
     And I should see the contextual link "Update curated content" in the "Highlighted event" region
-    And I should see the contextual link "Update curated content" in the "Highlighted solution" region
+    And I should see the contextual link "Update curated content" in the "Highlighted content" region
 
     Given I am on the homepage
     When I click the contextual link "Update curated content" in the "In the spotlight" region
@@ -50,5 +50,5 @@ Feature: Curated content listings
     Then I should see the heading "Update curated content listing Highlighted event"
 
     Given I am on the homepage
-    When I click the contextual link "Update curated content" in the "Highlighted solution" region
-    Then I should see the heading "Update curated content listing Highlighted solution"
+    When I click the contextual link "Update curated content" in the "Highlighted content" region
+    Then I should see the heading "Update curated content listing Highlighted content"
