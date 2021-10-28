@@ -519,7 +519,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    * This is shown on the homepage.
    *
    * @param string $label
-   *   The label of the solution that is highlighted on the homepage.
+   *   The label of the community content that is highlighted on the homepage.
    *
    * @Then I should see :label as the Highlighted content
    */
@@ -544,11 +544,11 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     $actual_title = $block_element->find('css', 'article h2')->getText();
     Assert::assertEquals($content->label(), $actual_title, sprintf('Expected the Highlighted content to have the title "%s" but instead found "%s".', $content->label(), $actual_title));
 
-    // Check that title links to the canonical page of the solution.
+    // Check that title links to the canonical page of the content.
     $xpath = '//h2/a[@href = "' . $content->toUrl()->toString() . '"]';
     Assert::assertNotEmpty($block_element->find('xpath', $xpath), sprintf('%s "%s" does not link to the canonical page.', $content->getType(), $actual_title));
 
-    // Retrieve the topics from the solution, limiting the result to maximum 2
+    // Retrieve the topics from the content, limiting the result to maximum 2
     // topics.
     $topics = array_slice($content->getTopics(), 0, 2);
 
