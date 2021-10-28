@@ -5,7 +5,6 @@ dependencies:
   config:
     - search_api.index.published
   module:
-    - joinup_material_design
     - search_api
     - views_autosubmit
     - views_block_area
@@ -69,10 +68,10 @@ display:
             offset_label: Offset
           quantity: 9
       style:
-        type: tiles
+        type: default
         options:
           row_class: ''
-          default_row_class: true
+          default_row_class: false
           uses_fields: false
       row:
         type: search_api
