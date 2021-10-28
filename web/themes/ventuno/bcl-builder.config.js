@@ -127,6 +127,16 @@ module.exports = {
     {
       from: [
         path.resolve(
+          __dirname,
+          "src/images/homepage-banner-md.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
           nodeModules,
           "slick-carousel/slick/slick.css"
         ),

@@ -12,25 +12,31 @@
 {%
     set search_url = path('view.search.page_1')
 %}
-{# <h2 class="display-6 mb-4 text-center text-lg-start">{{ 'Find the <strong>interoperability<br>resources</strong> you need'|trans }}</h2> #}
-<div class="row mb-4">
-  <div class="col-12 col-md-6">
+<div class="row mb-4 mb-md-0">
+  <div class="col-8 offset-2 col-md-7 offset-md-0 col-lg-6 mb-4">
     <img src="{{ directory }}/assets/images/logo.svg" class="img-fluid">
   </div>
-  <div class="col-12 col-md-6">
-    <p class="mb-0 text-end text-light display-6 fw-bold">welcomes</p>
-  </div>
-</div>
-<div class="search-bar mb-3">
-  <label for="search-bar__input" style="display: none">{{ 'Search'|trans }}</label>
-  <form action="{{ search_url }}">
-    {% for id, filter in filters %}
-      <input type="hidden" class="search-bar__chip" name="f[]" value="{{ id }}" data-description="{{ filter }}">
-    {% endfor %}
-    <div class="input-group">
-      <input class="search-bar__input form-control px-4 py-3" type="text" name="keys" id="search-bar__input" placeholder="{{ 'Start typing to search…'|trans }}">
-      <button type="submit" class="btn btn-search"></button>
+  <div class="col-12 order-md-2">
+    <div class="search-bar mb-3 px-2 ps-md-0 pe-md-5">
+      <label for="search-bar__input" style="display: none">{{ 'Search'|trans }}</label>
+      <form action="{{ search_url }}">
+        {% for id, filter in filters %}
+          <input type="hidden" class="search-bar__chip" name="f[]" value="{{ id }}" data-description="{{ filter }}">
+        {% endfor %}
+        <div class="input-group">
+          <input class="search-bar__input form-control px-4 py-3 py-md-0" type="text" name="keys" id="search-bar__input" placeholder="{{ 'Start typing to search…'|trans }}">
+          <button type="submit" class="btn btn-search"></button>
+        </div>
+      </form>
     </div>
-  </form>
+    <p class="mb-4 mb-md-0 text-center text-md-start text-light">{% trans %}
+      <span class="d-block d-md-inline">Need more search options?</span>
+
+      <span class="d-block d-md-inline">Use our <a class="text-light text-decoration-underline fw-bold" href="{{ search_url }}">advanced search</a></span>
+    {% endtrans %}</p>
+  </div>
+  <div class="col-8 offset-2 col-md-5 offset-md-0 order-md-1">
+    <p class="mb-0 text-center text-md-end text-light fs-1 fs-md-3 fs-lg-1 fw-bold">{{ 'welcomes'|trans }}</p>
+  </div>
+
 </div>
-<p class="text-center text-lg-start text-light">{% trans %}<span class="d-block d-lg-inline">Need more search options?</span> <span class="d-block d-lg-inline">Use our <a class="text-light text-decoration-underline fw-bold" href="{{ search_url }}">advanced search</a></span>{% endtrans %}</p>

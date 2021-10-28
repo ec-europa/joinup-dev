@@ -47,28 +47,9 @@
   }
 }
 
-// Region Featured
-.region-featured {
-  background: url(../images/homepage-banner.svg) no-repeat #082330; // Custom IOP-EU color
-  background-size: cover;
-  // background-color: $gray-200;
-  // background: radial-gradient(circle at top, white 94%, $gray-300 6%);
-  // @include media-breakpoint-up(md) {
-  //   background: none;
-  //   background-color: $gray-300;
-  //   position: relative;
-  //   overflow: hidden;
-  //   z-index: 0;
-  //   &:before {
-  //     content: "";
-  //     position: absolute;
-  //     background-color: $gray-100;
-  //     width: 100%;
-  //     height: 350%;
-  //     border-radius: 50%;
-  //     top: -200%;
-  //     transform: translate(-50%, 0);
-  //     z-index: -1;
-  //   }
-  // }
+.iop-gradient {
+	// background: linear-gradient(to right, #278ebf 0%, #44bfb8 32%, #50c1b0 37%, #70c89a 45%, #a4d377 56%, #c2d962 62%, #f6921e 100%); // Full IOP gradient
+	background: linear-gradient(to right, #c2d962 0%, #f6921e 100%); // Only last 2 colors
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
