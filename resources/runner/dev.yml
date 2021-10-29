@@ -51,11 +51,6 @@ commands:
         - site-clone
     - task: run
       command: toolkit:install-clone
-    - task: exec
-      command: ${drush.bin}
-      arguments:
-        - php:eval
-        - if (node_access_needs_rebuild()) { node_access_rebuild(); }
 
   dev:install-modules:
     - task: run
