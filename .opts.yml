@@ -28,3 +28,6 @@ virtuoso_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:virtuoso
 
 install_clean: Yes
 install_clone: False
+
+solr_refresh_acc: True
+virtuoso_refresh_acc: True
