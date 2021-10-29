@@ -699,7 +699,13 @@ class JoinupContext extends RawDrupalContext {
       // This will allow dynamic tests as well. `strtotime` will also be able to
       // receive entries like "1 day ago" or "+1 month".
       if (!is_numeric($node->published_at)) {
+        // The strtotime() PHP function is using the default timezone when doing
+        // the conversion. But we want to stick to UTC in order to avoid
+        // timezone and DST issue.
+        $timezone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
         $node->published_at = strtotime($node->published_at);
+        date_default_timezone_set($timezone);
       }
     }
 
