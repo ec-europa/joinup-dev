@@ -1,11 +1,12 @@
 .region-featured {
   background-size: 100% auto;
-  background-position: center;
-  background-image: url(../images/homepage-banner.svg), linear-gradient($primary 0%, $primary 50%, #082330 50%, #082330 100%);
+  background-position: 0 55%, 0 55%;
+  background-image: url(../images/wave.svg), url(../images/background.svg), linear-gradient($primary 0%, $primary 50%, #082330 50%, #082330 100%);
   background-repeat: no-repeat;
   @include media-breakpoint-up(md) {
     background-size: auto 100%;
-    background-image: url(../images/homepage-banner-md.svg), linear-gradient(to right, $primary 0%, $primary 30%, #082330 30%, #082330 100%);
+    background-position: center;
+    background-image: url(../images/banner-md.svg), linear-gradient(to right, $primary 0%, $primary 30%, #082330 30%, #082330 100%);
   }
   .block-joinup-search-global-search {
       padding-bottom: $spacer * .5; // 8px

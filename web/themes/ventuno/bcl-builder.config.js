@@ -136,7 +136,27 @@ module.exports = {
       from: [
         path.resolve(
           __dirname,
-          "src/images/homepage-banner-md.svg"
+          "src/images/homepage-banner/background.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/homepage-banner/wave.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/homepage-banner/banner-md.svg"
         ),
       ],
       to: path.resolve(outputFolder, "assets/images"),

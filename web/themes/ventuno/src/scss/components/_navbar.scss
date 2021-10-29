@@ -4,7 +4,7 @@
   box-shadow: $box-shadow;
   padding: 0;
   min-height: 46px;
-  border-bottom: .5px solid white;
+  border-bottom: 1px solid rgba(255, 255, 255, .5);
   @include media-breakpoint-up(sm) {
     min-height: 72px;
   }

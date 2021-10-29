@@ -29,11 +29,13 @@
         </div>
       </form>
     </div>
-    <p class="mb-4 mb-md-0 text-center text-md-start text-light">{% trans %}
-      <span class="d-block d-md-inline">Need more search options?</span>
+    <div class="col-12 col-md-9 col-lg-12">
+      <p class="mb-4 mb-md-0 text-center text-md-start text-light">{% trans %}
+        <span class="d-block d-md-inline">Need more search options?</span>
 
-      <span class="d-block d-md-inline">Use our <a class="text-light text-decoration-underline fw-bold" href="{{ search_url }}">advanced search</a></span>
-    {% endtrans %}</p>
+        <span class="d-block d-md-inline">Use our <a class="text-light text-decoration-underline fw-bold" href="{{ search_url }}">advanced search</a></span>
+      {% endtrans %}</p>
+    </div>
   </div>
   <div class="col-8 offset-2 col-md-5 offset-md-0 order-md-1">
     <p class="mb-0 text-center text-md-end text-light fs-1 fs-md-3 fs-lg-1 fw-bold">{{ 'welcomes'|trans }}</p>
