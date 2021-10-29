@@ -1,4 +1,4 @@
-@api @terms @group-b
+@api @terms @group-d
 Feature: Global search
   As a user of the site I can find content through the global search.
 
@@ -186,15 +186,15 @@ Feature: Global search
     When I visit the search page
     And the "spatial coverage" select facet should contain the following options:
       | Any location     |
-      | Greece   (1)     |
-      | Luxembourg   (2) |
+      | Greece (1)     |
+      | Luxembourg (2) |
     When I select "Luxembourg" from the "spatial coverage" select facet
-    Then the option with text "Luxembourg   (2)" from select facet "spatial coverage" is selected
+    Then the option with text "Luxembourg (2)" from select facet "spatial coverage" is selected
     # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
     And the "spatial coverage" select facet should contain the following options:
       | Any location     |
-      | Greece   (1)     |
-      | Luxembourg   (2) |
+      | Greece (1)     |
+      | Luxembourg (2) |
 
   Scenario: Content can be found with a full-text search.
     Given the following owner:

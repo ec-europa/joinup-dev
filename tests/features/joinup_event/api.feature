@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature: Event API
   In order to manage custom pages programmatically
   As a backend developer

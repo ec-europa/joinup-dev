@@ -1,21 +1,21 @@
-uuid: 1ba243ee-4006-4d79-aa79-edb8a8281fa1
+uuid: 01e4f6d2-2d57-429d-b00e-09aa9c2040e0
 langcode: en
 status: true
 dependencies:
   module:
     - search_api_solr
-id: solr_unpublished
-name: 'Server for unpublished entities'
+id: joinup
+name: 'Joinup Search API Server'
 description: ''
 backend: search_api_solr
 backend_config:
   connector: standard
   connector_config:
     scheme: http
-    host: solr_unpublished
+    host: solr
     port: '8983'
     path: /solr
-    core: drupal_unpublished
+    core: joinup
     timeout: 5
     index_timeout: 5
     optimize_timeout: 10

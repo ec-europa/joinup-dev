@@ -4,12 +4,11 @@
     "type": "project",
     "license": "EUPL-1.2",
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pdo": "*",
         "composer/installers": "^1.9",
-        "cpliakas/git-wrapper": "~1.7",
         "cweagans/composer-patches": "^1.7",
         "dkarv/mdl-chip-input": "dev-master",
         "drupal/allowed_formats": "^1.3",
@@ -138,13 +137,14 @@
         "drupal/restui": "^1.18",
         "drupal/stage_file_proxy": "^1.1",
         "drupaltest/behat-one-time-login": "^1.0",
-        "ec-europa/toolkit": "^4.4.6",
+        "ec-europa/toolkit": "^4.4.11",
+        "foxy/foxy": "^1.1",
         "jcalderonzumba/gastonjs": "^1.2@dev",
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.12.12",
         "mikey179/vfsstream": "~1.6",
         "openeuropa/composer-artifacts": "^0.1.3",
-        "openeuropa/task-runner": "dev-php-7.1 as 1.0.0-beta7",
+        "openeuropa/task-runner": "dev-master as 1.0.0-beta7",
         "pear/http_request2": "~2.4",
         "pfrenssen/phpcs-pre-push": "1.1",
         "php-task-runner/composer": "dev-master",
@@ -170,7 +170,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.1.9"
+            "php": "7.4.0"
         }
     },
     "autoload": {
@@ -211,16 +211,17 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev"
         ],
         "post-update-cmd": [
-            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev",
+            "rm -rf ./resources/solr/conf && cp -r ./web/modules/contrib/search_api_solr/solr-conf/6.x ./resources/solr/conf"
         ]
     },
     "extra": {
@@ -240,6 +241,7 @@
                 "web-root": "web/"
             },
             "file-mapping": {
+                "[web-root]/.eslintrc.json": false,
                 "[web-root]/robots.txt": {
                     "append": "resources/drupal-scaffold/robots.txt.append"
                 },
@@ -334,6 +336,9 @@
                 "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff",
                 "Duplicate dependencies @see https://www.drupal.org/project/search_api/issues/3111635": "https://www.drupal.org/files/issues/2020-02-08/3111635-8--fix_duplicate_dependencies.patch"
             },
+            "drupal/search_api_solr": {
+                "Trying to access array offset on value of type int @see https://www.drupal.org/project/search_api_solr/issues/3173950": "resources/patch/search_api_solr-3173950.diff"
+            },
             "drupal/site_alert": {
                 "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-26/3118800-44.patch"
             },
@@ -342,7 +347,8 @@
             },
             "drupal/sparql_entity_storage": {
                 "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
-                "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff"
+                "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff",
+                "Allow more information shown on a query exception @see https://www.drupal.org/project/sparql_entity_storage/issues/3239395": "https://git.drupalcode.org/project/sparql_entity_storage/-/merge_requests/1.diff"
             },
             "drupal/subpathauto": {
                 "Subpaths with redirect not resolved @see https://www.drupal.org/project/subpathauto/issues/3175637": "https://git.drupalcode.org/project/subpathauto/-/merge_requests/1/diffs.diff"
@@ -366,6 +372,9 @@
                 "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/master...cbee0e9.diff",
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
+            },
+            "solarium/solarium": {
+                "implode() deprecated usage": "resources/patch/solarium.diff"
             }
         },
         "patches-ignore": {
@@ -420,10 +429,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/gizra/og.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/pfrenssen/task-runner.git"
         },
         {
             "type": "composer",
