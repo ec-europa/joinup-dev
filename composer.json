@@ -126,7 +126,6 @@
         "drupal/filecache": "^1",
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.18",
-        "drupal/stage_file_proxy": "^1.1",
         "drupaltest/behat-one-time-login": "^1.0",
         "ec-europa/toolkit": "^4.4.11",
         "foxy/foxy": "^1.1",

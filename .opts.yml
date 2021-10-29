@@ -15,7 +15,7 @@ upgrade_commands:
   append:
     acceptance:
       - touch disable-config-readonly
-      - ./vendor/bin/drush pm:enable joinup_acceptance,stage_file_proxy --yes
+      - ./vendor/bin/drush pm:enable joinup_acceptance --yes
       - rm disable-config-readonly
 
 php_version: 7.4

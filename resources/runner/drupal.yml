@@ -175,7 +175,6 @@ drupal:
           'filecache',
           'joinup_cas_mock_server',
           'og_ui',
-          'stage_file_proxy',
           'views_ui',
         ];
         // Location of the site configuration files.
@@ -200,14 +199,6 @@ drupal:
         $settings['joinup']['sparql_public_endpoint'] = getenv('DRUPAL_SPARQL_PUBLIC_ENDPOINT');
       Permissions: |
         $settings['skip_permissions_hardening'] = TRUE;
-      Stage File Proxy: |
-        $config['stage_file_proxy.settings'] = [
-          'hotlink' => FALSE,
-          'origin' => 'https://joinup.ec.europa.eu/',
-          'origin_dir' => FALSE,
-          'use_imagecache_root' => TRUE,
-          'verify' => TRUE,
-        ];
       Null mail collector: |
         $config['system.mail']['interface']['default'] = 'null';
         $config['mailsystem.settings']['defaults']['sender'] = 'null';
