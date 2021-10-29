@@ -1,15 +1,12 @@
-transport: native
+transport: spool
 smtp_host: 127.0.0.1
 smtp_port: 25
-smtp_encryption: ''
+smtp_encryption: '0'
 smtp_credential_provider: swiftmailer
 smtp_credentials:
   swiftmailer:
     username: ''
     password: ''
-  key:
-    username: ''
-    password: ''
 sendmail_path: /usr/sbin/sendmail
 sendmail_mode: bs
-spool_directory: ''
+spool_directory: /tmp/spool/

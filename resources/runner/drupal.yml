@@ -35,6 +35,7 @@ drupal:
         - Matomo & OpenEuropa Webtools Analytics
         - Custom error handler
         - Permissions
+        - Null mail collector
       site-clone:
         - Main settings
         - Databases
@@ -44,7 +45,7 @@ drupal:
         - Custom error handler
         - Permissions
         - Error logging
-        - Mail catch
+        - Development mail collector
         - Redis
         - Custom queue services
       site-clean:
@@ -59,7 +60,7 @@ drupal:
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
         - Error logging
-        - Mail catch
+        - Development mail collector
         - Redis
         - Custom queue services
       behat:
@@ -91,6 +92,7 @@ drupal:
         - Redis
         - Pipe errors to a temporary file
         - Custom queue services
+        - Test mail collector
       phpunit:
         - Main settings
         - Databases
@@ -114,6 +116,7 @@ drupal:
         - Custom error handler
         - Redis
         - Custom queue services
+        - Mail transport
     header: |
       <?php
 
@@ -205,9 +208,19 @@ drupal:
           'use_imagecache_root' => TRUE,
           'verify' => TRUE,
         ];
-      Mail catch: |
+      Null mail collector: |
+        $config['system.mail']['interface']['default'] = 'null';
+        $config['mailsystem.settings']['defaults']['sender'] = 'null';
+      Development mail collector: |
         $config['system.mail']['interface']['default'] = 'devel_mail_log';
         $config['mailsystem.settings']['defaults']['sender'] = 'devel_mail_log';
+      Test mail collector: |
+        $config['system.mail']['interface']['default'] = 'test_mail_collector';
+        $config['mailsystem.settings']['defaults']['sender'] = 'test_mail_collector';
+      Mail transport: |
+        $config['swiftmailer.transport']['sendmail_path'] = getenv('DRUPAL_MAIL_SENDMAIL_PATH');
+        $config['swiftmailer.transport']['sendmail_mode'] = getenv('DRUPAL_MAIL_SENDMAIL_MODE');
+        $config['swiftmailer.transport']['spool_directory'] = getenv('DRUPAL_MAIL_SPOOL_DIR');
       Search API: |
         $config['search_api.server.joinup']['backend_config']['connector_config'] = parse_url(getenv('SOLR_URL'));
         $config['search_api.server.joinup']['backend_config']['connector_config']['core'] = getenv('SOLR_CORE');
@@ -220,7 +233,7 @@ drupal:
         $config['oe_webtools_analytics.settings']['sitePath'] = getenv('OE_WEBTOOLS_ANALYTICS_SITE_PATH');
         $config['oe_webtools_analytics.settings']['instance'] = getenv('OE_WEBTOOLS_ANALYTICS_SITE_INSTANCE');
       Redis: |
-        $settings['redis.connection']['interface'] = getenv('REDIS_INTERFACE');
+        $settings['redis.connection']['interface'] = 'Predis';
         $settings['redis.connection']['host'] = getenv('REDIS_HOST');
         $settings['redis.connection']['port'] = getenv('REDIS_PORT');
         $settings['cache']['default'] = 'cache.backend.redis';
@@ -246,6 +259,3 @@ drupal:
       Custom queue services: |
         $settings['queue_service_joinup_group:group_update'] = 'joinup_group.group_aware_queue';
         $settings['queue_service_joinup_group:group_content_update'] = 'joinup_group.group_aware_queue';
-      Test mail collector: |
-        $config['system.mail']['interface']['default'] = 'test_mail_collector';
-        $config['mailsystem.settings']['defaults']['sender'] = 'test_mail_collector';
