@@ -1,6 +1,6 @@
 // In the Spotlight
 .block-views-blockin-the-spotlight-block {
-  @extend .pb-5;
+  padding-bottom: $spacer * 3; // 48px
   height: 100%;
   border-bottom: 1px solid rgba($primary, .1);
   > h2 {
@@ -38,8 +38,8 @@
     }
     .metadata {
       color: $gray-500;
-      @extend .mt-2;
-      @extend .fs-xs;
+      margin-top: $spacer * .5; // 8px
+      font-size: $font-size-xs;
     }
     &:before {
       counter-increment: spotlight-counter;
@@ -48,8 +48,8 @@
       font-size: $h3-font-size;
       font-weight: 700;
       color: rgba($primary, .3);
-      @extend .pe-3;
-      @extend .mb-2;
+      padding-right: $spacer; // 16px
+      margin-bottom: $spacer * .5; // 8px
       line-height: 1;
     }
   }

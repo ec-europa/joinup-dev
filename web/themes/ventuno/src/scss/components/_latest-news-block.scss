@@ -1,7 +1,7 @@
 // Latest News
 .block-views-blocklatest-news-block {
   position: relative;
-  @extend .mb-5;
+  margin-bottom: $spacer * 3; // 48px
   > h2 {
     @include font-icon-before("\E804", 1.2rem, $warning);
   }
@@ -23,7 +23,7 @@
         text-align: center;
         display: flex;
         flex-flow: column;
-        @extend .pe-3;
+        padding-right: $spacer; // 16px
         line-height: 1;
         text-transform: uppercase;
         font-weight: 700;
@@ -38,7 +38,7 @@
       .dated-listing--content {
         h2 {
           font-size: $font-size-base;
-          @extend .fw-medium;
+          font-weight: $font-weight-medium;
           line-height: $line-height-base;
           a {
             color: $gray-900;

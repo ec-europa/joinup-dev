@@ -84,7 +84,7 @@ variant_settings:
             label: 'For fresh start on creating content'
             provider: layout_builder_block
             label_display: '0'
-            text: "<p><a href=\"/collection/joinup/help-videos\">How to video</a>&nbsp;<a href=\"\" data-drupal-tour-link=\"\" class=\"js-tour-start-button\">Guided tour</a>&nbsp;<a href=\"/collection/joinup/faq\">FAQ</a></p>\r\n"
+            text: "<p><a class="btn btn-secondary" href=\"/collection/joinup/help-videos\">How to video</a>&nbsp;<a class="btn btn-secondary" href=\"\" data-drupal-tour-link=\"\" class=\"js-tour-start-button\">Guided tour</a>&nbsp;<a class="btn btn-secondary" href=\"/collection/joinup/faq\">FAQ</a></p>\r\n"
             format: full_html
             context_mapping: {  }
           additional:

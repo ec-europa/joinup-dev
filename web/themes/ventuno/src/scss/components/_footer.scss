@@ -22,7 +22,8 @@
   a {
     font-size: $font-size-xs;
     color: $gray-300;
-    @extend .py-1;
+    padding-top: $spacer * .25; // 4px
+    padding-bottom: $spacer * .25; // 4px
     &.linkedin {
       @include icon-only();
       @include font-icon-before("\F0E1", 1.8em);

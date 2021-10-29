@@ -1,6 +1,6 @@
 // Site alerts
 .site-alert {
-  @extend .container;
+  @extend .container !optional;
   & > div {
     padding: $spacer*1.5 $spacer;
     border-radius: $border-radius;
