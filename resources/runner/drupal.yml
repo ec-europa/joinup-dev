@@ -220,7 +220,7 @@ drupal:
         $config['oe_webtools_analytics.settings']['sitePath'] = getenv('OE_WEBTOOLS_ANALYTICS_SITE_PATH');
         $config['oe_webtools_analytics.settings']['instance'] = getenv('OE_WEBTOOLS_ANALYTICS_SITE_INSTANCE');
       Redis: |
-        $settings['redis.connection']['interface'] = getenv('REDIS_INTERFACE');
+        $settings['redis.connection']['interface'] = 'Predis';
         $settings['redis.connection']['host'] = getenv('REDIS_HOST');
         $settings['redis.connection']['port'] = getenv('REDIS_PORT');
         $settings['cache']['default'] = 'cache.backend.redis';
