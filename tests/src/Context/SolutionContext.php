@@ -877,7 +877,7 @@ class SolutionContext extends RawDrupalContext {
     Assert::assertEquals($solution->label(), $actual_title, sprintf('Expected the highlighted solution to have the title "%s" but instead found "%s".', $solution->label(), $actual_title));
 
     // Check that title links to the canonical page of the solution.
-    $xpath = '//h2/a[@href = "' . $solution->toUrl()->toString() . '"]';
+    $xpath = '//h2/a[@href = "' . $this->getEntityUri($solution) . '"]';
     Assert::assertNotEmpty($block_element->find('xpath', $xpath), sprintf('Solution "%s" does not link to the canonical page.', $actual_title));
 
     // Retrieve the topics from the solution, limiting the result to maximum 2
@@ -897,7 +897,7 @@ class SolutionContext extends RawDrupalContext {
       Assert::assertEquals($topic->label(), $actual_topic_title, sprintf('Expected topic #%d to be "%s" in the "Highlighted solution" section but instead found "%s".', $j + 1, $topic->label(), $actual_topic_title));
 
       // Check that each topic links to their canonical page.
-      $xpath = '/a[@href = "' . $topic->toUrl()->toString() . '"]';
+      $xpath = '/a[@href = "' . $this->getEntityUri($topic) . '"]';
       Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" in the "Highlighted solution" section does not link to the canonical topic page.', $actual_topic_title));
     }
 
