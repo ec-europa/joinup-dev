@@ -331,6 +331,15 @@ class JoinupSearchContext extends RawDrupalContext {
   /**
    * Asserts the list of available options in a facet select box.
    *
+   * @codingStandardsIgnoreStart
+   * Table format:
+   * | Option 1 | 0 |
+   * | Option 2 | 1 |
+   * @codingStandardsIgnoreEnd
+   *
+   * The first column in the table is required and lists the options that should
+   * be available. The second, optional, column lists the expected indentation.
+   *
    * @param string $select
    *   The name of the field element.
    * @param \Behat\Gherkin\Node\TableNode $table

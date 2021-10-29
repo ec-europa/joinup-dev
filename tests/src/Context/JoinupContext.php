@@ -319,7 +319,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    },$this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     if (array_intersect($options, $available_options) !== $options) {
@@ -342,7 +344,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    },$this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $intersection = array_intersect($available_options, $options);
@@ -383,7 +387,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function assertSelectOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    },$this->getSelectOptions($field));
     sort($available_options);
 
     $options = $this->explodeCommaSeparatedStepArgument($options);
@@ -406,7 +412,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function assertSelectOptionNotAvailable($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    },$this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
