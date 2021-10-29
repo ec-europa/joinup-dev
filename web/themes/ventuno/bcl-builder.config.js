@@ -26,6 +26,14 @@ module.exports = {
         sourceMap: true,
       },
     },
+    {
+      entry: path.resolve(outputFolder, "src/js/sticky-menu.js"),
+      dest: path.resolve(outputFolder, "assets/js/sticky-menu.js"),
+      options: {
+        minify: true,
+        sourceMap: true,
+      },
+    },
   ],
   styles: [
     {

@@ -1,8 +1,10 @@
 .joinup-navbar {
+  z-index: 100;
   background-color: $primary;
   box-shadow: $box-shadow;
   padding: 0;
   min-height: 46px;
+  border-bottom: .5px solid white;
   @include media-breakpoint-up(sm) {
     min-height: 72px;
   }
@@ -53,7 +55,7 @@
     position: absolute;
     right: $spacer*.75;
     z-index: 1;
-    background: $primary;
+    background: $white;
     box-shadow: $box-shadow;
     margin-top: 1px;
     padding: $spacer; // 16px
@@ -123,7 +125,7 @@
     }
   }
   .accordion-cta-link {
-    color: $white;
+    color: $brand;
     text-decoration: none;
     &:hover {
       color: $gray-200;
@@ -201,9 +203,10 @@
     }
   }
   .accordion-list-link {
-    color: $white;
+    color: $brand;
+    font-weight: $font-weight-bold;
     &:hover {
-      color: $white;
+      color: $brand;
       text-decoration: none;
     }
   }
@@ -221,7 +224,7 @@
   .navbar__popover {
     border-radius: 0 0 $border-radius $border-radius;
     border: none;
-    background-color: $primary;
+    background-color: $white;
 
     .popover-arrow {
       display: none;
@@ -231,14 +234,14 @@
       font-weight: $font-weight-bold;
       font-size: $font-size-base; // 16px
       margin-bottom: 0;
-      color: $white;
+      color: $brand;
       @include font-icon-after("\E801", 1rem);
     }
 
     .popover__description {
       font-size: $font-size-xs; // 12px
       margin-bottom: 0;
-      color: $white;
+      color: $brand;
     }
   }
 
@@ -247,4 +250,11 @@
   .btn-light:hover {
     color: $primary;
   }
+  
+  &.js-is--sticky {
+    position: fixed;
+    top: 0;
+    width: 100%
+  }
 }
+

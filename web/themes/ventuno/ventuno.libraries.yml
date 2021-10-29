@@ -2,6 +2,8 @@ homepage:
   css:
     theme:
       assets/css/homepage.css: {}
+  js:
+    assets/js/sticky-menu.js: { minified: true, attributes: { defer: true } }
 
 slick:
   js:
