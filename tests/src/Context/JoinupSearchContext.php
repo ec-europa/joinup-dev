@@ -772,19 +772,14 @@ class JoinupSearchContext extends RawDrupalContext {
    * @When I should see the following facet summary :labels
    */
   public function assertFacetSummary(string $labels): void {
-    $labels = $this->explodeCommaSeparatedStepArgument($labels);
+    $present_labels = $this->explodeCommaSeparatedStepArgument($labels);
     $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' block-facets-summary-blocksearch-facets-summary ')]//li[contains(concat(' ', normalize-space(@class), ' '), ' facet-summary-item--facet ')]";
     $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
-    $present = $present_labels = [];
+    $present = [];
 
     /** @var \Behat\Mink\Element\NodeElement $element */
     foreach ($elements as $element) {
       $present[] = $element->getText();
-    }
-
-    // Add label close in front of label.
-    foreach ($labels as $label) {
-      $present_labels[] = $label . ' close';
     }
 
     $present = array_map('trim', $present);
