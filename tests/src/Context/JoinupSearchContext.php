@@ -516,7 +516,7 @@ class JoinupSearchContext extends RawDrupalContext {
     $session = $this->getSession()->getPage();
     $elements = $session->findAll('css', '.card > img');
 
-    Assert::assertSame(count($elements), $number, sprintf('The option "%s" is selected in the "%s" facet, but the option was expected.', count($elements), $number));
+    Assert::assertSame(count($elements), $number);
   }
 
   /**
