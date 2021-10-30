@@ -8,8 +8,15 @@ upgrade_commands:
     - ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer --yes
     - touch disable-config-readonly
     - ./vendor/bin/drush deploy --yes
+    - ./vendor/bin/drush search-api:reset-tracker --yes
+    - ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"
     - rm disable-config-readonly
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes
+  append:
+    acceptance:
+      - touch disable-config-readonly
+      - ./vendor/bin/drush pm:enable joinup_acceptance --yes
+      - rm disable-config-readonly
 
 php_version: 7.4
 
@@ -21,3 +28,6 @@ virtuoso_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:virtuoso
 
 install_clean: Yes
 install_clone: False
+
+solr_refresh_acc: True
+virtuoso_refresh_acc: True
