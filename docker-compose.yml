@@ -25,7 +25,7 @@ services:
     env_file:
       - .env.dist
     environment:
-      DOCUMENT_ROOT: "/var/www/html/web"
+      DOCUMENT_ROOT: "/var/www/html"
       SMTP_SERVER: mail
       SMTP_PORT: 1025
       SMTP_FROM: contact@example.com
