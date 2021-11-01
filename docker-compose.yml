@@ -103,6 +103,7 @@ services:
       - ./scripts/solr/restore_solr.sh:/opt/solr/bin/restore_solr.sh
       - ./scripts/docker/solr/precreate.sh:/docker-entrypoint-initdb.d/precreate.sh
     environment:
+      SOLR_CORE: digit-joinup
       DOCKER_RESTORE_PRODUCTION:
 
   redis:
