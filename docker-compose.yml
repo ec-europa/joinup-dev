@@ -41,6 +41,10 @@ services:
       ASDA_PASSWORD:
       DISABLE_XDEBUG:
       DISABLE_BLACKFIRE:
+      # For non-macOS hosts. For macOS, see docker-compose.override.yml.dist.
+      XDEBUG_CONFIG: "client_host=172.17.0.1"
+      XDEBUG_MODE: "develop, debug"
+      PHP_IDE_CONFIG: "serverName=Docker"
     depends_on:
       - mysql
       - sparql
