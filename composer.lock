@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "edac0f0611125534002ce69a61071ae6",
+    "content-hash": "c98feb426f74927b13fc1b53835b9722",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3928,7 +3928,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/facets_form.git",
-                "reference": "85965678f7d051c929be267cd1fd15453d556559"
+                "reference": "52d624f6b32986941e1df77c6dd0c5eab77f6391"
             },
             "require": {
                 "cweagans/composer-patches": "^1.7",
@@ -3936,6 +3936,7 @@
                 "drupal/facets": "^1.6"
             },
             "require-dev": {
+                "drupal/facets_summary": "*",
                 "drupal/search_api": "^1.13"
             },
             "type": "drupal-module",
@@ -3945,7 +3946,7 @@
                 },
                 "drupal": {
                     "version": "1.x-dev",
-                    "datestamp": "1629847996",
+                    "datestamp": "1632837046",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3978,7 +3979,7 @@
                 "source": "https://git.drupalcode.org/project/facets_form",
                 "issues": "https://www.drupal.org/project/issues/facets_form"
             },
-            "time": "2021-09-06T17:00:30+00:00"
+            "time": "2021-09-30T10:52:24+00:00"
         },
         {
             "name": "drupal/field_delimiter",
@@ -6278,7 +6279,7 @@
                     "datestamp": "1632485829",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -9360,7 +9361,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2021-05-17T17:56:07+00:00"
+            "time": "2021-06-30T06:04:10+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -10233,6 +10234,7 @@
                 "drupal/drupal-extension": "^4.1",
                 "drupal/styleguide": "^1.0@alpha",
                 "drush/drush": "^10.3",
+                "openeuropa/task-runner": "dev-php-7.1 as 1.0.0-beta7",
                 "phpspec/prophecy-phpunit": "^1 || ^2"
             },
             "type": "drupal-theme",
@@ -10277,7 +10279,7 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa Bootstrap base theme.",
-            "time": "2021-10-22T14:56:33+00:00"
+            "time": "2021-10-22T15:17:24+00:00"
         },
         {
             "name": "openeuropa/oe_webtools",
@@ -11647,7 +11649,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2021-05-20T17:05:25+00:00"
+            "time": "2021-07-31T00:07:16+00:00"
         },
         {
             "name": "stack/builder",
@@ -16103,7 +16105,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1633781924",
+                    "datestamp": "1633781890",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -16360,16 +16362,16 @@
         },
         {
             "name": "ec-europa/toolkit",
-            "version": "4.4.11",
+            "version": "4.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",
-                "reference": "06b6b9c3f1d8acce340a767c0cdb0b54b89246d3"
+                "reference": "32c84123e8684663035c6cfd74d350b08787870b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/06b6b9c3f1d8acce340a767c0cdb0b54b89246d3",
-                "reference": "06b6b9c3f1d8acce340a767c0cdb0b54b89246d3",
+                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/32c84123e8684663035c6cfd74d350b08787870b",
+                "reference": "32c84123e8684663035c6cfd74d350b08787870b",
                 "shasum": ""
             },
             "require": {
@@ -16378,8 +16380,10 @@
                 "ec-europa/qa-automation": "^4.2",
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "^6.3",
+                "j13k/yaml-lint": "^1.1",
                 "openeuropa/task-runner": "^1.0.0-beta6",
                 "php": "^7.1",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
                 "phpunit/phpunit": "^6.0 || ^7.5 || ^9.5"
             },
             "suggest": {
@@ -16401,7 +16405,7 @@
             ],
             "description": "Toolkit packaged for Drupal 8.",
             "homepage": "https://github.com/ec-europa/toolkit",
-            "time": "2021-09-07T21:53:38+00:00"
+            "time": "2021-10-27T13:26:54+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -16754,6 +16758,60 @@
                 "webtest"
             ],
             "time": "2021-10-14T03:25:34+00:00"
+        },
+        {
+            "name": "j13k/yaml-lint",
+            "version": "1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/j13k/yaml-lint.git",
+                "reference": "e3b6e970e1a341a2e09fc3b47188ce7f648ef8e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/j13k/yaml-lint/zipball/e3b6e970e1a341a2e09fc3b47188ce7f648ef8e8",
+                "reference": "e3b6e970e1a341a2e09fc3b47188ce7f648ef8e8",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/yaml": "^2|^3|^4|^5"
+            },
+            "bin": [
+                "bin/yaml-lint"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "J13k\\YamlLint\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Fitzpatrick",
+                    "homepage": "http://github.com/j13k"
+                }
+            ],
+            "description": "A compact command line utility for checking YAML file syntax",
+            "homepage": "https://github.com/j13k/yaml-lint",
+            "keywords": [
+                "cli",
+                "lint",
+                "symfony",
+                "syntax",
+                "utility",
+                "yaml",
+                "yml"
+            ],
+            "time": "2021-03-11T08:48:25+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -17897,6 +17955,59 @@
             ],
             "description": "Library for handling version information and constraints",
             "time": "2018-07-08T19:19:57+00:00"
+        },
+        {
+            "name": "php-parallel-lint/php-parallel-lint",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-parallel-lint/PHP-Parallel-Lint.git",
+                "reference": "761f3806e30239b5fcd90a0a45d41dc2138de192"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-parallel-lint/PHP-Parallel-Lint/zipball/761f3806e30239b5fcd90a0a45d41dc2138de192",
+                "reference": "761f3806e30239b5fcd90a0a45d41dc2138de192",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.3.0"
+            },
+            "replace": {
+                "grogy/php-parallel-lint": "*",
+                "jakub-onderka/php-parallel-lint": "*"
+            },
+            "require-dev": {
+                "nette/tester": "^1.3 || ^2.0",
+                "php-parallel-lint/php-console-highlighter": "~0.3",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "suggest": {
+                "php-parallel-lint/php-console-highlighter": "Highlight syntax in code snippet"
+            },
+            "bin": [
+                "parallel-lint"
+            ],
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Onderka",
+                    "email": "ahoj@jakubonderka.cz"
+                }
+            ],
+            "description": "This tool check syntax of PHP files about 20x faster than serial check.",
+            "homepage": "https://github.com/php-parallel-lint/PHP-Parallel-Lint",
+            "time": "2021-08-13T05:35:13+00:00"
         },
         {
             "name": "php-task-runner/composer",
