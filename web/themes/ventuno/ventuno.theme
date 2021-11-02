@@ -226,3 +226,13 @@ function ventuno_smart_trim(string $string, int $length, bool $ellipsis = TRUE):
   $truncate = new TruncateHTML();
   return $truncate->truncateChars($string, $length, $ellipsis ? '…' : '');
 }
+
+/**
+ * Implements hook_preprocess().
+ */
+function ventuno_preprocess(&$variables) {
+  /** @var \Drupal\Core\Extension\ThemeHandler $themeHandler */
+  $themeHandler = \Drupal::service('theme_handler');
+  $ventuno = $themeHandler->getTheme('ventuno')->getPath();
+  $variables['icons_path'] = base_path() . $ventuno . '/assets/icons/bootstrap-icons.svg';
+}

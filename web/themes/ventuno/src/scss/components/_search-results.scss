@@ -1,0 +1,16 @@
+// Search results
+
+.view-search {
+  .view-header {
+    color: $primary;
+  }
+}
+.block-facets-summary {
+  margin-top: $spacer * 2;
+  ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+  }
+}

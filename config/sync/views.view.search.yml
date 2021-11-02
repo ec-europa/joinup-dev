@@ -396,7 +396,7 @@ display:
           group_type: group
           admin_label: ''
           empty: false
-          content: 'Search Results (@total)'
+          content: 'SEARCH RESULTS ( @total )'
           plugin_id: result
         views_block_area:
           id: views_block_area
