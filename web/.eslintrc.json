@@ -1,3 +1,59 @@
 {
-  "extends": "./core/.eslintrc.json"
+  // This is copied from Drupal 9.3 which is the version in which YAML linting
+  // was introduced. Once we are on Drupal 9.3, allow this file to be scaffolded
+  // again by drupal-scaffold. It is currently excluded from scaffolding in
+  // `composer.json`.
+  "extends": [
+    "airbnb",
+    "plugin:prettier/recommended",
+    "plugin:yml/recommended"
+  ],
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "globals": {
+    "Drupal": true,
+    "drupalSettings": true,
+    "drupalTranslations": true,
+    "jQuery": true,
+    "_": true,
+    "Cookies": true,
+    "Backbone": true,
+    "Modernizr": true,
+    "Popper": true,
+    "Shepherd": true,
+    "Sortable": true,
+    "once": true,
+    "CKEDITOR": true,
+    "tabbable": true
+  },
+  "settings": {
+    "react": {
+      "version": "latest"
+    }
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "consistent-return": ["off"],
+    "no-underscore-dangle": ["off"],
+    "max-nested-callbacks": ["warn", 3],
+    "import/no-mutable-exports": ["warn"],
+    "no-plusplus": ["warn", {
+      "allowForLoopAfterthoughts": true
+    }],
+    "no-param-reassign": ["off"],
+    "no-prototype-builtins": ["off"],
+    "valid-jsdoc": ["warn", {
+      "prefer": {
+        "returns": "return",
+        "property": "prop"
+      },
+      "requireReturn": false
+    }],
+    "no-unused-vars": ["warn"],
+    "operator-linebreak": ["error", "after", { "overrides": { "?": "ignore", ":": "ignore" } }]
+  }
 }

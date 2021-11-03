@@ -1,4 +1,4 @@
-@api @terms @group-b
+@api @terms @group-d
 Feature: Unpublished content of the website
   In order to manage unpublished entities
   As a user of the website

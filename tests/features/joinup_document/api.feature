@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature: Document API
   In order to manage document entities programmatically
   As a backend developer

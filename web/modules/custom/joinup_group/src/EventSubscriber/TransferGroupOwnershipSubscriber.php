@@ -79,7 +79,9 @@ class TransferGroupOwnershipSubscriber implements EventSubscriberInterface {
   public function alterRedirection(FilterResponseEvent $event): void {
     $response = $event->getResponse();
     if ($response->isRedirect() && $response instanceof RedirectResponse) {
-      $path = trim(parse_url($response->getTargetUrl(), PHP_URL_PATH), '/');
+      $path = rtrim(parse_url($response->getTargetUrl(), PHP_URL_PATH), '/');
+      $path = substr($path, strlen(base_path()));
+
       /** @var \Symfony\Component\HttpFoundation\RedirectResponse $response */
       $url = Url::fromUri("internal:/$path");
       if ($url->isRouted() && ($url->getRouteName() === 'joinup_group.transfer_group_ownership_confirm')) {

@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-g
 Feature: As a user with 'RDF graph manager' role I want to be able to upload RDF
   files in custom graphs and make them available as triples on Joinup RDF endpoint.
 

@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-e
 Feature: Sharing content on social networks
   As a user of the platform
   I want to share content in my social networks

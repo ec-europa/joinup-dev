@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature: "Event page" editing.
   In order to manage events
   As an owner of the event

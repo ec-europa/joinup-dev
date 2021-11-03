@@ -1,4 +1,4 @@
-@api @email @wip
+@api @wip
 Feature: Asset release notification system
   In order to manage releases
   As a user of the website
@@ -27,8 +27,7 @@ Feature: Asset release notification system
       | My awesome solution abc | Copernicus | owner |
 
   Scenario: Publish a release as a facilitator.
-    When all e-mails have been sent
-    And I am logged in as "Copernicus"
+    When I am logged in as "Copernicus"
     And I go to the homepage of the "My awesome solution abc" solution
     And I click "Add release"
     And I fill in the following:
@@ -44,7 +43,7 @@ Feature: Asset release notification system
       | body      | Dear Copernicus, Your release "1" for the "My awesome solution abc" solution was uploaded succesfully. Kind regards, The Joinup Support Team. |
 
     # Update an existing release.
-    When all e-mails have been sent
+    When I mark all emails as read
     And I go to the homepage of the "My awesome release abc" release
     And I click "Edit" in the "Entity actions" region
     And I fill in "Release number" with "v2"

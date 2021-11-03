@@ -10,13 +10,13 @@
   @include hidden-print;
 
   .footer__first {
-    background-color: rgb(20, 59, 118);
+    background-color: $color-blue-default;
   }
 
   .footer__second {
     padding-top: 10px;
     padding-bottom: 5px;
-    background-color: rgb(20, 59, 118);
+    background-color: $color-blue-default;
   }
 
   .footer__site-name {
@@ -24,7 +24,7 @@
     margin-bottom: 10px;
 
     img {
-      height: 40px;
+      height: 30px;
       width: auto;
     }
   }

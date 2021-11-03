@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-d
 Feature: Dashboard
   In order to see an overview of my related information at a glance
   As an authenticated user

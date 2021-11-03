@@ -319,7 +319,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    }, $this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     if (array_intersect($options, $available_options) !== $options) {
@@ -342,7 +344,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    }, $this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $intersection = array_intersect($available_options, $options);
@@ -383,7 +387,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function assertSelectOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    }, $this->getSelectOptions($field));
     sort($available_options);
 
     $options = $this->explodeCommaSeparatedStepArgument($options);
@@ -406,7 +412,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function assertSelectOptionNotAvailable($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    }, $this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
@@ -709,7 +717,13 @@ class JoinupContext extends RawDrupalContext {
       // This will allow dynamic tests as well. `strtotime` will also be able to
       // receive entries like "1 day ago" or "+1 month".
       if (!is_numeric($node->published_at)) {
+        // The strtotime() PHP function is using the default timezone when doing
+        // the conversion. But we want to stick to UTC in order to avoid
+        // timezone and DST issue.
+        $timezone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
         $node->published_at = strtotime($node->published_at);
+        date_default_timezone_set($timezone);
       }
     }
 
@@ -1958,7 +1972,10 @@ class JoinupContext extends RawDrupalContext {
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
-    $entity_url = $entity->toUrl()->setAbsolute()->toString();
+    // @todo Drop the base_url trick as soon as ISAICP-6648 is fixed.
+    $entity_url = $entity->toUrl('canonical', [
+      'base_url' => $GLOBALS['base_url'],
+    ])->setAbsolute()->toString();
     $href = $link_element->getAttribute('href');
 
     Assert::assertContains(urlencode($entity_url), $href);

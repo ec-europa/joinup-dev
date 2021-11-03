@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature: Discussion homepage
   As a user of the website
   I want to be able to view the discussion information

@@ -126,7 +126,7 @@ class EuLoginMenuLink extends MenuLinkDefault {
     }
     // If we are on the homepage, set the 'returnto' path to '/' alias.
     elseif ($this->pathMatcher->isFrontPage()) {
-      $return_to = '/';
+      $return_to = base_path();
     }
     // Return to the current page URL.
     else {

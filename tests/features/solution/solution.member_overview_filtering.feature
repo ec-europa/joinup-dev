@@ -1,4 +1,4 @@
-@api
+@api @group-f
 Feature: Type something to filter the listing the member list
   In order to quickly find a particular member
   As a moderator
