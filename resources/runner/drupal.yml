@@ -109,6 +109,7 @@ drupal:
         - Test mail collector
       prod:
         - Main settings
+        - Site email
         - Databases
         - Configuration
         - Search API
@@ -208,6 +209,8 @@ drupal:
       Test mail collector: |
         $config['system.mail']['interface']['default'] = 'test_mail_collector';
         $config['mailsystem.settings']['defaults']['sender'] = 'test_mail_collector';
+      Site email:
+        $config['system.site']['mail'] = getenv('DRUPAL_SITE_MAIL');
       Mail transport: |
         $config['swiftmailer.transport']['sendmail_path'] = getenv('DRUPAL_MAIL_SENDMAIL_PATH');
         $config['swiftmailer.transport']['sendmail_mode'] = getenv('DRUPAL_MAIL_SENDMAIL_MODE');
