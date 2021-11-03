@@ -48,8 +48,19 @@
 }
 
 .iop-gradient {
-	// background: linear-gradient(to right, #278ebf 0%, #44bfb8 32%, #50c1b0 37%, #70c89a 45%, #a4d377 56%, #c2d962 62%, #f6921e 100%); // Full IOP gradient
-	background: linear-gradient(to right, #c2d962 0%, #f6921e 100%); // Only last 2 colors
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
+  // background: linear-gradient(to right, #278ebf 0%, #44bfb8 32%, #50c1b0 37%, #70c89a 45%, #a4d377 56%, #c2d962 62%, #f6921e 100%); // Full IOP gradient
+  background: linear-gradient(
+    to right,
+    #c2d962 0%,
+    #f6921e 100%
+  ); // Only last 2 colors
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// Use Polyfill classes for IE fallback colours.
+.iecp-u1 {
+  .text-light {
+    color: $white;
+  }
 }
