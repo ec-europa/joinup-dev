@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-g
 Feature: Moderate community content
   In order to accept or reject content that is proposed for publication or deletion
   As a facilitator

@@ -1,14 +1,12 @@
-@api
+@api @group-e
 Feature: User registration
   As a user I must be able to register to the site and complete my user profile
   and receive appropriate notifications.
 
-  @email
   Scenario: A moderator can register a user
     Given users:
       | Username      | Roles     |
       | Mr. Moderator | Moderator |
-    And all e-mails have been sent
     And I am logged in as "Mr. Moderator"
     When I am on the homepage
     Then I click "People"

@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-g
 Feature: Solution membership administration
   In order to manage a solution
   As a solution facilitator
@@ -60,7 +60,6 @@ Feature: Solution membership administration
     When I click "Add members"
     Then I should see the heading "Add members"
 
-  @email
   Scenario: Assign and remove new role to a member
     When I am logged in as "Guadalupe Norman"
     And I go to the members page of "The Missing Sons"
@@ -86,7 +85,6 @@ Feature: Solution membership administration
       | subject   | Your role has been changed to member                                             |
       | body      | Guadalupe Norman has changed your role in solution "The Missing Sons" to member. |
 
-  @email
   Scenario: Privileged members should be allowed to invite users to a solution.
     Given users:
       | Username  | E-mail                 | First name | Family name |
@@ -117,7 +115,6 @@ Feature: Solution membership administration
     Then the page should show the following chips in the Content region:
       | Christian Dwight |
     When I select "Facilitator" from "Role"
-    And the mail collector cache is empty
     And I press "Invite members"
     Then I should see the success message "1 user has been invited to this group."
     And the following email should have been sent:

@@ -35,6 +35,7 @@ drupal:
         - Matomo & OpenEuropa Webtools Analytics
         - Custom error handler
         - Permissions
+        - Null mail collector
       site-clone:
         - Main settings
         - Databases
@@ -44,7 +45,7 @@ drupal:
         - Custom error handler
         - Permissions
         - Error logging
-        - Mail catch
+        - Development mail collector
         - Redis
         - Custom queue services
       site-clean:
@@ -59,7 +60,7 @@ drupal:
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
         - Error logging
-        - Mail catch
+        - Development mail collector
         - Redis
         - Custom queue services
       behat:
@@ -75,6 +76,7 @@ drupal:
         - OpenEuropa Webtools Geocoding Cache
         - Redis
         - Custom queue services
+        - Test mail collector
       error_page_test:
         - Main settings
         - Databases
@@ -86,9 +88,11 @@ drupal:
         - Development
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
+        - Error logging
         - Redis
         - Pipe errors to a temporary file
         - Custom queue services
+        - Test mail collector
       phpunit:
         - Main settings
         - Databases
@@ -102,6 +106,7 @@ drupal:
         - OpenEuropa Webtools Geocoding Cache
         - Error logging
         - Custom queue services
+        - Test mail collector
       prod:
         - Main settings
         - Databases
@@ -111,6 +116,7 @@ drupal:
         - Custom error handler
         - Redis
         - Custom queue services
+        - Mail transport
     header: |
       <?php
 
@@ -136,7 +142,14 @@ drupal:
       }
     sections:
       Main settings: |
-        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT');
+        if (!$hash_salt = getenv('DRUPAL_HASH_SALT')) {
+          $hash_salt = \Drupal\Component\Utility\Crypt::randomBytesBase64(55);
+          $env_file = "{$app_root}/../.env.pipeline";
+          if (!file_exists($env_file)) {
+            file_put_contents($env_file, "DRUPAL_HASH_SALT={$hash_salt}");
+          }
+        }
+        $settings['hash_salt'] = $hash_salt;
         $settings['container_yamls'][] = "$app_root/$site_path/services.yml";
         $settings['file_scan_ignore_directories'] = [
           'node_modules',
@@ -174,7 +187,6 @@ drupal:
           'joinup_cas_mock_server',
           'og_ui',
           'page_manager_ui',
-          'stage_file_proxy',
           'views_ui',
         ];
         // Location of the site configuration files.
@@ -191,30 +203,30 @@ drupal:
           'driver' => 'mysql',
         ];
         $databases['sparql_default']['default'] = [
-          'host' => getenv('SPARQL_HOST'),
-          'port' => getenv('SPARQL_PORT'),
+          'host' => getenv('DRUPAL_SPARQL_HOSTNAME'),
+          'port' => getenv('DRUPAL_SPARQL_PORT'),
           'namespace' => 'Drupal\\joinup_sparql\\Driver\\Database\\joinup_sparql',
           'driver' => 'sparql',
         ];
-        $settings['joinup']['sparql_public_endpoint'] = getenv('SPARQL_PUBLIC_ENDPOINT');
+        $settings['joinup']['sparql_public_endpoint'] = getenv('DRUPAL_SPARQL_PUBLIC_ENDPOINT');
       Permissions: |
         $settings['skip_permissions_hardening'] = TRUE;
-      Stage File Proxy: |
-        $config['stage_file_proxy.settings'] = [
-          'hotlink' => FALSE,
-          'origin' => 'https://joinup.ec.europa.eu/',
-          'origin_dir' => FALSE,
-          'use_imagecache_root' => TRUE,
-          'verify' => TRUE,
-        ];
-      Mail catch: |
+      Null mail collector: |
+        $config['system.mail']['interface']['default'] = 'null';
+        $config['mailsystem.settings']['defaults']['sender'] = 'null';
+      Development mail collector: |
         $config['system.mail']['interface']['default'] = 'devel_mail_log';
         $config['mailsystem.settings']['defaults']['sender'] = 'devel_mail_log';
+      Test mail collector: |
+        $config['system.mail']['interface']['default'] = 'test_mail_collector';
+        $config['mailsystem.settings']['defaults']['sender'] = 'test_mail_collector';
+      Mail transport: |
+        $config['swiftmailer.transport']['sendmail_path'] = getenv('DRUPAL_MAIL_SENDMAIL_PATH');
+        $config['swiftmailer.transport']['sendmail_mode'] = getenv('DRUPAL_MAIL_SENDMAIL_MODE');
+        $config['swiftmailer.transport']['spool_directory'] = getenv('DRUPAL_MAIL_SPOOL_DIR');
       Search API: |
-        $config['search_api.server.solr_published']['backend_config']['connector_config'] = parse_url(getenv('SOLR_CORE_PUBLISHED_URL'));
-        $config['search_api.server.solr_published']['backend_config']['connector_config']['core'] = getenv('SOLR_CORE_PUBLISHED_NAME');
-        $config['search_api.server.solr_unpublished']['backend_config']['connector_config'] = parse_url(getenv('SOLR_CORE_UNPUBLISHED_URL'));
-        $config['search_api.server.solr_unpublished']['backend_config']['connector_config']['core'] = getenv('SOLR_CORE_UNPUBLISHED_NAME');;
+        $config['search_api.server.joinup']['backend_config']['connector_config'] = parse_url(getenv('SOLR_URL'));
+        $config['search_api.server.joinup']['backend_config']['connector_config']['core'] = getenv('SOLR_CORE');
       Matomo & OpenEuropa Webtools Analytics: |
         $config['matomo.settings']['site_id'] = getenv('MATOMO_SITE_ID');
         $config['matomo.settings']['url_http'] = getenv('MATOMO_SITE_URL_HTTP');
@@ -224,7 +236,7 @@ drupal:
         $config['oe_webtools_analytics.settings']['sitePath'] = getenv('OE_WEBTOOLS_ANALYTICS_SITE_PATH');
         $config['oe_webtools_analytics.settings']['instance'] = getenv('OE_WEBTOOLS_ANALYTICS_SITE_INSTANCE');
       Redis: |
-        $settings['redis.connection']['interface'] = getenv('REDIS_INTERFACE');
+        $settings['redis.connection']['interface'] = 'Predis';
         $settings['redis.connection']['host'] = getenv('REDIS_HOST');
         $settings['redis.connection']['port'] = getenv('REDIS_PORT');
         $settings['cache']['default'] = 'cache.backend.redis';

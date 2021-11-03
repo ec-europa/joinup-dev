@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-g
 Feature: Subscribers report
   In order to get a view on how many members are subscribed to our content
   As a facilitator

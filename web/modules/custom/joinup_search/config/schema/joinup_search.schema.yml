@@ -28,7 +28,6 @@ plugin.plugin_configuration.search_api_processor.joinup_entity_status:
     inverse:
       type: boolean
       label: 'Inverse'
-    roles:
 
 search_api_field.plugin.filter.node_entity_autocomplete:
   type: joinup_search_filter_plugin_entity_autocomplete

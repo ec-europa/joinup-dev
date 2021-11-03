@@ -1,4 +1,4 @@
-@api @terms @group-b
+@api @terms @group-d
 Feature: Global search
   As a user of the site I can find content through the global search.
 
@@ -42,26 +42,16 @@ Feature: Global search
     And the option with text "Any topic" from select facet "topic" is selected
     # Terms are sorted alphabetically
     And the "topic" select facet should contain the following options:
-      | Any topic               |
+      | Any topic               | 0 |
       # Parent term.
-      | Info                    |
+      | Info                    | 0 |
       # Child term.
-      | Statistics and Analysis |
+      | Statistics and Analysis | 1 |
       # Parent term.
-      | Social and Political    |
+      | Social and Political    | 0 |
       # Child terms.
-      | Demography              |
-      | E-inclusion             |
-    # Since the topics are indented by a whitespace, and the whitespaces are trimmed in the step above, we are testing
-    # the full response in order to ensure that the results are indented properly. The &nbsp; character below is the
-    # printable space character.
-    # @todo and WARNING. The following   character is supported by the old 3.4 selenium server. Change this in the
-    # new infrastructure with the &nbsp; encoded character.
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23info\"> Info</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23statistics-and-analysis\">  Statistics and Analysis</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23social-and-political\"> Social and Political</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23demography\">  Demography</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23e-inclusion\">  E-inclusion</option>"
+      | Demography              | 1 |
+      | E-inclusion             | 1 |
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
@@ -186,15 +176,15 @@ Feature: Global search
     When I visit the search page
     And the "spatial coverage" select facet should contain the following options:
       | Any location     |
-      | Greece   (1)     |
-      | Luxembourg   (2) |
+      | Greece (1)     |
+      | Luxembourg (2) |
     When I select "Luxembourg" from the "spatial coverage" select facet
-    Then the option with text "Luxembourg   (2)" from select facet "spatial coverage" is selected
+    Then the option with text "Luxembourg (2)" from select facet "spatial coverage" is selected
     # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
     And the "spatial coverage" select facet should contain the following options:
       | Any location     |
-      | Greece   (1)     |
-      | Luxembourg   (2) |
+      | Greece (1)     |
+      | Luxembourg (2) |
 
   Scenario: Content can be found with a full-text search.
     Given the following owner:

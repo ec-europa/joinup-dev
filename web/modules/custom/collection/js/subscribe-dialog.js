@@ -16,7 +16,7 @@
           const sparql_encoded_id = drupalSettings.joinGroupData.sparqlEncodedId;
           if (!!sparql_encoded_id) {
             Drupal.ajax({
-              url: '/ajax/collection/' + sparql_encoded_id + '/subscribe/auth',
+              url: drupalSettings.path.baseUrl + 'ajax/collection/' + sparql_encoded_id + '/subscribe/auth',
             }).execute();
           }
         }

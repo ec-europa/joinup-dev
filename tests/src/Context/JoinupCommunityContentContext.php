@@ -485,7 +485,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
 
       // Check that title links to the canonical page of the article.
       $node = self::getNodeByTitle($actual_title);
-      $xpath = '//h2/a[@href = "' . $node->toUrl()->toString() . '"]';
+      $xpath = '//h2/a[@href = "' . $this->getEntityUri($node) . '"]';
       Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('Article "%s" does not link to the canonical page.', $actual_title));
 
       // Check that the correct number of topics are present.
@@ -507,7 +507,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
 
         // Check that each topic links to their canonical page.
         $topic_entity = self::getEntityByLabel('taxonomy_term', $actual_topic_title, 'topic');
-        $xpath = '/a[@href = "' . $topic_entity->toUrl()->toString() . '"]';
+        $xpath = '/a[@href = "' . $this->getEntityUri($topic_entity) . '"]';
         Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" for article "%s" does not link to the canonical topic page.', $actual_topic_title, $actual_title));
       }
     }

@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-c
 Feature: Discussion moderation
   In order to manage discussions
   As a user of the website

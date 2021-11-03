@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-f
 Feature:
   In order to make it easy to browse to specific content
   As a moderator
