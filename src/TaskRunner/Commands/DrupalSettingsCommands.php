@@ -148,7 +148,7 @@ class DrupalSettingsCommands extends AbstractCommands {
       throw new AbortTasksException("The '{$preset}' preset contains invalid sections: '" . implode("', '", array_keys($invalidSections)) . "'. Check the 'drupal.settings' configuration.");
     }
 
-    return array_intersect_key($allSections, $sections);
+    return array_merge($sections, array_intersect_key($allSections, $sections));
   }
 
 }
