@@ -37,6 +37,8 @@ Configuration from `docker-compose.yml` can be overwritten in
 to `docker-compose.override.yml`. Port mappings are not declared in the main
 `docker-compose.yml` file because this is developer custom setting, so you'll
 need to uncomment and edit, if case, the port mappings in the override file.
+Port mapping for the web container is required for accessing the webpage from
+the host machine so the override file is required in a normal workflow.
 
 **macOS users**: As Docker has performance issues when the host machine is a
 _macOS_ system, the setup needs more attention. Please read carefully all the
@@ -68,7 +70,7 @@ To clean the volume as well, use the `-v` parameter as `docker-compose down -v`.
 By default, the `web` container starts with Xdebug and Blackfire.io enabled, in
 order to support debugging. However, having them enabled while running Composer
 install or installing the site will dramatically slow the operations. It's
-recommended to enable them only then debugging and start the container with
+recommended to enable them only when debugging and start the container with
 Xdebug and Blackfire.io disabled. In order to do that, you should declare these
 environment variables in your `.env` file:
 
@@ -178,7 +180,7 @@ override the parent entry and will not merge with it.
 From the project root, run:
 
 ```bash
-$ docker-compose exec ./vendor/bin/run toolkit:install-clean
+$ docker-compose exec web ./vendor/bin/run toolkit:install-clean
 ```
 You can now access the website at `http://localhost/web` on the host machine, if
 the port mapping is `80:8080`. If you define a different port mapping, such as
@@ -197,25 +199,25 @@ in `.env` file. The values should be provided by DevOps team.
 #### Download all dumps/snapshots at once
 
 ```bash
-$ docker-compose exec ./vendor/bin/run ./vendor/bin/run dev:download-databases
+$ docker-compose exec web ./vendor/bin/run ./vendor/bin/run dev:download-databases
 ```
 
 #### Download only the MySQL dump
 
 ```bash
-$ docker-compose exec ./vendor/bin/run ./vendor/bin/run mysql:download-dump
+$ docker-compose exec web ./vendor/bin/run ./vendor/bin/run mysql:download-dump
 ```
 
 #### Download only the Virtuoso snapshot
 
 ```bash
-$ docker-compose exec ./vendor/bin/run ./vendor/bin/run virtuoso:download-snapshot
+$ docker-compose exec web ./vendor/bin/run ./vendor/bin/run virtuoso:download-snapshot
 ```
 
 #### Download only the Solr snapshot
 
 ```bash
-$ docker-compose exec ./vendor/bin/run ./vendor/bin/run solr:download-snapshot
+$ docker-compose exec web ./vendor/bin/run ./vendor/bin/run solr:download-snapshot
 ```
 
 **Note:** If you are changing from a clean install to a restored environment,
@@ -244,9 +246,9 @@ After containers are up and got the chance to import from dump/snapshots, run
 this sequence of commands:
 
 ```bash
-$ docker-compose exec ./vendor/bin/run dev:rebuild-environment
+$ docker-compose exec web ./vendor/bin/run dev:rebuild-environment
 # Installs the development modules, such as `devel`.
-$ docker-compose exec ./vendor/bin/run dev:install-modules
+$ docker-compose exec web ./vendor/bin/run dev:install-modules
 ```
 
 But you can create your own Task Runner command, to include all steps, in the
@@ -268,7 +270,7 @@ commands:
 Then simply run this script from the host machine:
 
 ```bash
-$ docker-compose exec ./vendor/bin/run restore
+$ docker-compose exec web ./vendor/bin/run restore
 ```
 
 ## Accessing the containers
@@ -276,7 +278,7 @@ $ docker-compose exec ./vendor/bin/run restore
 All containers are accessible through the command
 
 ```bash
-docker-compose exec my_container_name "/bin/bash"
+$ docker-compose exec my_container_name "/bin/bash"
 ```
 
 Depending on the container (and its base image), it might be that `/bin/bash` is
