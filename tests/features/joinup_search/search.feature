@@ -70,7 +70,7 @@ Feature: Global search
     And there should be exactly 1 "search field" on the page
 
     When I select "Social and Political" from the "topic" select facet form
-    And I click Search in facets form
+    And I press "Search"
     Then the option with text "Social and Political" from select facet form "topic" is selected
     And the "topic" select facet form should contain the following options:
       | Any topic                 |
@@ -87,7 +87,7 @@ Feature: Global search
 
     # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
     When I select " Demography" from the "topic" select facet form
-    And I click Search in facets form
+    And I press "Search"
     Then the option with text "- Demography" from select facet form "topic" is selected
     # The selected option moves to the last position by default.
     And the "topic" select facet form should contain the following options:
@@ -110,7 +110,7 @@ Feature: Global search
 
     # Test the spatial coverage facet.
     When I select "Belgium" from the "spatial coverage" select facet form
-    And I click Search in facets form
+    And I press "Search"
     Then the option with text "Belgium (1)" from select facet form "spatial coverage" is selected
     And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
@@ -129,7 +129,7 @@ Feature: Global search
     # Select link in the 'type' facet.
     Given I am on the search page
     When I select "News (5)" from the "Content types" select facet form
-    And I click Search in facets form
+    And I press "Search"
     Then the option with text "News (5)" from select facet form "Content types" is selected
     And the "Content types" select facet form should contain the following options:
       | Collection (1)  |
@@ -137,7 +137,7 @@ Feature: Global search
       | Solutions (2)   |
 
     When I select "Solutions (2)" option in the "Content types" select facet form
-    And I click Search in facets form
+    And I press "Search"
     And I should see the following facet summary "News, Solutions"
     And the "Content types" select facet form should contain the following options:
       | Collection (1)  |
@@ -193,7 +193,7 @@ Feature: Global search
       | Greece (1)       |
       | Luxembourg (2)   |
     When I select "Luxembourg" from the "spatial coverage" select facet form
-    And I click Search in facets form
+    And I press "Search"
     Then the option with text "Luxembourg (2)" from select facet form "spatial coverage" is selected
     And I should see the text "Search Results (2)"
     # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
@@ -635,19 +635,19 @@ Feature: Global search
     When I visit the search page
     And I select "Solutions (2)" from the "Content types" select facet form
     And I select "News (5)" option in the "Content types" select facet form
-    And I click Search in facets form
+    And I press "Search"
     And I should see the following facet summary "News, Solutions"
 
     Then I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
-    And I click Search in facets form
+    And I press "Search"
     And I should see the following facet summary "News"
 
     # Check if facet summary was remove correctly.
     Then I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
     And I select "Collection (1)" option in the "Content types" select facet form
-    And I click Search in facets form
+    And I press "Search"
     And I should see the following facet summary "Collection, News"
     Then I should remove the following facet summary "News"
     And the page should show only the tiles "Radio cooking collection"
