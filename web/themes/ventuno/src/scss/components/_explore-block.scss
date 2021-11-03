@@ -68,6 +68,7 @@ body {
           padding: $spacer * 1.5; // 24px
           margin-right: $spacer * 1.5; // 24px
           height: 100%;
+          box-shadow: $box-shadow;
           .layout {
             flex-grow: 1;
             .layout__region {
