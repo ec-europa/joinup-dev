@@ -256,60 +256,6 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
-   * Clicks a facet item in an inline facet.
-   *
-   * @param string $select
-   *   The option to select.
-   * @param string $facet
-   *   The facet alias.
-   *
-   * @throws \Exception
-   *   Thrown when the facet or the link inside the facet is not found.
-   *
-   * @When I select :option from the :facet select facet
-   */
-  public function iSelectAnOptionFromFacet(string $select, string $facet): void {
-    $facet = $this->findFacetByAlias($facet, NULL, 'select');
-    $facet->selectOption($select);
-  }
-
-  /**
-   * Clicks a facet item in an inline facet form.
-   *
-   * @param string $select
-   *   The option to select.
-   * @param string $facet
-   *   The facet alias.
-   *
-   * @throws \Exception
-   *   Thrown when the facet or the link inside the facet is not found.
-   *
-   * @When I select :option from the :facet select facet form
-   */
-  public function iSelectAnOptionFromFacetForm(string $select, string $facet): void {
-    $facet = $this->findFacetByAlias($facet, NULL, 'select', TRUE);
-    $facet->selectOption($select);
-  }
-
-  /**
-   * Clicks in more facet items in an inline facet form.
-   *
-   * @param string $select
-   *   The option to select.
-   * @param string $facet
-   *   The facet alias.
-   *
-   * @throws \Exception
-   *   Thrown when the facet or the link inside the facet is not found.
-   *
-   * @When I select :option option in the :facet select facet form
-   */
-  public function iSelectOtherOptionFromFacetForm(string $select, string $facet): void {
-    $facet = $this->findFacetByAlias($facet, NULL, 'select', TRUE);
-    $facet->selectOption($select, TRUE);
-  }
-
-  /**
    * Asserts a selected option in the .
    *
    * @param string $option
