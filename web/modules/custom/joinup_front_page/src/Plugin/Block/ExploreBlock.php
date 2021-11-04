@@ -97,17 +97,17 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
       ])->toString();
     };
     $data = [
-      'solutions' => [
-        'label' => $this->t('Solutions'),
-        'plural_type' => $this->t('solutions'),
-        'data' => $this->getRdfEntities('solution'),
-        'url' => $get_url('solution'),
-      ],
       'collections' => [
         'label' => $this->t('Collections'),
         'plural_type' => $this->t('collections'),
         'data' => $this->getRdfEntities('collection'),
         'url' => $get_url('collection'),
+      ],
+      'solutions' => [
+        'label' => $this->t('Solutions'),
+        'plural_type' => $this->t('solutions'),
+        'data' => $this->getRdfEntities('solution'),
+        'url' => $get_url('solution'),
       ],
       'news' => [
         'label' => $this->t('News'),
