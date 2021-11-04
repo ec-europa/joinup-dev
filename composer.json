@@ -57,6 +57,7 @@
         "drupal/message_digest": "^1.0.0",
         "drupal/message_notify": "~1.2",
         "drupal/meta_entity": "^1.0-alpha2",
+        "drupal/monolog": "^1.3",
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/page_manager": "^4.0@beta",
