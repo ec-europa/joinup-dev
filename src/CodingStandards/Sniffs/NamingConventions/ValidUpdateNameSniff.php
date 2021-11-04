@@ -144,9 +144,9 @@ class ValidUpdateNameSniff extends ValidFunctionNameSniff {
       $tagsString = trim($repository->run('tag', ['--sort=creatordate']));
       $tags = array_reverse(preg_split('/\s/', $tagsString));
       foreach ($tags as $tag) {
-        // Only support stable release tags. The regexp is borrowed from
-        // \Composer\Semver\VersionParser::normalize().
-        if (preg_match('{^v?(\d{1,5})(\.\d++)?(\.\d++)?(\.\d++)?}i', $tag)) {
+        // Only support stable release tags. The regexp is borrowed and adapted
+        // from \Composer\Semver\VersionParser::normalize().
+        if (preg_match('{^v?(\d{1,5})(\.\d++)?(\.\d++)?(\.\d++)?$}i', $tag)) {
           // Remove a potential leading 'v'.
           static::$latestStableTag = ltrim($tag, 'v');
           break;
