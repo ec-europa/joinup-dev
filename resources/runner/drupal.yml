@@ -118,6 +118,7 @@ drupal:
         - Redis
         - Custom queue services
         - Mail transport
+        - Monolog
     header: |
       <?php
 
@@ -250,6 +251,8 @@ drupal:
         $settings['extension_discovery_scan_tests'] = TRUE;
       Error logging: |
         $config['system.logging']['error_level'] = 'verbose';
+      Monolog: |
+        $settings['container_yamls'][] = 'modules/custom/joinup_core/joinup_core.monolog.services.yml';
       Custom queue services: |
         $settings['queue_service_joinup_group:group_update'] = 'joinup_group.group_aware_queue';
         $settings['queue_service_joinup_group:group_content_update'] = 'joinup_group.group_aware_queue';
