@@ -32,7 +32,7 @@ Feature:
     And the relative url should be "/search?keys=how%20to%20redirect"
 
   Scenario: Only the destination parameter should be carried over if one exists outside the user pages.
-    When I am on "/search?keys=how+to+redirect&destination=/contact"
+    When I am on "/search?keys=how+to+redirect&destination=/web/contact"
     And I click "Sign in" in the "Navigation bar"
     And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"
