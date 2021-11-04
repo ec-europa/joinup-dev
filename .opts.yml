@@ -14,7 +14,7 @@ upgrade_commands:
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes
     # These are release v1.75.0 one-time-tasks and will be removed after a
     # successful deployment on production, in the scope of the release ticket.
-    # The unpublished content Solr core/server has been removed. We reindexo
+    # The unpublished content Solr core/server has been removed. We reindex
     # unpublished content into the unified Solr core/server.
     - ./vendor/bin/drush search-api:clear unpublished
     - ./vendor/bin/drush search-api:index unpublished
