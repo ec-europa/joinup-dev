@@ -1,4 +1,4 @@
-@api
+@api @group-d
 Feature: Solution API
   In order to be able to use solutions with spaces in their uris
   As a backend developer

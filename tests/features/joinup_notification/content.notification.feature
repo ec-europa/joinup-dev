@@ -1,4 +1,4 @@
-@api @email @wip
+@api @wip
 Feature: Content notification system
   As a user of the website
   In order to be up to date with the changes on my content
@@ -30,7 +30,6 @@ Feature: Content notification system
     And event content:
       | title                              | short title         | body                                  | state    | solution                    | start date          | end date            |
       | Smoke signals pre-conference party | Smoke signals party | A party thrown before the conference. | proposed | Smoke signals code standard | 2017-03-31T16:43:13 | 2017-03-31T16:43:13 |
-    And all e-mails have been sent
 
   Scenario: Send emails on content update.
     When I am logged in as "Jerrard Verity"
@@ -45,7 +44,7 @@ Feature: Content notification system
       | subject   | Joinup: user Jerrard Verity updated a News of your collection                                                 |
       | body      | Devyn Queshire, Jerrard Verity updated the News "Communication tools" in your Communication tools collection. |
 
-    Given all the e-mails have been sent
+    Given I mark all emails as read
     When I go to the "Smoke signals pre-conference party" event
     And I click "Edit"
     And I fill in "Location" with "Somewhere with a clean sky"
@@ -70,7 +69,7 @@ Feature: Content notification system
       | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The Joinup Support Team. |
 
     When I am logged in as "Jerrard Verity"
-    And all the e-mails have been sent
+    And I mark all emails as read
     When I go to the "Smoke signals pre-conference party" event
     And I click "Delete"
     And I press "Delete"

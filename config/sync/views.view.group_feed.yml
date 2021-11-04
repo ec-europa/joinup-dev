@@ -1140,7 +1140,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ view_node|trim(''/'', ''left'') }}{{ view_rdf_entity|trim(''/'', ''left'') }}'
+            text: '/{{ view_node|trim(''/'', ''left'') }}{{ view_rdf_entity|trim(''/'', ''left'') }}'
             make_link: false
             path: ''
             absolute: false

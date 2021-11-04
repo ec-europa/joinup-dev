@@ -8,6 +8,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -90,30 +91,35 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
    * {@inheritdoc}
    */
   public function build(): array {
+    $get_url = function (string $type): string {
+      return Url::fromRoute('view.search.page_1', [], [
+        'query' => ['f' => ['type:' . $type]],
+      ])->toString();
+    };
     $data = [
-      'solutions' => [
-        'label' => $this->t('Solutions'),
-        'plural_type' => $this->t('solutions'),
-        'data' => $this->getRdfEntities('solution'),
-        'url' => '/search?keys=&f[0]=type%3Asolution',
-      ],
       'collections' => [
         'label' => $this->t('Collections'),
         'plural_type' => $this->t('collections'),
         'data' => $this->getRdfEntities('collection'),
-        'url' => '/search?keys=&f[0]=type%3Acollection',
+        'url' => $get_url('collection'),
+      ],
+      'solutions' => [
+        'label' => $this->t('Solutions'),
+        'plural_type' => $this->t('solutions'),
+        'data' => $this->getRdfEntities('solution'),
+        'url' => $get_url('solution'),
       ],
       'news' => [
         'label' => $this->t('News'),
         'plural_type' => $this->t('news'),
         'data' => $this->getContent('news'),
-        'url' => '/search?keys=&f[0]=type%3Anews',
+        'url' => $get_url('news'),
       ],
       'events' => [
         'label' => $this->t('Events'),
         'plural_type' => $this->t('events'),
         'data' => $this->getContent('event'),
-        'url' => '/search?keys=&f[0]=type%3Aevent',
+        'url' => $get_url('event'),
       ],
     ];
 

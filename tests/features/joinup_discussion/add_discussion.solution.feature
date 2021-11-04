@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-d
 Feature: "Add discussion" visibility options.
   In order to manage discussions
   As a solution member

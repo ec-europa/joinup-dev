@@ -4,7 +4,6 @@ Feature: Submit the contact form
   As a moderator, group administrator or content owner
   I need to receive email when the content is reported
 
-  @email
   Scenario: Receive email when content is reported
     Given users:
       | Username         | Roles     | E-mail                    | First name | Family name |

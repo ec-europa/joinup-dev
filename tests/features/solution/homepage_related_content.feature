@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-g
 Feature: Solution homepage
   In order find content around a topic
   As a user of the website

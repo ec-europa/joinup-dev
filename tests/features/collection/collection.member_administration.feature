@@ -1,4 +1,4 @@
-@api @group-a @terms
+@api @terms @group-a
 Feature: Collection membership administration
   In order to build a community
   As a collection facilitator
@@ -36,10 +36,8 @@ Feature: Collection membership administration
     Then I should see the button "Apply to selected items" in the "Members admin form header" region
     But I should not see the button "Apply to selected items" in the "Members admin form actions" region
 
-  @email
   Scenario: Request a membership
     When I am logged in as "Donald Duck"
-    And all e-mails have been sent
     And I go to the "Medical diagnosis" collection
     And I press the "Join this collection" button
     Then I should see the success message "Your membership to the Medical diagnosis collection is under approval."
@@ -54,7 +52,6 @@ Feature: Collection membership administration
       | subject   | Joinup: A user has requested to join your collection                               |
       | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
 
-  @email
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
     Given I am logged in as "Kathie Cumbershot"
@@ -69,7 +66,6 @@ Feature: Collection membership administration
 
     # Approve a membership.
     Given I am logged in as "Lisa Cuddy"
-    And all e-mails have been sent
     And I am on the members page of "Medical diagnosis"
     Then the "Action" select should contain the following options:
       | Approve the pending membership(s)                               |
@@ -105,10 +101,9 @@ Feature: Collection membership administration
     Then I should see the plus button menu
     Then I should see the link "Add news"
 
-  @javascript @email
+  @javascript
   Scenario: Request a membership with subscription and approve it
     When I am logged in as "Cam Bridge"
-    And all e-mails have been sent
     And I go to the "Medical diagnosis" collection
     And I press the "Join this collection" button
     Then a modal should open
@@ -120,7 +115,6 @@ Feature: Collection membership administration
 
     # Approve a membership.
     Given I am logged in as "Lisa Cuddy"
-    When all e-mails have been sent
     And I go to the "Medical diagnosis" collection
 
     And I open the group sidebar menu
@@ -142,10 +136,8 @@ Feature: Collection membership administration
     When I click the "My subscriptions" link from the email sent to "Cam Bridge"
     Then I should see the heading "My subscriptions"
 
-  @email
   Scenario: Reject a membership
     Given I am logged in as "Lisa Cuddy"
-    And all e-mails have been sent
     And I am on the members page of "Medical diagnosis"
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
@@ -199,7 +191,6 @@ Feature: Collection membership administration
     Then I should not see the plus button menu
     And I should see the button "Join this collection"
 
-  @email
   Scenario: Assign a new role to a member
     # Check that Dr House can't edit the collection.
     When I am logged in as "Gregory House"
@@ -209,7 +200,6 @@ Feature: Collection membership administration
 
     # Dr Cuddy promotes Dr House to facilitator.
     When I am logged in as "Lisa Cuddy"
-    And all e-mails have been sent
     And I go to the "Medical diagnosis" collection
     Then I click "Members" in the "Left sidebar"
     # Assert that the user does not see the default OG tab.
@@ -360,7 +350,6 @@ Feature: Collection membership administration
       | Eric Foreman      |
       | Eric Drexler      |
 
-  @email
   Scenario: Privileged members should be allowed to invite users to a collection.
     Given users:
       | Username  | E-mail                 | First name | Family name |
@@ -398,7 +387,6 @@ Feature: Collection membership administration
       | Christian Dwight   |
       | Jeannette Belanger |
     When I select "Facilitator" from "Role"
-    And the mail collector cache is empty
     And I press "Invite members"
     Then I should see the success message "2 users have been invited to this group."
     And the following email should have been sent:

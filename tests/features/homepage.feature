@@ -160,13 +160,12 @@ Feature: Homepage
     Given the Joinup version is set to "<version>"
     When I am on the homepage
     Then I should see the link "<version>" in the Footer region
-    When I click "<version>"
-    Then the url should match "<url>"
+    And the "<version>" link should point to "<url>"
 
     Examples:
-      | version                    | url                                        |
-      | v1.57.0                    | /ec-europa/joinup-dev/releases/tag/v1.57.0 |
-      | v1.57.0-177-g0123456abcdef | /ec-europa/joinup-dev/commit/0123456abcdef |
+      | version                    | url                                                                |
+      | v1.57.0                    | https://git.fpfis.eu/digit/digit-joinup-reference/-/tags/v1.57.0   |
+      | v1.57.0-177-g0123456abcdef | https://git.fpfis.eu/digit/digit-joinup-dev/-/commit/0123456abcdef |
 
   Scenario: Search box is shown in the main content
     Given collection:
@@ -309,13 +308,6 @@ Feature: Homepage
     When I am on the homepage
     Then the explore section should contain the following content:
       | type       | title                       | date                   | description                                                                                                                                                                                                                             |
-      | solution   | Cities of Italy             | 2020-01-01 17:36 +0200 | Download our report report-2021-09-16.xls for more information.                                                                                                                                                                         |
-      | solution   | Products of Italy           | 2019-08-14 17:36 +0200 | Watch now                                                                                                                                                                                                                               |
-      | solution   | Proton Global               | 2019-07-05 10:00 +0100 | An inlined image:Text after image.                                                                                                                                                                                                      |
-      | solution   | Lantern International       | 2018-12-18 08:00 +0100 | Lantern International Group has started deploying personnel in focused areas. In this quest we have decided to consolidate our private businesses into one entity as a significant step towards realizing our company's long-term plan… |
-      | solution   | Cities of France            | 2018-12-14 17:36 +0200 | There are many variations                                                                                                                                                                                                               |
-      | solution   | Cities of Bulgaria          | 2018-11-14 17:36 +0200 | Supports fields                                                                                                                                                                                                                         |
-      | solution   | Products of Bulgaria        | 2018-08-14 17:36 +0200 | Supports health                                                                                                                                                                                                                         |
       | collection | Clash of vettel             | 2020-10-18 08:00 +0100 | The point is that we do have the rights to one of our films. So we could be dealing with a film that we'd normally have to show only for three or four weeks and see what happens. But it's more like a TV show. It's bigger and has…   |
       | collection | Sarah desert                | 2020-06-18 08:00 +0100 | Watch our video! It's embedded!                                                                                                                                                                                                         |
       | collection | Clash of jonnys             | 2019-12-18 08:00 +0100 | Supports health-related fields                                                                                                                                                                                                          |
@@ -324,6 +316,13 @@ Feature: Homepage
       | collection | Jupiter sun                 | 2018-12-18 08:00 +0100 | Sum is therefore                                                                                                                                                                                                                        |
       | collection | Clash of alex               | 2018-11-18 08:00 +0100 | Lorem Ipsum is simply dummy                                                                                                                                                                                                             |
       | collection | Nature area                 | 2018-07-18 08:00 +0100 | Supports health                                                                                                                                                                                                                         |
+      | solution   | Cities of Italy             | 2020-01-01 17:36 +0200 | Download our report report-2021-09-16.xls for more information.                                                                                                                                                                         |
+      | solution   | Products of Italy           | 2019-08-14 17:36 +0200 | Watch now                                                                                                                                                                                                                               |
+      | solution   | Proton Global               | 2019-07-05 10:00 +0100 | An inlined image:Text after image.                                                                                                                                                                                                      |
+      | solution   | Lantern International       | 2018-12-18 08:00 +0100 | Lantern International Group has started deploying personnel in focused areas. In this quest we have decided to consolidate our private businesses into one entity as a significant step towards realizing our company's long-term plan… |
+      | solution   | Cities of France            | 2018-12-14 17:36 +0200 | There are many variations                                                                                                                                                                                                               |
+      | solution   | Cities of Bulgaria          | 2018-11-14 17:36 +0200 | Supports fields                                                                                                                                                                                                                         |
+      | solution   | Products of Bulgaria        | 2018-08-14 17:36 +0200 | Supports health                                                                                                                                                                                                                         |
       | news       | Current biodiversity adapt  | 2021-04-30T19:09:00Z   | Here we combine global maps of human populations and land use over the past 12000 y with current biodiversity data to show that nearly three quarters of nature has long been shaped by histories of human habitation and use by…       |
       | news       | Super-Alfvenic plasma flow  | 2021-04-29T10:18:00Z   | Magnetic draping                                                                                                                                                                                                                        |
       | news       | H-rich Wolf-Rayet star      | 2021-03-29T10:18:00Z   | Polarimetric analysis Watch our video                                                                                                                                                                                                   |

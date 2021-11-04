@@ -37,8 +37,7 @@ class OutdatedContentFieldItemList extends FieldItemList {
     // If $publication_time is NULL, then the entity has never been published,
     // thus it cannot be outdated.
     if (!empty($publication_time)) {
-      $utc = new \DateTimeZone('UTC');
-      $published_at = new \DateTime("@$publication_time", $utc);
+      $published_at = new \DateTime("@$publication_time");
       $outdated_date = $published_at->add(new \DateInterval("P{$threshold}Y"))->getTimestamp();
     }
 

@@ -65,7 +65,7 @@ class JoinupNewsContext extends RawDrupalContext {
 
       // Check that title links to the canonical page of the news article.
       $news_node = self::getNodeByTitle($actual_title, 'news');
-      $xpath = '//h2/a[@href = "' . $news_node->toUrl()->toString() . '"]';
+      $xpath = '//h2/a[@href = "' . $this->getEntityUri($news_node) . '"]';
       Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('Article "%s" does not link to the canonical news page.', $actual_title));
 
       // Check the date.
@@ -92,7 +92,7 @@ class JoinupNewsContext extends RawDrupalContext {
 
         // Check that each topic links to their canonical page.
         $topic_entity = self::getEntityByLabel('taxonomy_term', $actual_topic_title, 'topic');
-        $xpath = '/a[@href = "' . $topic_entity->toUrl()->toString() . '"]';
+        $xpath = '/a[@href = "' . $this->getEntityUri($topic_entity) . '"]';
         Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" for article "%s" does not link to the canonical topic page.', $actual_topic_title, $actual_title));
       }
     }

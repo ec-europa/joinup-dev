@@ -290,8 +290,13 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
           '#default_value' => $link->getParent(),
         ];
 
+        $pathinfo = $link->getUrlObject()->toString();
+        // @todo Remove this workaround once this is fixed in core.
+        // @see https://www.drupal.org/project/drupal/issues/2548095
+        $pathinfo = substr($pathinfo, strlen(base_path()) - 1);
+
         // Disable nesting of links that are not pointing to nodes.
-        $route_info = $this->urlMatcher->match($link->getUrlObject()->toString());
+        $route_info = $this->urlMatcher->match($pathinfo);
         if ($route_info['_route'] !== 'entity.node.canonical') {
           // Force parent value to be empty. This will disable any value
           // submission for this form element, thus disallowing any parent to

@@ -51,10 +51,6 @@ body {
     }
   }
   .tab-content {
-    width: 100vw;
-    @include media-breakpoint-up(xl) {
-      width: 90vw;
-    }
     .tab-pane {
       .see-more {
         display: block;
@@ -68,7 +64,6 @@ body {
           padding: $spacer * 1.5; // 24px
           margin-right: $spacer * 1.5; // 24px
           height: 100%;
-          box-shadow: $box-shadow;
           .layout {
             flex-grow: 1;
             .layout__region {
@@ -141,7 +136,9 @@ body {
     order: 3;
     overflow-y: unset !important;
     overflow-x: clip !important;
-    padding: 6px 0 6px 6px;
+    padding: 0px 0px 6px 6px;
+    margin: 0 -3px;
+    width: calc(100% + 24px);
   }
   .slick-track {
     display: flex !important;
@@ -152,6 +149,11 @@ body {
     margin-right: $spacer*1.5;
     & > div {
       width: 100%;
+    }
+  }
+  .slick-active {
+    article {
+      @extend .shadow;
     }
   }
 }
