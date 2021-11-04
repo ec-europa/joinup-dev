@@ -25,14 +25,6 @@ tips:
     location: left
     attributes:
       data-class: search-bar
-  discover_topics:
-    id: discover_topics
-    plugin: text
-    body: 'Or, select a topic to view relevant content items.'
-    weight: 3
-    location: right
-    attributes:
-      data-class: view-discover-topics
   spotlight:
     id: spotlight
     plugin: text

@@ -2,6 +2,8 @@ homepage:
   css:
     theme:
       assets/css/homepage.css: {}
+  js:
+    assets/js/sticky-menu.js: { minified: true, attributes: { defer: true } }
 
 slick:
   js:
@@ -14,7 +16,7 @@ slick:
 style:
   version: VERSION
   css:
-    theme:
+    base:
       assets/css/main.css: {}
   js:
     assets/js/oe-bcl-joinup.bundle.min.js: { minified: true }

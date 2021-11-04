@@ -130,7 +130,7 @@ being created:
 
 ```gherkin
 ...
-And the "Discover topics" content listing contains:
+And the "Highlighted content" content listing contains:
   | type  | label                            |
   | topic | Employment and Support Allowance |
   | topic | E-justice                        |

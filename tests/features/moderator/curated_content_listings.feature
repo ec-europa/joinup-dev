@@ -10,12 +10,11 @@ Feature: Curated content listings
     And I click "Curated content listings"
     Then I should see the heading "Curated content listings"
     And I should see the following links:
-      | Discover topics      |
       | Highlighted event    |
       | Highlighted solution |
       | In the spotlight     |
-    When I click "Discover topics"
-    Then I should see the heading "Update curated content listing Discover topics"
+    When I click "In the spotlight"
+    Then I should see the heading "Update curated content listing In the spotlight"
     And I should see the button "Add item"
     And I should see the button "Save"
     And I should see the button "Reverse"

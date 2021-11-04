@@ -1,16 +1,40 @@
-.block-joinup-search-global-search {
-  @extend .pt-5;
-  @extend .pb-2;
-  @extend .me-3;
-  @extend .col-lg;
-  .search-bar {
-    .search-bar__input {
-      border-style: none;
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
+.region-featured {
+  background-size: 100% auto;
+  background-position: 0 55%, 0 55%;
+  background-image: url(../images/wave.svg), url(../images/background.svg),
+    linear-gradient($primary 0%, $primary 50%, #082330 50%, #082330 100%);
+  background-repeat: no-repeat;
+  @include media-breakpoint-up(md) {
+    background-size: auto 100%;
+    background-position: center;
+    background-image: url(../images/banner-md.svg),
+      linear-gradient(
+        to right,
+        $primary 0%,
+        $primary 30%,
+        #082330 30%,
+        #082330 100%
+      );
+  }
+  .block-joinup-search-global-search {
+    padding-bottom: $spacer * 0.5; // 8px
+    @include media-breakpoint-up(lg) {
+      margin-right: $spacer; // 16px
     }
-    .btn-search {
-      @include font-icon-before("\E805", 1.2rem, inherit, inherit, 0);
+    .search-bar {
+      .search-bar__input {
+        font-size: $font-size-base;
+        border-style: none;
+        border-top-left-radius: $border-radius-pill;
+        border-bottom-left-radius: $border-radius-pill;
+      }
+      .btn-search {
+        @include font-icon-before("\E805", 1.2rem, $primary, inherit, 0);
+        border-top-right-radius: $border-radius-pill;
+        border-bottom-right-radius: $border-radius-pill;
+        color: $dark;
+        background-color: $white;
+      }
     }
   }
 }

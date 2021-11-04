@@ -180,65 +180,6 @@ Feature: Homepage
     Then I should be on the search page
     And I should see the "RNA vaccines" tile
 
-  # Todo: This test is disabled because of a persisting failure on CPHP which
-  # cannot be replicated locally. To be enabled again once we have moved to
-  # the new infrastructure.
-  # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6656
-  @terms @javascript @wip
-  Scenario Outline: Discover topics block shows a list of topics.
-    Given collection:
-      | title | Clash of vania's |
-      | state | validated        |
-    And news content:
-      | title             | headline                      | collection       | topic         | state     | publication date     | body                  |
-      | Some title        | Some headline                 | Clash of vania's | E-justice     | validated | 2021-04-26T19:09:00Z | Body                  |
-      | Internet medicine | It cures virtually everything | Clash of vania's | E-health Dpt. | validated | 2014-02-22T19:26:57Z | Electronic healthcare |
-    And the "Discover topics" content listing contains:
-      | type  | label                            |
-      | topic | Employment and Support Allowance |
-      | topic | E-justice                        |
-    When I <logged in>
-    And I am on the homepage
-    Then I should see the link "Employment and Support Allowance" in the "Discover topics block"
-    And I should see the link "E-justice" in the "Discover topics block"
-    When I click "E-justice"
-    Then I should be on the advanced search page
-    And the option with text "E-justice" from select facet "topic" is selected
-
-    # See more topics modal.
-    When I am on the homepage
-    Then I should see the link "See more topics" in the "Discover topics block"
-    And I should not see the text "Topic categories"
-    And I should not see the following links in the "Discover topics block":
-      | Economy and Welfare  |
-      | eGov                 |
-      | E-health Dpt.        |
-      | HR Dpt.              |
-      | Info                 |
-      | Law and Justice      |
-      | Social and Political |
-
-    When I click "See more topics" in the "Discover topics block"
-    Then a modal should open
-    And I should see the text "Topic categories"
-    And I should see the following links:
-      | Economy and Welfare  |
-      | eGov                 |
-      | E-health Dpt.        |
-      | HR Dpt.              |
-      | Info                 |
-      | Law and Justice      |
-      | Social and Political |
-    When I click "E-health Dpt." in the "Modal content"
-    Then I should be on the advanced search page
-    And the option with text "E-health Dpt." from select facet "topic" is selected
-    And the page should show the tiles "Internet medicine"
-
-    Examples:
-      | logged in                                          |
-      | am not logged in                                   |
-      | am logged in as a user with the authenticated role |
-
   @terms
   Scenario: Explore block shows a selection of news, events, collections and solutions
     Given users:

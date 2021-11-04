@@ -70,7 +70,7 @@
   {% set list_item_attributes = create_attribute() %}
 {% endif %}
 
-{% set nav_attributes = nav_attributes.addClass(_nav_classes) %}
+{% set nav_attributes = nav_attributes.addClass(_nav_classes).setAttribute('id', 'joinup-navbar') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.addClass(_navbar_toggler_classes) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('type', 'button') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-toggle', 'collapse') %}

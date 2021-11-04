@@ -26,6 +26,14 @@ module.exports = {
         sourceMap: true,
       },
     },
+    {
+      entry: path.resolve(outputFolder, "src/js/sticky-menu.js"),
+      dest: path.resolve(outputFolder, "assets/js/sticky-menu.js"),
+      options: {
+        minify: true,
+        sourceMap: true,
+      },
+    },
   ],
   styles: [
     {
@@ -88,7 +96,67 @@ module.exports = {
       from: [
         path.resolve(
           __dirname,
+          "src/images/logo.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
           "src/images/highlighted-event.jpg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/iop-eu-logo.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/homepage-banner.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/homepage-banner/background.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/homepage-banner/wave.svg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/homepage-banner/banner-md.svg"
         ),
       ],
       to: path.resolve(outputFolder, "assets/images"),
