@@ -53,9 +53,7 @@ Feature: Asset distribution editing.
     And I go to the homepage of the "Asset distribution example" asset distribution
     Then I should not see the link "Edit" in the "Entity actions" region
 
-  @email
   Scenario: Edit a distribution as a solution facilitator.
-    When all e-mails have been sent
     When I am logged in as a facilitator of the "Solution A" solution
     And I go to the homepage of the "Asset distribution example" asset distribution
     And I click "Edit"

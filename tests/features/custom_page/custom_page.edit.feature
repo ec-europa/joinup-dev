@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-f
 Feature: "Custom page" editing.
   In order to manage custom pages
   As a moderator or group facilitator

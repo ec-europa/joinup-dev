@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-e
 Feature:
   As a moderator
   In order to better organize the content

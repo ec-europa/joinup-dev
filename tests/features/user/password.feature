@@ -1,4 +1,4 @@
-@api
+@api @group-e
 Feature: Password management
   As a registered user of the website
   I want to be able to manage and restore my password

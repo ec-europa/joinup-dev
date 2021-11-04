@@ -1,4 +1,4 @@
-@api
+@api @group-g
 Feature: Solution homepage
   In order get an idea of what a solution is about
   As a user of the website
@@ -176,5 +176,5 @@ Feature: Solution homepage
     And I should not see the link "Supplier exchange"
     When I click "HR"
     Then the url should match "/search"
-    Then the option with text "HR   (1)" from select facet "topic" is selected
+    Then the option with text "HR (1)" from select facet "topic" is selected
     Then the "Solution" content checkbox item should be selected

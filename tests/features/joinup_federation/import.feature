@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-c
 Feature: As a site moderator I am able to import RDF files.
 
   Background:

@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-d
 Feature:
   In order to be able to have the solutions categorized properly through the EIF Toolbox
   As the collection owner

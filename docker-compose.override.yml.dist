@@ -16,6 +16,11 @@ services:
 #    ports:
 #      - '80:8080'
 
+# macOS users should override this value by uncommenting the following
+# 'environment:' block.
+#    environment:
+#      XDEBUG_CONFIG: client_host=host.docker.internal
+
 # Create an .env.local file, in the project root directory, and uncomment the
 # 'env_file:' block in order override values provided in .env.dist file.
 #    env_file:
@@ -38,7 +43,7 @@ services:
 #      - '3306:3306'
 
 
-  virtuoso:
+  sparql:
 # macOS users should override this value by uncommenting the following
 # 'volumes:' block.
 #    volumes:

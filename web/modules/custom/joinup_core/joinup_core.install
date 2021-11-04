@@ -112,3 +112,13 @@ function joinup_core_update_0107500(): void {
     ->condition('name', 'password_policy.password_policy.generic_policy')
     ->execute();
 }
+
+/**
+ * Anticipate 'search_api.server.solr_unpublished' deletion.
+ */
+function joinup_core_update_0107501(): void {
+  \Drupal::database()->delete('config')
+    ->condition('collection', '')
+    ->condition('name', 'search_api.server.solr_unpublished')
+    ->execute();
+}
