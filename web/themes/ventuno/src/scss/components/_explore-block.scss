@@ -22,7 +22,7 @@ body {
     text-transform: uppercase;
     font-size: 1.25rem; // 20px
     padding-bottom: $spacer * .5; // 8px
-    margin-bottom: $spacer * 1.5; // 24px 
+    margin-bottom: $spacer * 1.5; // 24px
     @include font-icon-before("\E802", 1.42rem, $warning);
     border-bottom: 1px solid rgba($primary, .1);
   }
@@ -38,7 +38,7 @@ body {
       border: none;
       background: none;
       padding: 0 0 $btn-padding-y 0;
-      margin: $spacer * .5; // 8px 
+      margin: $spacer * .5; // 8px
       @include media-breakpoint-up(xl) {
         margin: $spacer * 1.5;
       }
@@ -92,15 +92,15 @@ body {
               padding-top: $btn-padding-y;
             }
           }
-          .block-extra-field-blockrdf-entitysolutionread-more,
-          .block-extra-field-blockrdf-entitycollectionread-more,
-          .block-extra-field-blocknodenewsread-more,
-          .block-extra-field-blocknodeeventread-more {
+          .read-more-wrapper {
             align-self: flex-end;
             margin-top: -1.8rem;
           }
           .read-more {
             float: right;
+            &:hover {
+              text-decoration: none;
+            }
           }
         }
       }
@@ -153,7 +153,7 @@ body {
   }
   .slick-active {
     article {
-      @extend .shadow;
+      box-shadow: 0 0.1rem 0.4rem 0.1rem rgba(0, 0, 0, 0.1);
     }
   }
 }
