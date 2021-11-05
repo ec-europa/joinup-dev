@@ -354,7 +354,13 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
     try {
       $link = $solution->toLink(t('Read more'), 'about-page', [
         'attributes' => [
-          'class' => ['about-page', 'read-more', 'fieldset__read-more'],
+          'class' => [
+            'about-page',
+            'read-more',
+            'fieldset__read-more',
+            'btn',
+            'btn-secondary',
+          ],
         ],
       ]);
       $build['read_more'] = $link->toRenderable();

@@ -3,17 +3,28 @@
   .block {
     & > h2 {
       text-transform: uppercase;
-      @extend .h4;
+      font-size: 1.25rem; // 20px
     }
   }
   .field--name-field-topic {
-    @extend .mb-3;
+    margin-bottom: $spacer; // 16px
     .field__item {
       display: inline-block;
     }
     a {
-      @extend .badge;
-      @extend .bg-secondary;
+      // Badge classes
+      display: inline-block;
+      padding: 0.35em 0.65em;
+      font-size: 0.75em;
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: 0.25rem;
+      // End badge classes
+      background-color: $secondary;
       font-size: $font-size-sm;
       color: $link-color;
       font-weight: normal;
@@ -24,9 +35,9 @@
 .block-entityqueue--highlighted-solution,
 .view-latest-news {
   .views-row {
-    @extend .mb-4;
+    margin-bottom: $spacer * 1.5; // 24px
     &:last-child {
-      @extend .mb-0;
+      margin-bottom: 0;
     }
   }
   .field--name-body {
@@ -35,14 +46,14 @@
   article {
     h2 {
       font-size: $font-size-base;
-      @extend .fw-medium;
+      font-weight: $font-weight-medium;
       line-height: $line-height-base;
       a {
         color: $gray-900;
       }
     }
     img {
-      @extend .rounded;
+      border-radius: $border-radius; // .5rem;
     }
   }
 }

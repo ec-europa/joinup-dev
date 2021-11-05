@@ -24,9 +24,3 @@
 .about-how {
   color: $gray-700;
 }
-.about-how {
-  a {
-    @extend .btn;
-    @extend .btn-secondary;
-  }
-}

@@ -1,8 +1,8 @@
 .block-joinup-search-global-search {
-  @extend .pt-5;
-  @extend .pb-2;
-  @extend .me-3;
-  @extend .col-lg;
+  @extend .pt-5 !optional;
+  @extend .pb-2 !optional;
+  @extend .me-3 !optional;
+  @extend .col-lg !optional;
   .search-bar {
     .search-bar__input {
       border-style: none;
