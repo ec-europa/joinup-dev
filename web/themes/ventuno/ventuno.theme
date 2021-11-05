@@ -11,8 +11,11 @@ use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
 use Drupal\collection\Entity\CollectionInterface;
+use Drupal\interoperable_europe\InteroperableEuropeCollectionInterface;
 use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\smart_trim\Truncate\TruncateHTML;
 
@@ -51,6 +54,32 @@ function ventuno_preprocess_page(&$variables) {
   // Export the user name to display in the header.
   $variables['user_name'] = \Drupal::currentUser()->getDisplayName();
 
+  // Show links to 'Interoperable Europe' and 'Interoperability Solutions'.
+  $landing_page_links = [];
+  foreach ([
+    InteroperableEuropeCollectionInterface::LANDING_PAGE_ENTITY_ID,
+    JoinupCollectionHelper::INTEROPERABILITY_SOLUTIONS_ENTITY_ID,
+  ] as $node_id) {
+    try {
+      $node = Node::load($node_id);
+      if (!$node instanceof NodeInterface) {
+        throw new Exception();
+      }
+      $label = $node->getTitle();
+      $url = $node->toUrl();
+      $landing_page_links[] = [
+        'label' => $label,
+        'link' => $url,
+      ];
+    }
+    catch (Exception $e) {
+      // The custom pages cannot be loaded. This should not crash the page since
+      // these pages might not exist in projects that reuse the Joinup open
+      // source project.
+    }
+  }
+  $variables['landing_page_links'] = $landing_page_links;
+
   // Export the user account menu in the format expected by the header template.
   /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree */
   $menu_link_tree = \Drupal::service('menu.link_tree');
@@ -82,6 +111,9 @@ function ventuno_preprocess_page(&$variables) {
     'link' => Url::fromRoute('<front>'),
     'hide_on_desktop' => TRUE,
   ];
+
+  // Include the links to the interoperability landing pages.
+  $anonymous_links = array_merge($anonymous_links, $landing_page_links);
 
   // Generate a link to EU Login.
   $cas_login_link = Url::fromRoute('cas.login');

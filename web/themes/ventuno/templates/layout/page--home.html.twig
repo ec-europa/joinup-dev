@@ -72,8 +72,24 @@
       </nav>
     </div>
     <header role="banner" class="region-header">
+      {% set items = logged_in ? [{
+        breakpoint: "lg",
+        classes: ["order-1"],
+        id: "landing-pages",
+        icon: { name: "justify" },
+        label: "",
+        links: landing_page_links,
+      }] : [] %}
+      {% set items = items|merge([{
+        breakpoint: logged_in ? "" : "lg",
+        id: logged_in ? "account" : "navbar-toggler",
+        icon: {
+          name: logged_in ? "person-circle" : "justify",
+        },
+        label: logged_in ? user_name : "",
+        links: logged_in ? profile_links : anonymous_links,
+      }]) %}
       {% include directory ~ '/templates/navigation/navbar.html.twig' with {
-        breakpoint: logged_in ? "" : "sm",
         brand: {
           src: base_path ~ directory ~ "/src/images/logo.svg",
           alt: "Joinup logo"|t,
@@ -81,16 +97,7 @@
         },
         collapse_id: "main-navbar",
         list_id: "main-navbar-list",
-        items: [
-          {
-            id: logged_in ? "account" : "navbar-toggler",
-            icon: {
-              name: logged_in ? "person-circle" : "justify",
-            },
-            label: logged_in ? user_name : "",
-            links: logged_in ? profile_links : anonymous_links,
-          },
-        ],
+        items: items,
       } %}
     </header>
 

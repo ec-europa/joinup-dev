@@ -2,8 +2,6 @@
 {% spaceless %}
 
 {# Parameters:
-  - breakpoint (string) (default: 'md')
-    options: ['', 'xs', 'sm', 'md', 'lg', 'xl']
   - brand (object) (default: {})
     format: {
       src: '',
@@ -38,7 +36,6 @@
     }]
 #}
 
-{% set _breakpoint = breakpoint|default('') %}
 {% set _brand = brand|default({}) %}
 {% set _collapse_id = collapse_id|default('') %}
 {% set _list_id = list_id|default('') %}
@@ -48,11 +45,6 @@
 {% set _navbar_toggler_classes = ['navbar-toggler'] %}
 {% set _list_id = list_id|default('accordion-1') %}
 {% set _list_classes = ['navbar-nav', 'accordion', 'accordion-flush'] %}
-{% set _list_item_classes = ['nav-item', 'accordion-item'] %}
-
-{% if _breakpoint %}
-  {% set _list_item_classes = _list_item_classes|merge(['d-' ~ _breakpoint ~ '-none']) %}
-{% endif %}
 
 {% if nav_attributes is empty %}
   {% set nav_attributes = create_attribute() %}
@@ -66,21 +58,16 @@
   {% set list_attributes = create_attribute() %}
 {% endif %}
 
-{% if list_item_attributes is empty %}
-  {% set list_item_attributes = create_attribute() %}
-{% endif %}
-
 {% set nav_attributes = nav_attributes.addClass(_nav_classes) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.addClass(_navbar_toggler_classes) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('type', 'button') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-toggle', 'collapse') %}
-{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-target', '#' ~ _collapse_id) %}
-{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-controls', _collapse_id) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-target', '#' ~ _list_id) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-controls', _list_id) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-expanded', 'false') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-label', 'Toggle navigation') %}
 {% set list_attributes = list_attributes.addClass(_list_classes) %}
 {% set list_attributes = list_attributes.setAttribute('id', _list_id) %}
-{% set list_item_attributes = list_item_attributes.addClass(_list_item_classes) %}
 
 <nav
   {{ nav_attributes }}
@@ -93,20 +80,20 @@
       <span class="navbar-motto d-none d-md-block">{{ _brand.motto }}</span>
     {% endif %}
 
-    <div class="collapse navbar-collapse rounded-bottom" id="{{ _collapse_id }}">
+    <div class="" id="{{ _collapse_id }}">
       <ul
         {{ list_attributes }}
       >
         {% for item in _items %}
-          {% if _breakpoint %}
+          {% if item.breakpoint %}
             {% for link in item.links %}
               {% if not link.hide_on_desktop %}
-                <li class="nav-item d-none d-{{ _breakpoint }}-inline-block">
+                <li class="nav-item d-none d-{{ item.breakpoint }}-inline-block">
                   {% if link.link %}
                     <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>
                   {% elseif link.popover %}
                     <button
-                      data-bs-toggle="popover"
+                      data-bs-toggle="collapse"
                       autocomplete="off"
                       data-bs-placement="bottom"
                       data-bs-content="<a class='popover__cta' href='{{ link.popover.cta.link }}' {{ link.popover.cta.attributes }}>{{ link.popover.cta.text }}</a><p class='popover__description'>{{ link.popover.description }}</p>"
@@ -125,6 +112,12 @@
               {% endif %}
             {% endfor %}
           {% endif %}
+          {% set list_item_attributes = create_attribute() %}
+          {% set _list_item_classes = item.classes|default([])|merge(['nav-item', 'accordion-item']) %}
+          {% if item.breakpoint %}
+            {% set _list_item_classes = _list_item_classes|merge(['d-' ~ item.breakpoint ~ '-none']) %}
+          {% endif %}
+          {% set list_item_attributes = list_item_attributes.addClass(_list_item_classes) %}
           <li {{ list_item_attributes }}>
             <span class="accordion-header" id="heading-{{ item.id }}">
               <button
@@ -150,7 +143,7 @@
               id="collapse-{{ item.id }}"
               class="accordion-collapse collapse rounded-bottom"
               aria-labelledby="heading-{{ item.id }}"
-              data-bs-parent="#{{ _collapse_id }}"
+              data-bs-parent="#{{ _list_id }}"
             >
               <div class="accordion-body">
                 <ul class="accordion-list">

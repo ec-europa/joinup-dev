@@ -1,0 +1,6 @@
+name: Interoperable Europe
+type: module
+description: Custom code for the Interoperable Europe community of the Joinup project.
+package: Joinup communities
+core_version_requirement: ^8 || ^9
+php: 7.1
