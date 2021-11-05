@@ -62,8 +62,8 @@
 {% set navbar_toggler_attributes = navbar_toggler_attributes.addClass(_navbar_toggler_classes) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('type', 'button') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-toggle', 'collapse') %}
-{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-target', '#' ~ _collapse_id) %}
-{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-controls', _collapse_id) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-target', '#' ~ _list_id) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-controls', _list_id) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-expanded', 'false') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-label', 'Toggle navigation') %}
 {% set list_attributes = list_attributes.addClass(_list_classes) %}
@@ -80,7 +80,7 @@
       <span class="navbar-motto d-none d-md-block">{{ _brand.motto }}</span>
     {% endif %}
 
-    <div class="collapse navbar-collapse rounded-bottom" id="{{ _collapse_id }}">
+    <div class="" id="{{ _collapse_id }}">
       <ul
         {{ list_attributes }}
       >
@@ -93,7 +93,7 @@
                     <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>
                   {% elseif link.popover %}
                     <button
-                      data-bs-toggle="popover"
+                      data-bs-toggle="collapse"
                       autocomplete="off"
                       data-bs-placement="bottom"
                       data-bs-content="<a class='popover__cta' href='{{ link.popover.cta.link }}' {{ link.popover.cta.attributes }}>{{ link.popover.cta.text }}</a><p class='popover__description'>{{ link.popover.description }}</p>"
@@ -143,7 +143,7 @@
               id="collapse-{{ item.id }}"
               class="accordion-collapse collapse rounded-bottom"
               aria-labelledby="heading-{{ item.id }}"
-              data-bs-parent="#{{ _collapse_id }}"
+              data-bs-parent="#{{ _list_id }}"
             >
               <div class="accordion-body">
                 <ul class="accordion-list">
