@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c98feb426f74927b13fc1b53835b9722",
+    "content-hash": "a9aa624ac05867d87540ccd3f57a0d5f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5821,6 +5821,68 @@
             }
         },
         {
+            "name": "drupal/monolog",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/monolog.git",
+                "reference": "8.x-1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/monolog-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "939642830811428b5a17afb5c9d4243c72fa796d"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "monolog/monolog": ">=1.6.0,<2.0.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.3",
+                    "datestamp": "1558959784",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Drupal\\Monolog": "src/"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Pliakas",
+                    "homepage": "https://www.drupal.org/user/1011436",
+                    "email": "opensource@chrispliakas.com",
+                    "role": "Project Lead"
+                },
+                {
+                    "name": "See contributors",
+                    "homepage": "http://drupal.org/node/1937716/committers",
+                    "role": "Developer"
+                },
+                {
+                    "name": "lussoluca",
+                    "homepage": "https://www.drupal.org/user/138068"
+                }
+            ],
+            "description": "A Framework and UI for integrating with the Monolog library.",
+            "homepage": "http://drupal.org/project/monolog",
+            "support": {
+                "source": "https://git.drupalcode.org/project/monolog",
+                "issues": "http://drupal.org/project/issues/monolog"
+            }
+        },
+        {
             "name": "drupal/og",
             "version": "dev-neutral-access-result",
             "source": {
@@ -10103,6 +10165,88 @@
             "time": "2020-06-16T17:45:06+00:00"
         },
         {
+            "name": "monolog/monolog",
+            "version": "1.26.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "c6b00f05152ae2c9b04a448f99c7590beb6042f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c6b00f05152ae2c9b04a448f99c7590beb6042f5",
+                "reference": "c6b00f05152ae2c9b04a448f99c7590beb6042f5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/log": "~1.0"
+            },
+            "provide": {
+                "psr/log-implementation": "1.0.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
+                "doctrine/couchdb": "~1.0@dev",
+                "graylog2/gelf-php": "~1.0",
+                "php-amqplib/php-amqplib": "~2.4",
+                "php-console/php-console": "^3.1.3",
+                "phpstan/phpstan": "^0.12.59",
+                "phpunit/phpunit": "~4.5",
+                "ruflin/elastica": ">=0.90 <3.0",
+                "sentry/sentry": "^0.13",
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
+                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-mongo": "Allow sending log messages to a MongoDB server",
+                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
+                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
+                "php-console/php-console": "Allow sending log messages to Google Chrome",
+                "rollbar/rollbar": "Allow sending log messages to Rollbar",
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
+                "sentry/sentry": "Allow sending log messages to a Sentry server"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Monolog\\": "src/Monolog"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "http://github.com/Seldaek/monolog",
+            "keywords": [
+                "log",
+                "logging",
+                "psr-3"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/Seldaek",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-05-28T08:32:12+00:00"
+        },
+        {
             "name": "neilime/php-css-lint",
             "version": "v1.1.0",
             "source": {
@@ -10347,7 +10491,7 @@
                 "patches_applied": {
                     "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                     "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/master...cbee0e9.diff",
+                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/1.7.0...cbee0e99a3a17972e1e4553e0b67d8b812ae074d.diff",
                     "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                     "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
                 }
@@ -11649,7 +11793,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2021-07-31T00:07:16+00:00"
+            "time": "2020-10-26T14:41:29+00:00"
         },
         {
             "name": "stack/builder",
@@ -17101,88 +17245,6 @@
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
             "time": "2021-09-25T08:05:01+00:00"
-        },
-        {
-            "name": "monolog/monolog",
-            "version": "1.26.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "c6b00f05152ae2c9b04a448f99c7590beb6042f5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c6b00f05152ae2c9b04a448f99c7590beb6042f5",
-                "reference": "c6b00f05152ae2c9b04a448f99c7590beb6042f5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "psr/log": "~1.0"
-            },
-            "provide": {
-                "psr/log-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
-                "doctrine/couchdb": "~1.0@dev",
-                "graylog2/gelf-php": "~1.0",
-                "php-amqplib/php-amqplib": "~2.4",
-                "php-console/php-console": "^3.1.3",
-                "phpstan/phpstan": "^0.12.59",
-                "phpunit/phpunit": "~4.5",
-                "ruflin/elastica": ">=0.90 <3.0",
-                "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "^5.3|^6.0"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
-                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
-                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-                "ext-mongo": "Allow sending log messages to a MongoDB server",
-                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
-                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
-                "php-console/php-console": "Allow sending log messages to Google Chrome",
-                "rollbar/rollbar": "Allow sending log messages to Rollbar",
-                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
-                "sentry/sentry": "Allow sending log messages to a Sentry server"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Monolog\\": "src/Monolog"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-            "homepage": "http://github.com/Seldaek/monolog",
-            "keywords": [
-                "log",
-                "logging",
-                "psr-3"
-            ],
-            "funding": [
-                {
-                    "url": "https://github.com/Seldaek",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-05-28T08:32:12+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
