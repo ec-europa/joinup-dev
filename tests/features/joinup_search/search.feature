@@ -645,14 +645,16 @@ Feature: Global search
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
 
-    Then I click "Clear filters"
+    Then I scroll link "Clear filters" into view
+    And I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News"
 
     # Check if facet summary was remove correctly.
-    Then I click "Clear filters"
+    Then I scroll link "Clear filters" into view
+    And I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
     And I select "Collection (1)" option in the "Content types" select facet form
     Then I scroll button "Search" into view

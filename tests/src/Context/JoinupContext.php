@@ -2951,17 +2951,19 @@ class JoinupContext extends RawDrupalContext {
    * might throw this exception while the button is visible.
    * This might be due to attempting to find the button too fast.
    *
+   * @param string $type
+   *   Type of element link/button.
    * @param string $label
    *   The label of the radio button.
    *
    * @throws \Exception
-   *   Thrown when an expected scroll in to view failed.
+   *    Thrown when an expected scroll in to view failed.
    *
-   * @Given I scroll button :label into view
+   * @Given I scroll :type :label into view
    */
-  public function scrollButtonIntoView(string $label) {
+  public function scrollButtonIntoView(string $type, string $label): void {
     $page = $this->getSession()->getPage();
-    $button = $page->find('named', ['button', str_replace('\\"', '"', $label)]);
+    $button = $page->find('named', [$type, str_replace('\\"', '"', $label)]);
     $button_id = $button->getAttribute("id");
 
     $function = <<<JS
