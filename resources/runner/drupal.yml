@@ -109,6 +109,7 @@ drupal:
         - Test mail collector
       prod:
         - Main settings
+        - Site email
         - Databases
         - Configuration
         - Search API
@@ -117,6 +118,7 @@ drupal:
         - Redis
         - Custom queue services
         - Mail transport
+        - Monolog
     header: |
       <?php
 
@@ -220,6 +222,8 @@ drupal:
       Test mail collector: |
         $config['system.mail']['interface']['default'] = 'test_mail_collector';
         $config['mailsystem.settings']['defaults']['sender'] = 'test_mail_collector';
+      Site email:
+        $config['system.site']['mail'] = getenv('DRUPAL_SITE_MAIL');
       Mail transport: |
         $config['swiftmailer.transport']['sendmail_path'] = getenv('DRUPAL_MAIL_SENDMAIL_PATH');
         $config['swiftmailer.transport']['sendmail_mode'] = getenv('DRUPAL_MAIL_SENDMAIL_MODE');
@@ -259,6 +263,8 @@ drupal:
         $settings['extension_discovery_scan_tests'] = TRUE;
       Error logging: |
         $config['system.logging']['error_level'] = 'verbose';
+      Monolog: |
+        $settings['container_yamls'][] = 'modules/custom/joinup_core/joinup_core.monolog.services.yml';
       Custom queue services: |
         $settings['queue_service_joinup_group:group_update'] = 'joinup_group.group_aware_queue';
         $settings['queue_service_joinup_group:group_content_update'] = 'joinup_group.group_aware_queue';

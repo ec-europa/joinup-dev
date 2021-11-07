@@ -11,6 +11,7 @@ dependencies:
   - 'matomo_reporting_api:matomo_reporting_api'
   - 'message:message'
   - 'message_notify:message_notify'
+  - 'monolog:monolog'
   - 'og:og'
   - 'rdf_entity:rdf_draft'
   - 'rdf_entity:rdf_entity'

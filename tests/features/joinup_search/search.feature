@@ -70,6 +70,7 @@ Feature: Global search
     And there should be exactly 1 "search field" on the page
 
     When I select "Social and Political" from "Topics"
+    Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "Social and Political" from select facet form "topic" is selected
     And the "topic" select facet form should contain the following options:
@@ -87,6 +88,7 @@ Feature: Global search
 
     # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
     When I select "- Demography" from "Topics"
+    Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "- Demography" from select facet form "topic" is selected
     # The selected option moves to the last position by default.
@@ -110,6 +112,7 @@ Feature: Global search
 
     # Test the spatial coverage facet.
     When I select "Belgium" from "Geographic coverage"
+    Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "Belgium (1)" from select facet form "spatial coverage" is selected
     And the "spatial coverage" select facet form should contain the following options:
@@ -129,6 +132,7 @@ Feature: Global search
     # Select link in the 'type' facet.
     Given I am on the search page
     When I select "News (5)" from "Content types"
+    Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "News (5)" from select facet form "Content types" is selected
     And the "Content types" select facet form should contain the following options:
@@ -137,6 +141,7 @@ Feature: Global search
       | Solutions (2)   |
 
     When I select "Solutions (2)" from "Content types"
+    Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
     And the "Content types" select facet form should contain the following options:
@@ -192,7 +197,9 @@ Feature: Global search
       | Any location     |
       | Greece (1)       |
       | Luxembourg (2)   |
+
     When I select "Luxembourg" from "Geographic coverage"
+    Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "Luxembourg (2)" from select facet form "spatial coverage" is selected
     And I should see the text "Search Results (2)"
@@ -635,18 +642,23 @@ Feature: Global search
     When I visit the search page
     And I select "Solutions (2)" from "Content types"
     And I additionally select "News (5)" from "Content types"
+    Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
 
+    Then I scroll link "Clear filters" into view
     Then I click "Clear filters"
     And I select "News (5)" from "Content types"
+    Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News"
 
     # Check if facet summary was remove correctly.
-    Then I click "Clear filters"
+    Then I scroll link "Clear filters" into view
+    And I click "Clear filters"
     And I select "News (5)" from "Content types"
     And I additionally select "Collection (1)" from "Content types"
+    Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "Collection, News"
     Then I should remove the following facet summary "News"
