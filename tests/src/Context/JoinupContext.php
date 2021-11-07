@@ -2944,4 +2944,43 @@ class JoinupContext extends RawDrupalContext {
     }
   }
 
+  /**
+   * Shows the button in the middle of the screen.
+   *
+   * In the latest version of Selenium in docker, moving to a button element
+   * might throw this exception while the button is visible.
+   * This might be due to attempting to find the button too fast.
+   *
+   * @param string $label
+   *   The label of the radio button.
+   *
+   * @throws \Exception
+   *   Thrown when an expected scroll in to view failed.
+   *
+   * @Given I scroll button :label into view
+   */
+  public function scrollButtonIntoView(string $label) {
+    $page = $this->getSession()->getPage();
+    $button = $page->find('named', ['button', str_replace('\\"', '"', $label)]);
+    $button_id = $button->getAttribute("id");
+
+    $function = <<<JS
+(
+    function(){
+      setTimeout(() => {
+        var elem = document.getElementById('$button_id');
+        elem.scrollIntoView({ behavior: 'instant', block: 'center' });
+      }, 300);
+    }
+)()
+JS;
+    try {
+      $this->getSession()->executeScript($function);
+      sleep(1);
+    }
+    catch (\Exception $e) {
+      throw new \Exception("Scroll button into view failed");
+    }
+  }
+
 }
