@@ -6,6 +6,7 @@ namespace Drupal\joinup\Context;
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -2964,24 +2965,57 @@ class JoinupContext extends RawDrupalContext {
   public function scrollButtonIntoView(string $type, string $label): void {
     $page = $this->getSession()->getPage();
     $button = $page->find('named', [$type, str_replace('\\"', '"', $label)]);
-    $button_id = $button->getAttribute("id");
+    $this->scrollElementIntoView($button);
+  }
 
+  /**
+   * Shows the button in the middle of the screen.
+   *
+   * In the latest version of Selenium in docker, moving to a button element
+   * might throw this exception while the button is visible.
+   * This might be due to attempting to find the button too fast.
+   *
+   * @param string $label
+   *   The label of the radio button.
+   *
+   * @throws \Exception
+   *    Thrown when an expected scroll in to view failed.
+   *
+   * @Given I scroll the :label chip into view
+   */
+  public function scrollChipIntoView(string $label): void {
+    $css = "div.block-facets-summary-blocksearch-facets-summary li.facet-summary-item--facet a:contains('{$label}')";
+    $element = $this->getSession()->getPage()->find('css', $css);
+    $this->scrollElementIntoView($element);
+  }
+
+  /**
+   * Scrolls until the element is in the middle of the screen.
+   *
+   * @param \Behat\Mink\Element\TraversableElement $element
+   *   The element to move.
+   *
+   * @throws \Exception
+   *    Thrown when an expected scroll in to view failed.
+   */
+  public function scrollElementIntoView(TraversableElement $element): void {
+    $xpath = $element->getXpath();
     $function = <<<JS
-(
-    function(){
-      setTimeout(() => {
-        var elem = document.getElementById('$button_id');
-        elem.scrollIntoView({ behavior: 'instant', block: 'center' });
-      }, 300);
-    }
-)()
-JS;
+  (
+      function(){
+        let elem = document.evaluate("$xpath", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        setTimeout(() => {
+          elem.scrollIntoView({ behavior: 'instant', block: 'center' });
+        }, 300);
+      }
+  )()
+  JS;
     try {
       $this->getSession()->executeScript($function);
       sleep(1);
     }
     catch (\Exception $e) {
-      throw new \Exception("Scroll button into view failed");
+      throw new \Exception("Scroll element into view failed");
     }
   }
 

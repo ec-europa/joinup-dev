@@ -641,10 +641,16 @@ Feature: Global search
     When I visit the search page
     And I select "Solutions (2)" from the "Content types" select facet form
     And I select "News (5)" option in the "Content types" select facet form
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
 
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
     Then I scroll link "Clear filters" into view
     And I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
@@ -653,10 +659,16 @@ Feature: Global search
     And I should see the following facet summary "News"
 
     # Check if facet summary was remove correctly.
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
     Then I scroll link "Clear filters" into view
     And I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
     And I select "Collection (1)" option in the "Content types" select facet form
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "Collection, News"

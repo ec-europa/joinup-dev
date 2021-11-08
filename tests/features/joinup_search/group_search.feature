@@ -221,6 +221,10 @@ Feature: Search inside groups
     Then the option with text "Chalet construction (2)" from select facet form "collection/solution" is selected
     And the page should show the tiles "Ground plan, Natural materials"
     And I should see the following facet summary "Chalet construction"
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
+    When I scroll the "Chalet construction" chip into view
     When I should remove the following facet summary "Chalet construction"
     Then the page should not contain any facet summary
     And the page should show the tiles "Ground plan, Pre-alpha, Natural materials, Presenting DrillMaster X88"

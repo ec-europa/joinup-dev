@@ -13,7 +13,6 @@ use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
-use WebDriver\Exception\MoveTargetOutOfBounds;
 
 /**
  * Behat step definitions for testing searches.
@@ -821,17 +820,6 @@ class JoinupSearchContext extends RawDrupalContext {
       throw new \Exception("The $label facet summary item was not found in the page.");
     }
     $remove = $element->find('css', '.js-facet-deactivate');
-    try {
-      $remove->mouseOver();
-    }
-    catch (MoveTargetOutOfBounds $e) {
-      // In the latest version of Selenium in docker, moving to a button element
-      // might throw this exception while the button is visible.
-      // This might be due to attempting to find the button too fast.
-      // This is why we try to move and sleep for a second before trying to do
-      // that again.
-      sleep(1);
-    }
     $remove->click();
   }
 
