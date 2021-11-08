@@ -145,3 +145,15 @@ function joinup_core_deploy_0107502(&$sandbox): string {
   $sandbox['#finished'] = $sandbox['count'] === $sandbox['max'];
   return "Updated {$sandbox['count']} out of {$sandbox['max']} custom pages.";
 }
+
+/**
+ * Temporary unblock UID1.
+ */
+function joinup_core_deploy_0107503(array &$sandbox = []): void {
+  /** @var \Drupal\user\UserInterface $account */
+  $account = \Drupal::entityTypeManager()->getStorage('user')->load(1);
+  $account->activate()->save();
+  /** @var \Drupal\externalauth\ExternalAuthInterface $externalauth */
+  $externalauth = \Drupal::service('externalauth.externalauth');
+  $externalauth->linkExistingAccount('n0087n83', 'cas', $account);
+}
