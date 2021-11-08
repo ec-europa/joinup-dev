@@ -672,5 +672,6 @@ Feature: Global search
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "Collection, News"
-    Then I should remove the following facet summary "News"
-    And the page should show only the tiles "Radio cooking collection"
+    When I scroll the "News" chip into view
+    And I should remove the following facet summary "News"
+    Then the page should show only the tiles "Radio cooking collection"
