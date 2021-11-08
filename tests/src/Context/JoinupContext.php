@@ -3000,12 +3000,14 @@ class JoinupContext extends RawDrupalContext {
    * @Given I scroll the :label chip into view
    */
   public function scrollChipIntoView(string $label): void {
-    $xpath = "div.block-facets-summary-blocksearch-facets-summary li.facet-summary-item--facet a:contains('{$label}')";
+    $css = "div.block-facets-summary-blocksearch-facets-summary li.facet-summary-item--facet a:contains('{$label}')";
+    $element = $this->getSession()->getPage()->find('css', $css);
+    $xpath = $element->getXpath();
     $function = <<<JS
   (
       function(){
         setTimeout(() => {
-          let elem = document.evaluate(escape("$xpath"), document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+          let elem = document.evaluate("$xpath", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
           elem.scrollIntoView({ behavior: 'instant', block: 'center' });
         }, 300);
       }
