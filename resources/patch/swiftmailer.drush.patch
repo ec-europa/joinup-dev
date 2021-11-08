@@ -1,0 +1,20 @@
+Index: src/Commands/SwiftMailerCommands.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Commands/SwiftMailerCommands.php b/src/Commands/SwiftMailerCommands.php
+--- a/src/Commands/SwiftMailerCommands.php	
++++ b/src/Commands/SwiftMailerCommands.php	(date 1635492944219)
+@@ -52,7 +52,10 @@
+    */
+   public function sendSpool(string $transport) {
+     if (!in_array($transport, self::$validtransports, TRUE)) {
+-      throw new \InvalidArgumentException(dt('Invalid transport type. Valid types are %types.', ['%types' => implode(', ', self::$validtransports)]));
++      throw new \InvalidArgumentException(dt('Invalid transport type: "%type". Valid types are %types.', [
++        '%type' => $transport,
++        '%types' => implode(', ', self::$validtransports),
++      ]));
+     }
+ 
+     $spool_transport = $this->transportFactory->getTransport(SWIFTMAILER_TRANSPORT_SPOOL);
