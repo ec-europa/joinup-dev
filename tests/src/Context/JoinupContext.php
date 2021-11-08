@@ -6,7 +6,6 @@ namespace Drupal\joinup\Context;
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -2965,7 +2964,24 @@ class JoinupContext extends RawDrupalContext {
   public function scrollButtonIntoView(string $type, string $label): void {
     $page = $this->getSession()->getPage();
     $button = $page->find('named', [$type, str_replace('\\"', '"', $label)]);
-    $this->scrollElementIntoView($button);
+    $id = $button->getAttribute('id');
+    $function = <<<JS
+  (
+      function(){
+        setTimeout(() => {
+          let elem = document.getElementById("$id");
+          elem.scrollIntoView({ behavior: 'instant', block: 'center' });
+        }, 300);
+      }
+  )()
+  JS;
+    try {
+      $this->getSession()->executeScript($function);
+      sleep(1);
+    }
+    catch (\Exception $e) {
+      throw new \Exception("Scroll element into view failed");
+    }
   }
 
   /**
@@ -2984,27 +3000,12 @@ class JoinupContext extends RawDrupalContext {
    * @Given I scroll the :label chip into view
    */
   public function scrollChipIntoView(string $label): void {
-    $css = "div.block-facets-summary-blocksearch-facets-summary li.facet-summary-item--facet a:contains('{$label}')";
-    $element = $this->getSession()->getPage()->find('css', $css);
-    $this->scrollElementIntoView($element);
-  }
-
-  /**
-   * Scrolls until the element is in the middle of the screen.
-   *
-   * @param \Behat\Mink\Element\TraversableElement $element
-   *   The element to move.
-   *
-   * @throws \Exception
-   *    Thrown when an expected scroll in to view failed.
-   */
-  public function scrollElementIntoView(TraversableElement $element): void {
-    $xpath = $element->getXpath();
+    $xpath = "div.block-facets-summary-blocksearch-facets-summary li.facet-summary-item--facet a:contains('{$label}')";
     $function = <<<JS
   (
       function(){
-        let elem = document.evaluate("$xpath", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
         setTimeout(() => {
+          let elem = document.evaluate(escape("$xpath"), document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
           elem.scrollIntoView({ behavior: 'instant', block: 'center' });
         }, 300);
       }
