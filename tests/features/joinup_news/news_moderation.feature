@@ -298,7 +298,6 @@ Feature: News moderation.
       | Eagle to join in season 4     |
       | Question joined JL            |
       | Creating Legion of Doom       |
-      | Creating Legion of Doom       |
       | Stealing from Batman          |
       | Learn batman's secret         |
 
