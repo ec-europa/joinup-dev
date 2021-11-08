@@ -87,6 +87,7 @@ module:
   joinup_legal: 0
   joinup_licence: 0
   joinup_material_design: 0
+  joinup_menu: 0
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0

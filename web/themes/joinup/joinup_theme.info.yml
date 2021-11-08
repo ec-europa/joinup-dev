@@ -6,6 +6,9 @@ core_version_requirement: ^8.9 || ^9.1
 base theme: stable
 php: 7.1
 
+dependencies:
+  - joinup/joinup_menu
+
 libraries:
   - joinup_theme/material-design-lite
   - joinup_theme/global-components

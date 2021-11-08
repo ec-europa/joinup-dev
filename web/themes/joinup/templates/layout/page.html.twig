@@ -42,14 +42,40 @@
 #}
 <div class="mdl-layout__container">
   <div class="mdl-layout mdl-js-layout" {{ attributes|without('class') }}>
+    {# Temporary EC header, until this pattern is included in oe_bootstrap. #}
+    <div class="ec__header bcl-header">
+      <nav class="w-100 shadow-sm navbar">
+        <div class="container">
+          <a class="navbar-brand" href="https://ec.europa.eu/info/index_en">
+            <img src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.0.2/ec/images/logo/logo-ec--en.svg" alt="European Commission logo"/>
+          </a>
+        </div>
+      </nav>
+    </div>
+    <header role="banner" class="region-header">
+      {% include directory ~ '/../ventuno/templates/navigation/navbar.html.twig' with {
+        breakpoint: logged_in ? "" : "sm",
+        brand: {
+          src: base_path ~ directory ~ "/../ventuno/src/images/logo.svg",
+          alt: "Joinup logo"|t,
+          link: front_page,
+        },
+        collapse_id: "main-navbar",
+        list_id: "main-navbar-list",
+        items: [
+          {
+            id: logged_in ? "account" : "navbar-toggler",
+            icon: {
+              name: logged_in ? "person-circle" : "justify",
+            },
+            label: logged_in ? user_name : "",
+            links: logged_in ? profile_links : anonymous_links,
+          },
+        ],
+      } %}
+    </header>
 
-    {% if not is_front or logged_in %}
-      {% include directory ~ '/templates/parts/header.html.twig' %}
-    {% endif %}
-
-    {% if is_front and not logged_in %}
-      {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
-    {% elseif page.featured or is_blue_header %}
+    {% if page.featured or is_blue_header %}
       <div class="section section--featured">
         {% if is_blue_header %}
           {% include directory ~ '/templates/parts/featured--title.html.twig' %}

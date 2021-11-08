@@ -403,6 +403,17 @@ function joinup_theme_preprocess_page(&$variables) {
   if ($route_name == 'view.search.page_1') {
     $variables['is_search_page'] = TRUE;
   }
+
+  // Export the user name to display in the header.
+  $variables['user_name'] = \Drupal::currentUser()->getDisplayName();
+
+  // Export the user account menu in the format expected by the header template.
+  /** @var \Drupal\joinup_menu\MenuHelperInterface $menu_helper */
+  $menu_helper = \Drupal::service('joinup_menu.menu_helper');
+  $variables['profile_links'] = $menu_helper->getBclAccountMenu();
+
+  // Populate the links shown to anonymous users.
+  $variables['anonymous_links'] = $menu_helper->getBclAnonymousMenu();
 }
 
 /**

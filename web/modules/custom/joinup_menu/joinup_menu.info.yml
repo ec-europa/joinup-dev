@@ -3,4 +3,7 @@ description: 'Reusable code to interact with menus in Joinup.'
 type: module
 package: Joinup
 core_version_requirement: ^8.9 || ^9.1
-php: 7.1
+php: 7.4
+
+dependencies:
+  - joinup/collection

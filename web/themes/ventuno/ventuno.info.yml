@@ -6,6 +6,9 @@ core_version_requirement: ^8 || ^9
 php: 7.1
 base theme: oe_bootstrap_theme
 
+dependencies:
+  - joinup/joinup_menu
+
 libraries:
   - ventuno/style
 
