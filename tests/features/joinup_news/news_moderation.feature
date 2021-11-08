@@ -256,6 +256,8 @@ Feature: News moderation.
     Then I should not see the heading "Access denied"
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
+    And I log out
+
     Examples:
       | user     | title                         | available buttons                       | unavailable buttons                                                |
       # Post moderated
