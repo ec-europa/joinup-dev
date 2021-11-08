@@ -140,7 +140,7 @@ Feature: Global search
       | News (5)        |
       | Solutions (2)   |
 
-    When I select "Solutions (2)" from "Content types"
+    When I additionally select "Solutions (2)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
