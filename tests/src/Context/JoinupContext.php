@@ -319,7 +319,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    }, $this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     if (array_intersect($options, $available_options) !== $options) {
@@ -342,7 +344,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    }, $this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $intersection = array_intersect($available_options, $options);
@@ -383,7 +387,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function assertSelectOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    }, $this->getSelectOptions($field));
     sort($available_options);
 
     $options = $this->explodeCommaSeparatedStepArgument($options);
@@ -406,7 +412,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function assertSelectOptionNotAvailable($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = $this->getSelectOptions($field);
+    $available_options = array_map(function (array $option): string {
+      return $option['text'];
+    }, $this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
@@ -709,7 +717,13 @@ class JoinupContext extends RawDrupalContext {
       // This will allow dynamic tests as well. `strtotime` will also be able to
       // receive entries like "1 day ago" or "+1 month".
       if (!is_numeric($node->published_at)) {
+        // The strtotime() PHP function is using the default timezone when doing
+        // the conversion. But we want to stick to UTC in order to avoid
+        // timezone and DST issue.
+        $timezone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
         $node->published_at = strtotime($node->published_at);
+        date_default_timezone_set($timezone);
       }
     }
 
@@ -1958,7 +1972,10 @@ class JoinupContext extends RawDrupalContext {
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
-    $entity_url = $entity->toUrl()->setAbsolute()->toString();
+    // @todo Drop the base_url trick as soon as ISAICP-6648 is fixed.
+    $entity_url = $entity->toUrl('canonical', [
+      'base_url' => $GLOBALS['base_url'],
+    ])->setAbsolute()->toString();
     $href = $link_element->getAttribute('href');
 
     Assert::assertContains(urlencode($entity_url), $href);
@@ -2924,6 +2941,84 @@ class JoinupContext extends RawDrupalContext {
     $xpath = "//ul/li[contains(concat(' ', @class, ' '), ' menu-item--active-trail ')]/descendant::a/descendant-or-self::*[text()='{$link_label}']";
     if (!$page->find('xpath', $xpath)) {
       throw new ExpectationFailedException("The '{$link_label}' link is not in the active trail but it should.");
+    }
+  }
+
+  /**
+   * Shows the button in the middle of the screen.
+   *
+   * In the latest version of Selenium in docker, moving to a button element
+   * might throw this exception while the button is visible.
+   * This might be due to attempting to find the button too fast.
+   *
+   * @param string $type
+   *   Type of element link/button.
+   * @param string $label
+   *   The label of the radio button.
+   *
+   * @throws \Exception
+   *    Thrown when an expected scroll in to view failed.
+   *
+   * @Given I scroll :type :label into view
+   */
+  public function scrollButtonIntoView(string $type, string $label): void {
+    $page = $this->getSession()->getPage();
+    $button = $page->find('named', [$type, str_replace('\\"', '"', $label)]);
+    $id = $button->getAttribute('id');
+    $function = <<<JS
+  (
+      function(){
+        setTimeout(() => {
+          let elem = document.getElementById("$id");
+          elem.scrollIntoView({ behavior: 'instant', block: 'center' });
+        }, 300);
+      }
+  )()
+  JS;
+    try {
+      $this->getSession()->executeScript($function);
+      sleep(1);
+    }
+    catch (\Exception $e) {
+      throw new \Exception("Scroll element into view failed");
+    }
+  }
+
+  /**
+   * Shows the button in the middle of the screen.
+   *
+   * In the latest version of Selenium in docker, moving to a button element
+   * might throw this exception while the button is visible.
+   * This might be due to attempting to find the button too fast.
+   *
+   * @param string $label
+   *   The label of the radio button.
+   *
+   * @throws \Exception
+   *    Thrown when an expected scroll in to view failed.
+   *
+   * @Given I scroll the :label chip into view
+   */
+  public function scrollChipIntoView(string $label): void {
+    $css = "div.block-facets-summary-blocksearch-facets-summary li.facet-summary-item--facet a:contains('{$label}')";
+    $element = $this->getSession()->getPage()->find('css', $css);
+    $xpath = $element->getXpath();
+    $function = <<<JS
+  (
+      function(){
+        setTimeout(() => {
+          let elem = document.evaluate("$xpath", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+          elem.scrollIntoView({ behavior: 'instant', block: 'center' });
+        }, 300);
+      }
+  )()
+  JS;
+    try {
+      $this->getSession()->executeScript($function);
+      sleep(1);
+    }
+    catch (\Exception $e) {
+      throw new \Exception("Scroll element into view failed");
     }
   }
 

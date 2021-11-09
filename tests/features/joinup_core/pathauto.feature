@@ -1,4 +1,4 @@
-@api @group-b
+@api @group-c
 Feature:
   As an owner of a website
   In order to provide the visitors with user friendly urls

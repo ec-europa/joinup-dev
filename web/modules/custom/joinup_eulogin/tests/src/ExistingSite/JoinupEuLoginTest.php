@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_eulogin\ExistingSite;
 
+use Drupal\Core\Test\AssertMailTrait;
 use Drupal\Tests\cas\Traits\CasTestTrait;
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\user\Entity\User;
@@ -16,6 +17,7 @@ use weitzman\LoginTrait\LoginTrait;
  */
 class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
+  use AssertMailTrait;
   use CasTestTrait;
   use LoginTrait;
 
@@ -227,7 +229,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $assert->pageTextContains('Your account access is limited.');
     $assert->pageTextContains('Starting from 02/03/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service. After you sign-in using EU Login, you will be able to synchronise your existing Joinup account to restore your access.');
     $assert->linkExists('EU Login');
-    $assert->linkByHrefExists('/user/logout?destination=/caslogin');
+    $assert->linkByHrefExists('/user/logout?destination=' . base_path() . 'caslogin');
   }
 
   /**

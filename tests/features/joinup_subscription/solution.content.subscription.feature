@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-c
 Feature: Subscribing to community content in solutions
   As a member of a solution
   I want to receive a periodic digest listing newly published content
@@ -34,9 +34,7 @@ Feature: Subscribing to community content in solutions
       | Cities of Bulgaria   | bisera | discussion, event, news                |
       | Cities of Bulgaria   | kalin  | discussion, document, news             |
     And all message digests have been delivered
-    And the mail collector cache is empty
 
-  @email
   Scenario: Receive a digest of content that is published in my solutions
     Given discussion content:
       | title      | body                      | solution             | state     | author |
@@ -160,7 +158,7 @@ Feature: Subscribing to community content in solutions
     And the content subscription digest sent to kalin should have the subject "Joinup: Monthly digest message"
 
     # Clean out the message queue for the next test.
-    And the mail collector cache is empty
+    And I mark all emails as read
 
     # Check that if community content is published a second time it is not
     # included in the next digest.

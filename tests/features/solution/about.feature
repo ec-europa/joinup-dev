@@ -1,4 +1,4 @@
-@api
+@api @group-e
 Feature: About this solution
   In order to expose basic information about my solutions
   As a solution owner or solution facilitator

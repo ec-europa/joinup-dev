@@ -1,4 +1,4 @@
-@api @terms @group-b
+@api @terms @group-d
 Feature: Global search
   As a user of the site I can find content through the global search.
 
@@ -70,7 +70,8 @@ Feature: Global search
     And there should be exactly 1 "search field" on the page
 
     When I select "Social and Political" from the "topic" select facet form
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     Then the option with text "Social and Political" from select facet form "topic" is selected
     And the "topic" select facet form should contain the following options:
       | Any topic                 |
@@ -87,7 +88,8 @@ Feature: Global search
 
     # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
     When I select " Demography" from the "topic" select facet form
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     Then the option with text "- Demography" from select facet form "topic" is selected
     # The selected option moves to the last position by default.
     And the "topic" select facet form should contain the following options:
@@ -110,7 +112,8 @@ Feature: Global search
 
     # Test the spatial coverage facet.
     When I select "Belgium" from the "spatial coverage" select facet form
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     Then the option with text "Belgium (1)" from select facet form "spatial coverage" is selected
     And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
@@ -129,7 +132,8 @@ Feature: Global search
     # Select link in the 'type' facet.
     Given I am on the search page
     When I select "News (5)" from the "Content types" select facet form
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     Then the option with text "News (5)" from select facet form "Content types" is selected
     And the "Content types" select facet form should contain the following options:
       | Collection (1)  |
@@ -137,7 +141,8 @@ Feature: Global search
       | Solutions (2)   |
 
     When I select "Solutions (2)" option in the "Content types" select facet form
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     And I should see the following facet summary "News, Solutions"
     And the "Content types" select facet form should contain the following options:
       | Collection (1)  |
@@ -193,7 +198,8 @@ Feature: Global search
       | Greece (1)       |
       | Luxembourg (2)   |
     When I select "Luxembourg" from the "spatial coverage" select facet form
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     Then the option with text "Luxembourg (2)" from select facet form "spatial coverage" is selected
     And I should see the text "Search Results (2)"
     # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
@@ -315,14 +321,15 @@ Feature: Global search
     Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
-     When I enter "Jenessa" in the search bar and press enter
-     Then the page should show the tiles "Jenessa Carlyle"
-     When I enter "freeman" in the search bar and press enter
-     Then the page should show the tiles "Ulysses Freeman"
-     When I enter "clyffco" in the search bar and press enter
-     Then the page should show the tiles "Jenessa Carlyle"
-     When I enter "Omero+snc" in the search bar and press enter
-     Then the page should show the tiles "Ulysses Freeman"
+    # @todo Enable when this ticket is implemented ISAICP-6575.
+    # When I enter "Jenessa" in the search bar and press enter
+    # Then the page should show the tiles "Jenessa Carlyle"
+    # When I enter "freeman" in the search bar and press enter
+    # Then the page should show the tiles "Ulysses Freeman"
+    # When I enter "clyffco" in the search bar and press enter
+    # Then the page should show the tiles "Jenessa Carlyle"
+    # When I enter "Omero+snc" in the search bar and press enter
+    # Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Advanced search
     # An advanced search link is shown in the header, except on the search page.
@@ -371,7 +378,8 @@ Feature: Global search
       | Chickens are small birds          |
       | Bird spotting                     |
       | Best place to find an exotic bird |
-      | Bird Birdman                      |
+      # @todo Enable when this ticket is implemented ISAICP-6575.
+      # | Bird Birdman                      |
 
   @clearStaticCache
   Scenario: Solutions and/or releases are found by their distribution keyword.
@@ -593,19 +601,80 @@ Feature: Global search
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=relevance"
 
-     When I select "Creation Date" from "Sort by"
-     And I should see the following tiles in the correct order:
-       | Absolutely nonesense               |
-       | Relativity news: Relativity theory |
-       | Relativity is the word             |
-     And I should be on "/search?keys=Relativity&sort_by=creation-date"
+    # @todo Enable when this ticket is implemented ISAICP-6575.
+    # When I select "Creation Date" from "Sort by"
+    # And I should see the following tiles in the correct order:
+    #   | Absolutely nonesense               |
+    #   | Relativity news: Relativity theory |
+    #   | Relativity is the word             |
+    # And I should be on "/search?keys=Relativity&sort_by=creation-date"
+    #
+    # When I select "Last Updated Date" from "Sort by"
+    # And I should see the following tiles in the correct order:
+    #   | Relativity is the word             |
+    #   | Relativity news: Relativity theory |
+    #   | Absolutely nonesense               |
+    # And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
 
-     When I select "Last Updated Date" from "Sort by"
-     And I should see the following tiles in the correct order:
-       | Relativity is the word             |
-       | Relativity news: Relativity theory |
-       | Absolutely nonesense               |
-     And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
+  @javascript
+  Scenario: Anonymous user can find facets summary
+    Given the following collection:
+      | title            | Radio cooking collection     |
+      | logo             | logo.png                     |
+      | moderation       | no                           |
+      | topic            | Demography                   |
+      | spatial coverage | Belgium                      |
+      | state            | validated                    |
+    And the following solutions:
+      | title          | collection                   | description                                                                                                                          | topic      | spatial coverage | state     |
+      | Spheres        | Radio cooking collection     | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography | European Union   | validated |
+      | Movistar       | Radio cooking collection     | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |            |                  | validated |
+    And news content:
+      | title                 | body             | collection                   | topic                   | spatial coverage | state     |
+      | El Cabo da Roca       | The best in town | Radio cooking collection     | Statistics and Analysis | Luxembourg       | validated |
+      | Funny news 1          | Dummy body       | Radio cooking collection     | E-inclusion             | Luxembourg       | validated |
+      | Funny news 2          | Dummy body       | Radio cooking collection     | E-inclusion             | Luxembourg       | validated |
+      | Funny news 3          | Dummy body       | Radio cooking collection     | E-inclusion             | Luxembourg       | validated |
+      | Funny news 4          | Dummy body       | Radio cooking collection     | E-inclusion             | Luxembourg       | validated |
+
+    Given I am logged in as a user with the "authenticated" role
+    When I visit the search page
+    And I select "Solutions (2)" from the "Content types" select facet form
+    And I select "News (5)" option in the "Content types" select facet form
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
+    Then I scroll button "Search" into view
+    And I press "Search"
+    And I should see the following facet summary "News, Solutions"
+
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
+    Then I scroll link "Clear filters" into view
+    And I click "Clear filters"
+    And I select "News (5)" from the "Content types" select facet form
+    Then I scroll button "Search" into view
+    And I press "Search"
+    And I should see the following facet summary "News"
+
+    # Check if facet summary was remove correctly.
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
+    Then I scroll link "Clear filters" into view
+    And I click "Clear filters"
+    And I select "News (5)" from the "Content types" select facet form
+    And I select "Collection (1)" option in the "Content types" select facet form
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
+    Then I scroll button "Search" into view
+    And I press "Search"
+    And I should see the following facet summary "Collection, News"
+    When I scroll the "News" chip into view
+    And I should remove the following facet summary "News"
+    Then the page should show only the tiles "Radio cooking collection"
 
   @javascript
   Scenario: Anonymous user can find facets summary

@@ -1,4 +1,4 @@
-@api @terms @group-a
+@api @terms @group-e
 Feature: Creating content and commenting on archived collection
   In order to not waste time on maintaining legacy collections
   As a collection owner

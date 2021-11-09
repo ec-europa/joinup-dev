@@ -1,0 +1,17 @@
+Index: src/Plugin/search_api/backend/SearchApiSolrBackend.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Plugin/search_api/backend/SearchApiSolrBackend.php b/src/Plugin/search_api/backend/SearchApiSolrBackend.php
+--- a/src/Plugin/search_api/backend/SearchApiSolrBackend.php	
++++ b/src/Plugin/search_api/backend/SearchApiSolrBackend.php	(date 1630050890891)
+@@ -2803,7 +2803,7 @@
+       foreach ($keys as $key_nr => $key) {
+         // We cannot use \Drupal\Core\Render\Element::children() anymore because
+         // $keys is not a valid render array.
+-        if ($key_nr[0] === '#' || !$key) {
++        if ((is_string($key_nr) && $key_nr[0] === '#') || !$key) {
+           continue;
+         }
+         if (is_array($key)) {

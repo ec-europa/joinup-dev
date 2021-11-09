@@ -605,8 +605,6 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @Then the group content subscription digest sent to :username contains the following sections:
    */
   public function assertGroupContentSubscriptionEmailSections(string $username, TableNode $table): void {
-    $this->assertEmailTagPresent();
-
     // Remove the table header from the array.
     $expected_sections = $table->getColumn(0);
     array_shift($expected_sections);
@@ -657,8 +655,6 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @Then the content subscription digest sent to :username should have the subject :subject
    */
   public function assertGroupContentSubscriptionEmailSubject(string $username, string $subject): void {
-    $this->assertEmailTagPresent();
-
     $user = user_load_by_name($username);
     $email_address = $user->getEmail();
     $emails = $this->getGroupSubscriptionEmailsByEmail($email_address);

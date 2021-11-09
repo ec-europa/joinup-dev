@@ -1,1 +1,0 @@
-../../../../common/settings.php

@@ -178,11 +178,8 @@ class SolrCommands extends AbstractCommands {
    */
   protected function getUrl(string $core, string $operation, bool $checkStatus = FALSE): string {
     $config = $this->getConfig();
-    $envCorePrefix = 'env.SOLR_CORE_' . strtoupper($core);
-    $coreUrl = $config->get("${envCorePrefix}_URL");
-    $coreName = $config->get("${envCorePrefix}_NAME");
     $command = static::COMMAND_MAP[$operation][$checkStatus];
-    return "{$coreUrl}/{$coreName}/replication?command={$command}&name={$core}&location={$config->get('solr.snapshot_dir')}&wt=json&json.nl=map";
+    return "{$config->get("env.SOLR_URL")}/{$config->get("env.SOLR_CORE")}/replication?command={$command}&name={$core}&location={$config->get('solr.snapshot_dir')}&wt=json&json.nl=map";
   }
 
   /**

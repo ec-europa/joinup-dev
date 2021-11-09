@@ -1,6 +1,8 @@
 parameters:
     customRulesetUsed: true
     reportUnmatchedIgnoredErrors: false
+    drupal:
+        drupal_root: %currentWorkingDirectory%/web
     ignoreErrors:
         -
             # The rule that suggests to use dependency injection instead of
