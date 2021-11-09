@@ -646,6 +646,9 @@ Feature: Global search
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
 
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
     Then I scroll link "Clear filters" into view
     Then I click "Clear filters"
     And I select "News (5)" from "Content types"
@@ -654,6 +657,9 @@ Feature: Global search
     And I should see the following facet summary "News"
 
     # Check if facet summary was remove correctly.
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
     Then I scroll link "Clear filters" into view
     And I click "Clear filters"
     And I select "News (5)" from "Content types"
@@ -661,5 +667,6 @@ Feature: Global search
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "Collection, News"
-    Then I should remove the following facet summary "News"
-    And the page should show only the tiles "Radio cooking collection"
+    When I scroll the "News" chip into view
+    And I should remove the following facet summary "News"
+    Then the page should show only the tiles "Radio cooking collection"
