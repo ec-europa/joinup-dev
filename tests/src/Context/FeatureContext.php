@@ -1916,14 +1916,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Creates a backup of the Joinup `VERSION` file.
+   * Creates a backup of the `VERSION.txt` file.
    *
    * Tests that interact with the version file should be tagged with `@version`.
    *
    * @BeforeScenario @version&&@api
    */
   public function backupJoinupVersion(): void {
-    $filename = DRUPAL_ROOT . '/../VERSION';
+    $filename = JoinupVersionInterface::PATH;
     $this->version = file_exists($filename) ? $this->version = file_get_contents($filename) : FALSE;
   }
 
@@ -1944,9 +1944,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Sets the Joinup version.
    *
-   * Since this overwrites the `VERSION` file in the root folder, any scenario
-   * that includes this step should be tagged with `@version` so that the
-   * original contents of the file will be restored at the end of the scenario.
+   * Since this overwrites the `VERSION.txt` file in the webroot directory, any
+   * scenario that includes this step should be tagged with `@version` so that
+   * the original contents of the file will be restored at the end of the
+   * scenario.
    *
    * @param string $version
    *   The Joinup version to set, e.g. 'v1.57.0' or 'v1.57.0-66-g1234abcde'.

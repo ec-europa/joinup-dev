@@ -9,15 +9,15 @@ use Drupal\Core\Url;
 /**
  * Interface for services that retrieve the current Joinup version.
  *
- * The version is saved during composer install in a `VERSION` file in the root
- * folder of the project.
+ * The version is saved during building the codebase in a `VERSION.txt` file, in
+ * the project's webroot directory.
  */
 interface JoinupVersionInterface {
 
   /**
    * The path to the file that contains the Joinup version.
    */
-  const PATH = DRUPAL_ROOT . '/../VERSION';
+  const PATH = DRUPAL_ROOT . '/VERSION.txt';
 
   /**
    * Returns a string that uniquely identifies the current Joinup version.
