@@ -9,8 +9,8 @@ use Drupal\Core\Url;
 /**
  * A service that retrieves the current Joinup version.
  *
- * The version is saved during building the codebase in a `VERSION` file, in the
- * root folder of the project.
+ * The version is saved during building the codebase in a `VERSION.txt` file, in
+ * the project's webroot directory.
  */
 class JoinupVersion implements JoinupVersionInterface {
 
@@ -59,13 +59,13 @@ class JoinupVersion implements JoinupVersionInterface {
     }
 
     // If the current version could not be determined, return a link to the
-    // releases page on Github.
+    // releases page on repo.
     if ($version === static::UNTAGGED) {
       return Url::fromUri('https://git.fpfis.eu/digit/digit-joinup-reference/-/tags');
     }
 
     // If a tag is checked out, return a link to the matching release.
-    return Url::fromUri('https://git.fpfis.eu/digit/digit-joinup-reference/-/tags/' . $version);
+    return Url::fromUri('https://git.fpfis.eu/ec-europa/digit-joinup-reference/-/tags/' . $version);
   }
 
 }

@@ -44,7 +44,7 @@ commands:
     - task: mkdir
       dir: ${env.DRUPAL_FILE_TEMP_PATH}
     - task: exec
-      command: test "$(git tag)" = "" || git describe --tags | tr -d '\n' > ${joinup.dir}/VERSION
+      command: test "$(git tag)" = "" || git describe --tags | tr -d '\n' > ${joinup.site_dir}/VERSION.txt
 
   # Overrides toolkit:install-clean.
   toolkit:install-clean:
@@ -107,7 +107,7 @@ commands:
     # standards check.
     # See \Joinup\CodingStandards\Sniffs\NamingConventions\ValidUpdateNameSniff
     - task: exec
-      command: if $(git rev-parse --is-shallow-repository); then git fetch --unshallow; fi
+      command: test "$(git rev-parse --is-shallow-repository)" = "false" || git fetch --unshallow
     - task: run
       command: testing:phpcs-setup
     - task: exec

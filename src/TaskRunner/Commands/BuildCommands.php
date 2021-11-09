@@ -78,8 +78,8 @@ class BuildCommands extends AbstractCommands {
       ->addImportPath($config->get('scss.import_dir'));
 
     // Prepare sha and tag variables.
-    $tag = $options['tag'] ?? $this->getGitTag();
-    $sha = $options['sha'] ?? $this->getGitCommitHash();
+    $tag = $this->getGitTag();
+    $sha = $this->getGitCommitHash();
 
     // Write version tag in manifest.json and VERSION.txt.
     $tasks[] = $this->taskWriteToFile("{$distDir}/manifest.json")->text(
@@ -103,7 +103,20 @@ class BuildCommands extends AbstractCommands {
    *   Current Git tag.
    */
   protected function getGitTag(): string {
-    return trim(Robo::getContainer()->get('repository')->run('describe', ['--tags']));
+    /** @var \Gitonomy\Git\Repository $repository */
+    $repository = Robo::getContainer()->get('repository');
+
+    // Handle a potential case where the repository has been shallow cloned.
+    // Typically, this happens in GitLab pipelines, where the repos are shallow
+    // cloned for performance reasons. A shallow clone repository prevents us to
+    // get the latest Git tag as no tags are available. But we require this info
+    // during the coding standards check.
+    $is_shallow_repository = $repository->run('rev-parse', ['--is-shallow-repository']) === 'true';
+    if ($is_shallow_repository) {
+      $repository->run('fetch', ['--unshallow']);
+    }
+
+    return trim($repository->run('describe', ['--tags']));
   }
 
   /**

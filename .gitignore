@@ -50,7 +50,7 @@
 
 # Ignore temporary and auto-generated files.
 /tmp/
-/VERSION
+/web/VERSION.txt
 
 # Ignore local docker compose file.
 /docker-compose.override.yml
