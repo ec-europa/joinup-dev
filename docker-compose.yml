@@ -16,7 +16,7 @@
 version: '3.8'
 services:
   web:
-    image: fpfis/httpd-php-dev:7.1
+    image: fpfis/httpd-php-dev:7.4
     working_dir: /var/www/html
     # macOS users should override 'volumes:' in docker-compose.override.yml.
     # See docker-compose.override.yml.dist.
@@ -25,7 +25,7 @@ services:
     env_file:
       - .env.dist
     environment:
-      DOCUMENT_ROOT: "/var/www/html/web"
+      DOCUMENT_ROOT: "/var/www/html"
       SMTP_SERVER: mail
       SMTP_PORT: 1025
       SMTP_FROM: contact@example.com
@@ -40,6 +40,11 @@ services:
       ASDA_USER:
       ASDA_PASSWORD:
       DISABLE_XDEBUG:
+      DISABLE_BLACKFIRE:
+      # For non-macOS hosts. For macOS, see docker-compose.override.yml.dist.
+      XDEBUG_CONFIG: "client_host=172.17.0.1"
+      XDEBUG_MODE: "develop, debug"
+      PHP_IDE_CONFIG: "serverName=Docker"
     depends_on:
       - mysql
       - sparql
@@ -98,6 +103,7 @@ services:
       - ./scripts/solr/restore_solr.sh:/opt/solr/bin/restore_solr.sh
       - ./scripts/docker/solr/precreate.sh:/docker-entrypoint-initdb.d/precreate.sh
     environment:
+      SOLR_CORE: digit-joinup
       DOCKER_RESTORE_PRODUCTION:
 
   redis:
