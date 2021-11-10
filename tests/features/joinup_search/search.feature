@@ -378,8 +378,7 @@ Feature: Global search
       | Chickens are small birds          |
       | Bird spotting                     |
       | Best place to find an exotic bird |
-      # @todo Enable when this ticket is implemented ISAICP-6575.
-      # | Bird Birdman                      |
+      | Bird Birdman                      |
 
   @clearStaticCache
   Scenario: Solutions and/or releases are found by their distribution keyword.
