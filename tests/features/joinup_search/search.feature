@@ -700,18 +700,22 @@ Feature: Global search
     When I visit the search page
     And I select "Solutions (2)" from the "Content types" select facet form
     And I select "News (5)" option in the "Content types" select facet form
+    And I scroll "Search" link into view
     And I click Search in facets form
     And I should see the following facet summary "News, Solutions"
 
     Then I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
+    And I scroll "Search" link into view
     And I click Search in facets form
     And I should see the following facet summary "News"
 
     # Check if facet summary was remove correctly.
-    Then I click "Clear filters"
+    Then I scroll "Clear filters" link into view
+    And I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
     And I select "Collection (1)" option in the "Content types" select facet form
+    And I scroll "Search" link into view
     And I click Search in facets form
     And I should see the following facet summary "Collection, News"
     Then I should remove the following facet summary "News"
