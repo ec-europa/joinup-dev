@@ -69,7 +69,7 @@ Feature: Global search
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
-    When I select "Social and Political" from the "topic" select facet form
+    When I select "Social and Political" from "Topics"
     Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "Social and Political" from select facet form "topic" is selected
@@ -87,7 +87,7 @@ Feature: Global search
     And I should see the "Dummy news 4" tile
 
     # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
-    When I select " Demography" from the "topic" select facet form
+    When I select "- Demography" from "Topics"
     Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "- Demography" from select facet form "topic" is selected
@@ -111,7 +111,7 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I select "Belgium" from the "spatial coverage" select facet form
+    When I select "Belgium" from "Geographic coverage"
     Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "Belgium (1)" from select facet form "spatial coverage" is selected
@@ -131,7 +131,7 @@ Feature: Global search
 
     # Select link in the 'type' facet.
     Given I am on the search page
-    When I select "News (5)" from the "Content types" select facet form
+    When I select "News (5)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "News (5)" from select facet form "Content types" is selected
@@ -140,7 +140,7 @@ Feature: Global search
       | News (5)        |
       | Solutions (2)   |
 
-    When I select "Solutions (2)" option in the "Content types" select facet form
+    When I additionally select "Solutions (2)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
@@ -197,7 +197,8 @@ Feature: Global search
       | Any location     |
       | Greece (1)       |
       | Luxembourg (2)   |
-    When I select "Luxembourg" from the "spatial coverage" select facet form
+
+    When I select "Luxembourg" from "Geographic coverage"
     Then I scroll button "Search" into view
     And I press "Search"
     Then the option with text "Luxembourg (2)" from select facet form "spatial coverage" is selected
@@ -636,11 +637,8 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     When I visit the search page
-    And I select "Solutions (2)" from the "Content types" select facet form
-    And I select "News (5)" option in the "Content types" select facet form
-    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
-    # @todo: Remove this as part of ISAICP-6800.
-    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
+    And I select "Solutions (2)" from "Content types"
+    And I additionally select "News (5)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
@@ -649,8 +647,8 @@ Feature: Global search
     # @todo: Remove this as part of ISAICP-6800.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
     Then I scroll link "Clear filters" into view
-    And I click "Clear filters"
-    And I select "News (5)" from the "Content types" select facet form
+    Then I click "Clear filters"
+    And I select "News (5)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News"
@@ -661,11 +659,8 @@ Feature: Global search
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
     Then I scroll link "Clear filters" into view
     And I click "Clear filters"
-    And I select "News (5)" from the "Content types" select facet form
-    And I select "Collection (1)" option in the "Content types" select facet form
-    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
-    # @todo: Remove this as part of ISAICP-6800.
-    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
+    And I select "News (5)" from "Content types"
+    And I additionally select "Collection (1)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "Collection, News"
