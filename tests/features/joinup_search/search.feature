@@ -748,11 +748,6 @@ Feature: Global search
 
     When I visit the search page
     Then I should see the 3 tiles with image
-    And I should see the following links:
-      | Current page    |
-      | Go to page 2    |
-      | Go to next page |
-      | Go to last page |
 
     Then I go to "/search?sort_by=relevance&page=1"
     And I should see the 0 tiles with image
