@@ -691,15 +691,15 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     When I visit the search page
-    And I select "Solutions (2)" from the "Content types" select facet form
-    And I select "News (5)" option in the "Content types" select facet form
+    Then I select "Solutions (2)" from "Content types"
+    And I additionally select "News (5)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
 
     Then I scroll link "Clear filters" into view
     And I click "Clear filters"
-    And I select "News (5)" from the "Content types" select facet form
+    And I select "News (5)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News"
@@ -707,8 +707,8 @@ Feature: Global search
     # Check if facet summary was remove correctly.
     Then I scroll link "Clear filters" into view
     And I click "Clear filters"
-    And I select "News (5)" from the "Content types" select facet form
-    And I select "Collection (1)" option in the "Content types" select facet form
+    Then I select "News (5)" from "Content types"
+    And I additionally select "Collection (1)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "Collection, News"
