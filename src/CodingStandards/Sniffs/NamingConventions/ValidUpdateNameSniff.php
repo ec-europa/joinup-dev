@@ -7,6 +7,7 @@ namespace Joinup\CodingStandards\Sniffs\NamingConventions;
 use Composer\Semver\Comparator;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Sniffs\NamingConventions\ValidFunctionNameSniff;
+use Gitonomy\Git\Exception\ProcessException;
 use Gitonomy\Git\Repository;
 use PHP_CodeSniffer\Files\File;
 
@@ -69,6 +70,15 @@ class ValidUpdateNameSniff extends ValidFunctionNameSniff {
   protected static string $latestStableTag;
 
   /**
+   * Static cache for currently checked out Git tag.
+   *
+   * @var string|null
+   *   NULL when not initialized, an empty string when no tag is checked out, or
+   *   a string representing the currently checked out tag.
+   */
+  protected static string $checkedOutTag;
+
+  /**
    * Static cache for next version candidates.
    *
    * @var string[]
@@ -117,7 +127,10 @@ class ValidUpdateNameSniff extends ValidFunctionNameSniff {
         $error = "Remove %s(). Already applied in %s";
         $data = [$functionName, $minorVersionTag];
       }
-      else {
+      // If the release tag is currently checked out we are on a production
+      // build and the updates for the current tag are allowed. If not we show
+      // a helpful message suggesting the right identifier to use.
+      elseif (Comparator::notEqualTo($tag, static::getCheckedOutTag())) {
         $nextVersionCandidates = static::getNextVersionCandidates();
         if (!in_array(substr($name, 0, 5), $nextVersionCandidates)) {
           $error = "Invalid '%s' identifier. The first 5 digits should be '%s' or '%s'";
@@ -155,6 +168,30 @@ class ValidUpdateNameSniff extends ValidFunctionNameSniff {
     }
 
     return static::$latestStableTag;
+  }
+
+  /**
+   * Returns the currently checked out Git tag.
+   *
+   * @return string
+   *   The currently checked out Git tag with the potential leading 'v' stripped
+   *   out. If no tag is currently checked out an empty string is returned.
+   */
+  protected static function getCheckedOutTag(): string {
+    if (!isset(static::$checkedOutTag)) {
+      $repository = new Repository(getcwd());
+      try {
+        $tag = trim($repository->run('describe', ['--tags', '--exact-match']));
+        // An exact match was found.
+        static::$checkedOutTag = ltrim($tag, 'v');
+      }
+      catch (ProcessException $e) {
+        // There is no exact match.
+        static::$checkedOutTag = '';
+      }
+    }
+
+    return static::$checkedOutTag;
   }
 
   /**
