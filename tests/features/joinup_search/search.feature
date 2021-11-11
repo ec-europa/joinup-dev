@@ -321,15 +321,14 @@ Feature: Global search
     Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
-    # @todo Enable when this ticket is implemented ISAICP-6575.
-    # When I enter "Jenessa" in the search bar and press enter
-    # Then the page should show the tiles "Jenessa Carlyle"
-    # When I enter "freeman" in the search bar and press enter
-    # Then the page should show the tiles "Ulysses Freeman"
-    # When I enter "clyffco" in the search bar and press enter
-    # Then the page should show the tiles "Jenessa Carlyle"
-    # When I enter "Omero+snc" in the search bar and press enter
-    # Then the page should show the tiles "Ulysses Freeman"
+     When I enter "Jenessa" in the search bar and press enter
+     Then the page should show the tiles "Jenessa Carlyle"
+     When I enter "freeman" in the search bar and press enter
+     Then the page should show the tiles "Ulysses Freeman"
+     When I enter "clyffco" in the search bar and press enter
+     Then the page should show the tiles "Jenessa Carlyle"
+     When I enter "Omero+snc" in the search bar and press enter
+     Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Advanced search
     # An advanced search link is shown in the header, except on the search page.
@@ -600,20 +599,19 @@ Feature: Global search
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=relevance"
 
-    # @todo Enable when this ticket is implemented ISAICP-6575.
-    # When I select "Creation Date" from "Sort by"
-    # And I should see the following tiles in the correct order:
-    #   | Absolutely nonesense               |
-    #   | Relativity news: Relativity theory |
-    #   | Relativity is the word             |
-    # And I should be on "/search?keys=Relativity&sort_by=creation-date"
-    #
-    # When I select "Last Updated Date" from "Sort by"
-    # And I should see the following tiles in the correct order:
-    #   | Relativity is the word             |
-    #   | Relativity news: Relativity theory |
-    #   | Absolutely nonesense               |
-    # And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
+     When I select "Creation Date" from "Sort by"
+     And I should see the following tiles in the correct order:
+       | Absolutely nonesense               |
+       | Relativity news: Relativity theory |
+       | Relativity is the word             |
+     And I should be on "/search?keys=Relativity&sort_by=creation-date"
+
+     When I select "Last Updated Date" from "Sort by"
+     And I should see the following tiles in the correct order:
+       | Relativity is the word             |
+       | Relativity news: Relativity theory |
+       | Absolutely nonesense               |
+     And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
 
   @javascript
   Scenario: Anonymous user can find facets summary
@@ -700,23 +698,25 @@ Feature: Global search
     When I visit the search page
     And I select "Solutions (2)" from the "Content types" select facet form
     And I select "News (5)" option in the "Content types" select facet form
-    And I scroll "Search" link into view
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     And I should see the following facet summary "News, Solutions"
 
-    Then I click "Clear filters"
+    Then I scroll link "Clear filters" into view
+    And I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
-    And I scroll "Search" link into view
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     And I should see the following facet summary "News"
 
     # Check if facet summary was remove correctly.
-    Then I scroll "Clear filters" link into view
+    Then I scroll link "Clear filters" into view
     And I click "Clear filters"
     And I select "News (5)" from the "Content types" select facet form
     And I select "Collection (1)" option in the "Content types" select facet form
-    And I scroll "Search" link into view
-    And I click Search in facets form
+    Then I scroll button "Search" into view
+    And I press "Search"
     And I should see the following facet summary "Collection, News"
-    Then I should remove the following facet summary "News"
+    Then I scroll the "News" chip into view
+    And I should remove the following facet summary "News"
     And the page should show only the tiles "Radio cooking collection"
