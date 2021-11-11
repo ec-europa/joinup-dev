@@ -691,15 +691,15 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     When I visit the search page
-    And I select "Solutions (2)" from the "Content types" select facet form
-    And I select "News (5)" option in the "Content types" select facet form
+    Then I select "Solutions (2)" from "Content types"
+    And I additionally select "News (5)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News, Solutions"
 
     Then I scroll link "Clear filters" into view
     And I click "Clear filters"
-    And I select "News (5)" from the "Content types" select facet form
+    And I select "News (5)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "News"
@@ -707,11 +707,42 @@ Feature: Global search
     # Check if facet summary was remove correctly.
     Then I scroll link "Clear filters" into view
     And I click "Clear filters"
-    And I select "News (5)" from the "Content types" select facet form
-    And I select "Collection (1)" option in the "Content types" select facet form
+    Then I select "News (5)" from "Content types"
+    And I additionally select "Collection (1)" from "Content types"
     Then I scroll button "Search" into view
     And I press "Search"
     And I should see the following facet summary "Collection, News"
     Then I scroll the "News" chip into view
     And I should remove the following facet summary "News"
     And the page should show only the tiles "Radio cooking collection"
+
+  @terms @javascript
+  Scenario: Show first three search results as featured
+    Given collection:
+      | title | Mice in space |
+      | state | validated     |
+    And document content:
+      | title        | collection    | topic                                  | state     | logo     | body                                                                                                                                                                                            |
+      | Microgravity | Mice in space | HR, Statistics and Analysis, E-justice | validated | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+    And event content:
+      | title           | collection    | topic                    | state     | logo        | body                                                                                                                                                                                  |
+      | Stay at the ISS | Mice in space | EU and European Policies | validated | charles.jpg | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity. |
+    And news content:
+      | title                 | body                                       | collection     | topic                   | spatial coverage | state     | logo        |
+      | Muscle atrophy        | Researchers from the University of Tsukuba | Mice in space  | Finance in EU           | Luxembourg       | validated | blaise.jpg  |
+      | El Cabo da Roca       | The best in town                           | Mice in space  | Statistics and Analysis | Luxembourg       | validated | charles.jpg |
+      | Funny news 1          | Dummy body                                 | Mice in space  | HR                      | Luxembourg       | validated | ada.png     |
+      | Funny news 2          | Dummy body                                 | Mice in space  | E-inclusion             | Luxembourg       | validated | alan.jpg    |
+      | Funny news 3          | Dummy body                                 | Mice in space  | E-inclusion             | Luxembourg       | validated | charles.jpg |
+      | Funny news 4          | Dummy body                                 | Mice in space  | HR                      | Luxembourg       | validated | ada.png     |
+      | Funny news 5          | Dummy body                                 | Mice in space  | HR                      | Luxembourg       | validated | ada.png     |
+      | Dummy news 1          | Dummy body                                 | Mice in space  | Statistics and Analysis | Luxembourg       | validated | charles.jpg |
+      | Dummy news 2          | Dummy body                                 | Mice in space  | E-inclusion             | Luxembourg       | validated | alan.jpg    |
+      | Dummy news 3          | Dummy body                                 | Mice in space  | Statistics and Analysis | Luxembourg       | validated | ada.png     |
+      | Dummy news 4          | Dummy body                                 | Mice in space  | E-inclusion             | Luxembourg       | validated | charles.jpg |
+
+    When I visit the search page
+    Then I should see the 3 tiles with image
+
+    Then I go to "/search?sort_by=relevance&page=1"
+    And I should see the 0 tiles with image
