@@ -10353,14 +10353,9 @@
         {
             "name": "openeuropa/oe_bootstrap_theme",
             "version": "0.71.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/openeuropa/oe_bootstrap_theme.git",
-                "reference": "acaf97ddaa159dc827622a2ede554336dc2afe63"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_bootstrap_theme/zipball/acaf97ddaa159dc827622a2ede554336dc2afe63",
+                "type": "tar",
+                "url": "https://github.com/openeuropa/oe_bootstrap_theme/releases/download/0.71.0/oe_bootstrap_theme-0.71.0.tar.gz",
                 "reference": "acaf97ddaa159dc827622a2ede554336dc2afe63",
                 "shasum": ""
             },

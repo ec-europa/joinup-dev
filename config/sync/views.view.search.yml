@@ -5,7 +5,6 @@ dependencies:
   config:
     - search_api.index.published
   module:
-    - joinup_material_design
     - search_api
     - views_autosubmit
     - views_block_area
@@ -69,32 +68,38 @@ display:
             offset_label: Offset
           quantity: 9
       style:
-        type: tiles
+        type: default
         options:
-          row_class: ''
-          default_row_class: true
+          row_class: tile
+          default_row_class: false
           uses_fields: false
       row:
         type: search_api
         options:
           view_modes:
             'entity:node':
-              custom_page: view_mode_tile
-              discussion: view_mode_tile
-              document: view_mode_tile
-              event: view_mode_tile
-              news: view_mode_tile
-              newsletter: view_mode_tile
-              tallinn_report: view_mode_tile
-              video: view_mode_tile
+              custom_page: search_result
+              discussion: search_result
+              document: search_result
+              event: search_result
+              news: search_result
+              tallinn_report: search_result
+              video: search_result
             'entity:rdf_entity':
-              asset_distribution: view_mode_tile
-              asset_release: view_mode_tile
-              collection: view_mode_tile
-              licence: view_mode_tile
-              solution: view_mode_tile
+              asset_distribution: search_result
+              asset_release: search_result
+              collection: search_result
+              licence: search_result
+              solution: search_result
+              spdx_licence: default
+            'entity:taxonomy_term':
+              eif_conceptual_model: default
+              eif_interoperability_layer: default
+              eif_principle: default
+              eif_recommendation: default
+              topic: default
             'entity:user':
-              user: view_mode_tile
+              user: search_result
       fields:
         id:
           table: search_api_index_published

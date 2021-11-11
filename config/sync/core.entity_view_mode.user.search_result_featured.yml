@@ -1,0 +1,10 @@
+uuid: eeb7ab15-857c-4d3b-a6f7-e691fbec8306
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.search_result_featured
+label: 'Search result item (featured)'
+targetEntityType: user
+cache: true

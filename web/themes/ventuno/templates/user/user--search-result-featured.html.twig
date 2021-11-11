@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Theme override to display a user search result featured.
+ */
+#}
+{% if content %}
+  {{ pattern('card', {
+    'variants': 'horizontal',
+    'title': {
+      attributes: [
+        {
+          name: "href",
+          value: path('entity.user.canonical', {'user': user.id}),
+        },
+      ],
+      'content': full_name
+    },
+    'content': content|without('field_user_photo'),
+    'image': content.field_user_photo,
+  }) }}
+{% endif %}
