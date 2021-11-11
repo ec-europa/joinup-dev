@@ -14,6 +14,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\joinup_search\Plugin\views\row\JoinupSearchApiRow;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Query\ConditionGroupInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -400,4 +401,11 @@ function joinup_search_theme_suggestions_joinup_search_global_search(array $vari
   }
 
   return [];
+}
+
+/**
+ * Implements hook_views_plugins_row_alter().
+ */
+function joinup_search_views_plugins_row_alter(array &$plugins): void {
+  $plugins['search_api']['class'] = JoinupSearchApiRow::class;
 }

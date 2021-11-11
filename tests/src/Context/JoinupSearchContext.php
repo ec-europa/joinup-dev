@@ -514,6 +514,21 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
+   * Check number of search results as featured.
+   *
+   * @param int $number
+   *   Number of tiles with image.
+   *
+   * @Given I should see the :number tiles with image
+   */
+  public function numberOfTilesWithImage(int $number) {
+    $session = $this->getSession()->getPage();
+    $elements = $session->findAll('css', '.card > img');
+
+    Assert::assertSame(count($elements), $number);
+  }
+
+  /**
    * Opens the dropdown for the given facet element.
    *
    * @param \Behat\Mink\Element\NodeElement $facet
