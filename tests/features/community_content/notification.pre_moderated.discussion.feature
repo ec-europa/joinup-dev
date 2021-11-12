@@ -1,4 +1,4 @@
-@api @email @terms @group-b
+@api @terms @group-b
 Feature: Notification test for the discussion transitions on a pre moderated parent.
   In order to manage my collections
   As an owner of the collection
@@ -36,8 +36,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | CC notify validated to revise       | CC member      | body | CC pre collection | validated        |
 
     # Test 'create' operation.
-    When all e-mails have been sent
-    And I am logged in as "CC member"
+    When I am logged in as "CC member"
     And I go to the "CC pre collection" collection
     And I click "Add discussion" in the plus button menu
     And I fill in "Title" with "CC notify create propose"
@@ -49,8 +48,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been proposed                                                                                             |
       | body      | CC Member has submitted a new discussion - "CC notify create propose" for publication in the collection: "CC pre collection". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC pre collection" collection
     And I click "Add discussion" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
@@ -63,8 +61,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | body      | CC Facilitator has published the new discussion - "CC notify create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
-    When all e-mails have been sent
-    And I am logged in as "CC member"
+    When I am logged in as "CC member"
     And I go to the "CC notify pre propose" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
@@ -73,8 +70,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been proposed                                                                                          |
       | body      | CC Member has submitted a new discussion - "CC notify pre propose" for publication in the collection: "CC pre collection". |
 
-    When all e-mails have been sent
-    And I go to the "CC notify pre propose from reported" discussion
+    When I go to the "CC notify pre propose from reported" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
@@ -82,8 +78,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been updated                                                                                                                                                  |
       | body      | CC Member has updated the content of the discussion - "CC notify pre propose from reported" as advised and requests again its publication in the collection: "CC pre collection". |
 
-    When all e-mails have been sent
-    And I go to the "CC notify pre request deletion" discussion
+    When I go to the "CC notify pre request deletion" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
     Then I should see the error message "This action requires you to fill in the motivation field"
@@ -94,8 +89,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been updated                                                                                                                                                        |
       | body      | CC Member has requested to delete the discussion - "CC notify pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
 
-    When all e-mails have been sent
-    And I go to the "CC notify validated to revise" discussion
+    When I go to the "CC notify validated to revise" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Propose changes"
     Then the following email should have been sent:
@@ -103,8 +97,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been proposed                                                                                                             |
       | body      | CC Member has submitted an update of the discussion - "CC notify validated to revise" for publication in the collection: "CC pre collection". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify pre publish" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
@@ -113,8 +106,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been published                                                                                |
       | body      | CC Facilitator has published the new discussion - "CC notify pre publish" in the collection: "CC pre collection". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify pre request changes" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Request changes"
@@ -130,8 +122,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been proposed                                                                                                                  |
       | body      | CC Facilitator has submitted an update of the discussion - "CC notify pre request changes" for publication in the collection: "CC pre collection". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify pre report" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Report"
@@ -143,8 +134,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been updated                                                                                                                                                                       |
       | body      | the Facilitator, CC Facilitator has requested you to modify the discussion - "CC notify pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify pre approve proposed" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
@@ -153,8 +143,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: Content has been updated                                                                                                                                      |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the discussion - "CC notify pre approve proposed" in the collection: "CC pre collection". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify pre reject deletion" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Reject deletion"
@@ -167,8 +156,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | body      | the Facilitator, CC Facilitator has not approved your request to delete the discussion - "CC notify pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
 
     # Test 'delete' operation on an entity in 'deletion_request' state.
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify pre delete" discussion
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
@@ -178,8 +166,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | subject   | Joinup: The discussion "CC notify pre delete" was deleted in the space of "CC pre collection"                    |
       | body      | for your information, the discussion "CC notify pre delete" was deleted from the "CC pre collection" collection. |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify pre request deletion" discussion
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
@@ -190,8 +177,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | body      | for your information, the discussion "CC notify pre request deletion" was deleted from the "CC pre collection" collection. |
 
     # Test 'delete' operation on an entity in 'validated' state.
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify validated to delete" discussion
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"

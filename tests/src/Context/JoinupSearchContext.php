@@ -256,60 +256,6 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
-   * Clicks a facet item in an inline facet.
-   *
-   * @param string $select
-   *   The option to select.
-   * @param string $facet
-   *   The facet alias.
-   *
-   * @throws \Exception
-   *   Thrown when the facet or the link inside the facet is not found.
-   *
-   * @When I select :option from the :facet select facet
-   */
-  public function iSelectAnOptionFromFacet(string $select, string $facet): void {
-    $facet = $this->findFacetByAlias($facet, NULL, 'select');
-    $facet->selectOption($select);
-  }
-
-  /**
-   * Clicks a facet item in an inline facet form.
-   *
-   * @param string $select
-   *   The option to select.
-   * @param string $facet
-   *   The facet alias.
-   *
-   * @throws \Exception
-   *   Thrown when the facet or the link inside the facet is not found.
-   *
-   * @When I select :option from the :facet select facet form
-   */
-  public function iSelectAnOptionFromFacetForm(string $select, string $facet): void {
-    $facet = $this->findFacetByAlias($facet, NULL, 'select', TRUE);
-    $facet->selectOption($select);
-  }
-
-  /**
-   * Clicks in more facet items in an inline facet form.
-   *
-   * @param string $select
-   *   The option to select.
-   * @param string $facet
-   *   The facet alias.
-   *
-   * @throws \Exception
-   *   Thrown when the facet or the link inside the facet is not found.
-   *
-   * @When I select :option option in the :facet select facet form
-   */
-  public function iSelectOtherOptionFromFacetForm(string $select, string $facet): void {
-    $facet = $this->findFacetByAlias($facet, NULL, 'select', TRUE);
-    $facet->selectOption($select, TRUE);
-  }
-
-  /**
    * Asserts a selected option in the .
    *
    * @param string $option
@@ -400,6 +346,15 @@ class JoinupSearchContext extends RawDrupalContext {
 
   /**
    * Asserts the list of available options in a facet select box.
+   *
+   * @codingStandardsIgnoreStart
+   * Table format:
+   * | Option 1 | 0 |
+   * | Option 2 | 1 |
+   * @codingStandardsIgnoreEnd
+   *
+   * The first column in the table is required and lists the options that should
+   * be available. The second, optional, column lists the expected indentation.
    *
    * @param string $select
    *   The name of the field element.
@@ -534,6 +489,21 @@ class JoinupSearchContext extends RawDrupalContext {
 
       return $table->getColumn(0) === $found;
     });
+  }
+
+  /**
+   * Check number of search results as featured.
+   *
+   * @param int $number
+   *   Number of tiles with image.
+   *
+   * @Given I should see the :number tiles with image
+   */
+  public function numberOfTilesWithImage(int $number) {
+    $session = $this->getSession()->getPage();
+    $elements = $session->findAll('css', '.card > img');
+
+    Assert::assertSame(count($elements), $number);
   }
 
   /**
@@ -836,15 +806,14 @@ class JoinupSearchContext extends RawDrupalContext {
    * @When I should remove the following facet summary :label
    */
   public function removeFacetSummary(string $label): void {
-
-    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-summary-blocksearch-facets-summary ")]//span[text()="' . $label . '"]';
-    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    $css = "div.block-facets-summary-blocksearch-facets-summary li.facet-summary-item--facet a:contains('{$label}')";
+    $element = $this->getSession()->getPage()->find('css', $css);
 
     if (empty($element)) {
       throw new \Exception("The $label facet summary item was not found in the page.");
     }
-
-    $element->click();
+    $remove = $element->find('css', '.js-facet-deactivate');
+    $remove->click();
   }
 
   /**

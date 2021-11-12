@@ -6,7 +6,6 @@ namespace Drupal\joinup\Traits;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\user\UserInterface;
-use PHPUnit\Framework\Assert;
 
 /**
  * Contains utility methods.
@@ -93,8 +92,6 @@ trait MailCollectorTrait {
    *   Thrown if no emails are found or no user exists with the given data.
    */
   protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail, bool $strict = TRUE): array {
-    $this->assertEmailTagPresent();
-
     $mails = $this->getMails();
     if (empty($mails)) {
       throw new \Exception('No mail was sent.');
@@ -118,18 +115,6 @@ trait MailCollectorTrait {
     }
 
     return $emails_found;
-  }
-
-  /**
-   * Checks if the current scenario or feature has the @email tag.
-   *
-   * Call this in steps that use the test mail collector so that the developer
-   * is alerted if this tag is not present.
-   */
-  protected function assertEmailTagPresent(): void {
-    \assert(method_exists($this, 'getTags'), __METHOD__ . ' depends on TagTrait. Please include it in your class.');
-    $tags = $this->getTags();
-    Assert::assertTrue(in_array('email', $tags), '@email tag is missing, it should be added to the scenario or feature');
   }
 
   /**

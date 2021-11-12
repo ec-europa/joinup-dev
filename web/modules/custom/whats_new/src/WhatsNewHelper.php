@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\path_alias\AliasManagerInterface;
 use Drupal\user\UserDataInterface;
 
 /**
@@ -44,6 +45,13 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
   protected $invalidator;
 
   /**
+   * The path alias manager service.
+   *
+   * @var \Drupal\path_alias\AliasManagerInterface
+   */
+  protected $aliasManager;
+
+  /**
    * Constructs a WhatsNewHelper object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -54,12 +62,15 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
    *   The user data service.
    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $invalidator
    *   The cache tag invalidator service.
+   * @param \Drupal\path_alias\AliasManagerInterface $alias_manager
+   *   The path alias manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $current_user, UserDataInterface $user_data, CacheTagsInvalidatorInterface $invalidator) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $current_user, UserDataInterface $user_data, CacheTagsInvalidatorInterface $invalidator, AliasManagerInterface $alias_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->currentUser = $current_user;
     $this->userData = $user_data;
     $this->invalidator = $invalidator;
+    $this->aliasManager = $alias_manager;
   }
 
   /**
@@ -84,11 +95,12 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
       ->condition('live_link', 1);
 
     if ($entity) {
+      $system_path = '/' . $entity->toUrl()->getInternalPath();
       $entity_uris = [
         // Support both the alias and the internal URL. The alias can occur if
         // the user copies it from the URL and the internal URL can occur if the
         // user selects the entity from the autocomplete field.
-        'internal:' . $entity->toUrl()->toString(),
+        "internal:{$this->aliasManager->getAliasByPath($system_path)}",
         "entity:node/{$entity->id()}",
       ];
 

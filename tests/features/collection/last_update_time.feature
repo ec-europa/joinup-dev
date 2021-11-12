@@ -1,4 +1,4 @@
-@api @javascript @terms @clearStaticCache @group-a
+@api @javascript @terms @clearStaticCache @group-c
 Feature: Tests the collection last update time.
 
   Scenario: As a user visiting a collection, I want to see the collection last

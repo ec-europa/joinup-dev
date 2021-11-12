@@ -1,4 +1,4 @@
-@api @email @group-a
+@api @group-e
 Feature: Delete comments
   As a visitor of the website I can leave a comment on community content.
 

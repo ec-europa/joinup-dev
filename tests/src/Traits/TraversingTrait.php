@@ -115,18 +115,23 @@ trait TraversingTrait {
    *    identical.
    */
   protected function assertSelectAvailableOptions(NodeElement $element, TableNode $table): void {
-    $available_options = $this->getSelectOptions($element);
-    $rows = $table->getColumn(0);
-
     // Ignore duplicated whitespace.
     $strip_multiple_spaces = function (string $option): string {
-      $option = preg_replace("/\s{2,}/", " ", $option);
-      return $option;
+      return preg_replace("/\s{2,}/", " ", $option);
     };
-    $available_options = array_map($strip_multiple_spaces, $available_options);
-    $rows = array_map($strip_multiple_spaces, $rows);
 
-    Assert::assertEquals($rows, $available_options);
+    $actual_options = $this->getSelectOptions($element);
+    $expected_options = $table->getTable();
+
+    foreach ($expected_options as $expected_option) {
+      $actual_option = array_shift($actual_options);
+
+      Assert::assertEquals($strip_multiple_spaces($expected_option[0]), $strip_multiple_spaces($actual_option['text']));
+
+      if (isset($expected_option[1])) {
+        Assert::assertEquals($expected_option[1], $actual_option['indentation']);
+      }
+    }
   }
 
   /**
@@ -136,13 +141,19 @@ trait TraversingTrait {
    *   The select element.
    *
    * @return array
-   *   The options text keyed by option value.
+   *   The options as a structured array keyed by option value, with the
+   *   following elements:
+   *   - text: The option text.
+   *   - indentation: The indentation level.
    */
   protected function getSelectOptions(NodeElement $select): array {
     $options = [];
     foreach ($select->findAll('xpath', '//option') as $element) {
       /** @var \Behat\Mink\Element\NodeElement $element */
-      $options[] = trim($element->getText());
+      $options[] = [
+        'text' => trim($element->getText()),
+        'indentation' => substr_count($element->getHtml(), '&nbsp;'),
+      ];
     }
 
     return $options;
@@ -237,10 +248,10 @@ trait TraversingTrait {
     $result = [];
     // @todo The `.listing__item--tile` selector is part of the original Joinup
     //   theme and can be removed once we have fully migrated to the new theme.
-    foreach ($regionObj->findAll('css', '.listing__item--tile, article.tile') as $element) {
+    foreach ($regionObj->findAll('css', '.listing__item--tile, .card, article.tile') as $element) {
       // @todo The `.listing__title` selector is part of the original Joinup
       //   theme and can be removed once we migrated to the new theme.
-      $title_element = $element->find('css', ' .listing__title, h2 a');
+      $title_element = $element->find('css', ' .listing__title, .card-title, h2 a');
       // Some tiles don't have a title, like the one to create a new collection
       // in the collections page.
       if ($title_element) {
@@ -294,7 +305,7 @@ trait TraversingTrait {
     // @todo This can be removed once we are fully migrated to the new theme.
     $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
     // That have a heading with the specified text.
-    $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ")][normalize-space()="' . $heading . '"]]';
+    $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ") or contains(concat(" ", normalize-space(@class), " "), " card-title ")][normalize-space()="' . $heading . '"]]';
 
     $item = $this->getSession()->getPage()->find('xpath', $xpath);
 

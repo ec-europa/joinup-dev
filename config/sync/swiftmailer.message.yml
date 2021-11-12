@@ -1,7 +1,6 @@
-format: text/html
-respect_format: true
-convert_mode: true
+content_type: text/html
+text_format: plain_text
+generate_plain: true
 character_set: UTF-8
 _core:
   default_config_hash: 1ErUI34W400SFVtJGG8W1mfDZ6-Dw3L9l9ZST2PsTMs
-filter_format: plain_text

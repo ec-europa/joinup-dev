@@ -221,6 +221,10 @@ Feature: Search inside groups
     Then the option with text "Chalet construction (2)" from select facet form "collection/solution" is selected
     And the page should show the tiles "Ground plan, Natural materials"
     And I should see the following facet summary "Chalet construction"
+    # Workaround to scroll an element towards the center of the screen to avoid a false out of bounds move exception.
+    # @todo: Remove this as part of ISAICP-6800.
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6800
+    When I scroll the "Chalet construction" chip into view
     When I should remove the following facet summary "Chalet construction"
     Then the page should not contain any facet summary
     And the page should show the tiles "Ground plan, Pre-alpha, Natural materials, Presenting DrillMaster X88"
@@ -233,8 +237,8 @@ Feature: Search inside groups
     When I open the search bar by clicking on the search icon
     Then the page should not contain any chips
 
-    When I select "Inclined foundations" from the "collection/solution" select facet form
-    And I click Search in facets form
+    When I select "Inclined foundations" from "Collection/Solution"
+    And I press "Search"
     Then the option with text "Inclined foundations (6)" from select facet form "collection/solution" is selected
     And I should see 6 tiles
 
@@ -243,8 +247,8 @@ Feature: Search inside groups
 
     # The filter facets summary shouldn't remain active when doing another search.
     When I enter "ground" in the search bar and press enter
-    Then I select "Inclined foundations" from the "collection/solution" select facet form
-    And I click Search in facets form
+    Then I select "Inclined foundations" from "Collection/Solution"
+    And I press "Search"
     And I should see 2 tiles
     When I open the search bar by clicking on the search icon
     And I should see the following facet summary "Inclined foundations"

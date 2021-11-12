@@ -1,0 +1,38 @@
+// Pagination
+.pagination {
+  .page-item {
+    height: 3rem;
+  }
+  .page-link {
+    padding: 0.375rem 0.55rem;
+  }
+  .pager__item--first,
+  .pager__item--previous,
+  .pager__item--last,
+  .pager__item--next {
+    a {
+      color: $link-color;
+      width: 1.2rem;
+      height: 2rem;
+      @include icon-only();
+    }
+  }
+    
+  .pager__item--first a {
+    @include font-icon-before("\E808", inherit, inherit, inherit, -1px 0 0 0);
+  }
+  .pager__item--previous {
+    padding-right: 10px;
+    a {
+      @include font-icon-before("\E812", inherit, inherit, inherit, -1px 8px 0 0);
+    }
+  }
+
+  .pager__item--last a {
+    @include font-icon-before("\E809", inherit, inherit, inherit, -1px 0 0 0);
+  }
+  .pager__item--next a {
+    @include font-icon-before("\E811", inherit, inherit, inherit, -1px 0 0 0);
+  }
+
+}

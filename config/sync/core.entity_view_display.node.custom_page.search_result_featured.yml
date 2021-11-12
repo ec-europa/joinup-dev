@@ -1,0 +1,65 @@
+uuid: 66e9838b-b5d0-4b87-803a-f160e38ff00f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result_featured
+    - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.field_paragraphs_body
+    - field.field.node.custom_page.og_audience
+    - node.type.custom_page
+  module:
+    - field_group
+    - layout_builder
+    - template_suggestion
+    - user
+third_party_settings:
+  field_group:
+    group_attachment:
+      children:
+        - field_attachment
+      parent_name: ''
+      weight: 7
+      format_type: html_element
+      format_settings:
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: Attachments
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: ZZ0APhON-5FpA-vKXTwx_A1Bz6FHZzw2XG7t7MvvXO8
+id: node.custom_page.search_result_featured
+targetEntityType: node
+bundle: custom_page
+mode: search_result_featured
+content:
+  published_at:
+    type: timestamp
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_attachment: true
+  field_custom_page_logo: true
+  field_paragraphs_body: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true

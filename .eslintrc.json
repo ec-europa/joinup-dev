@@ -1,0 +1,13 @@
+{
+  "extends": "./web/.eslintrc.json",
+  "overrides": [
+    // Empty mappings are allowed in the docker-compose file. This indicates
+    // options that will inherit their value from the environment variables.
+    {
+      "files": ["docker-compose.yml"],
+      "rules": {
+        "yml/no-empty-mapping-value": "off"
+      }
+    }
+  ]
+}

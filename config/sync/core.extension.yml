@@ -132,6 +132,7 @@ module:
   metatag: 0
   metatag_open_graph: 0
   moderation: 0
+  monolog: 0
   nio: 0
   node: 0
   oe_bootstrap_theme_helper: 0
@@ -197,7 +198,6 @@ module:
   state_machine_revisions: 0
   subpathauto: 0
   swiftmailer: 0
-  syslog: 0
   system: 0
   tallinn: 0
   taxonomy: 0

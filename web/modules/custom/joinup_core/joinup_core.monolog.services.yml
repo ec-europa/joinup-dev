@@ -1,0 +1,28 @@
+parameters:
+
+  monolog.channel_handlers:
+    default: ['default_handler']
+    php: ['php_handler']
+
+  monolog.processors:
+    - message_placeholder
+    - current_user
+    - request_uri
+    - ip
+    - referer
+    - error_page_error_uuid
+
+services:
+
+  monolog.handler.default_handler:
+    class: Monolog\Handler\RotatingFileHandler
+    # The parameter is set in \Drupal\joinup_core\JoinupCoreServiceProvider
+    arguments: ['%joinup_core.monolog.paths.default_handler%', 10, '100']
+
+  monolog.handler.php_handler:
+    class: Monolog\Handler\RotatingFileHandler
+    # The parameter is set in \Drupal\joinup_core\JoinupCoreServiceProvider
+    arguments: ['%joinup_core.monolog.paths.php_handler%', 10, '400']
+
+  monolog.processor.error_page_error_uuid:
+    class: Drupal\joinup_core\Logger\Processor\ErrorPageErrorUuidProcessor

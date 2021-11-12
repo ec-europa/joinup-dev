@@ -232,4 +232,32 @@ trait EntityTrait {
     $this->visitPath($path);
   }
 
+  /**
+   * Returns the URI of the given entity, prefixed with the base path.
+   *
+   * Since Behat tests are run from the CLI the base path (which is normally
+   * provided as an environment variable by the webserver) is not available on
+   * the Symfony router object which is used by Drupal to construct the URI.
+   * This returns the URI prefixed with the base path which is set as a global
+   * variable in Drupal by the Behat Drupal Extension.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity for which to return the URI.
+   * @param string $rel
+   *   The link relationship type, for example: canonical or edit-form.
+   * @param array $options
+   *   See \Drupal\Core\Routing\UrlGeneratorInterface::generateFromRoute() for
+   *   the available options.
+   *
+   * @return string
+   *   The URI.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   When the entity doesn't have an ID yet.
+   */
+  protected function getEntityUri(EntityInterface $entity, string $rel = 'canonical', array $options = []): string {
+    $base_path = rtrim(base_path(), '/');
+    return $base_path . $entity->toUrl($rel, $options)->toString();
+  }
+
 }

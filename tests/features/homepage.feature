@@ -160,13 +160,12 @@ Feature: Homepage
     Given the Joinup version is set to "<version>"
     When I am on the homepage
     Then I should see the link "<version>" in the Footer region
-    When I click "<version>"
-    Then the url should match "<url>"
+    And the "<version>" link should point to "<url>"
 
     Examples:
-      | version                    | url                                        |
-      | v1.57.0                    | /ec-europa/joinup-dev/releases/tag/v1.57.0 |
-      | v1.57.0-177-g0123456abcdef | /ec-europa/joinup-dev/commit/0123456abcdef |
+      | version                    | url                                                                |
+      | v1.57.0                    | https://git.fpfis.eu/digit/digit-joinup-reference/-/tags/v1.57.0   |
+      | v1.57.0-177-g0123456abcdef | https://git.fpfis.eu/digit/digit-joinup-dev/-/commit/0123456abcdef |
 
   Scenario: Search box is shown in the main content
     Given collection:

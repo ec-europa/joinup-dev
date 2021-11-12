@@ -20,7 +20,7 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
   /**
    * The current time.
    *
-   * @var int
+   * @var \DateTimeInterface
    */
   protected $now;
 
@@ -35,7 +35,7 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
       ->set('node.news', 10)
       ->save();
 
-    $this->now = time();
+    $this->now = new \DateTime('now', new \DateTimeZone('UTC'));
 
     /** @var \Drupal\collection\Entity\CollectionInterface $collection */
     $collection = $this->createRdfEntity([
@@ -46,25 +46,34 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
     $discussion = $this->createNode([
       'type' => 'discussion',
       'og_audience' => $collection,
-      'published_at' => strtotime('-3 years -1 minute', $this->now),
+      'published_at' => (clone $this->now)
+        ->sub(new \DateInterval('P3YT1M'))
+        ->getTimestamp(),
     ]);
     /** @var \Drupal\joinup_document\Entity\DocumentInterface $document */
     $document = $this->createNode([
       'type' => 'document',
       'og_audience' => $collection,
-      'published_at' => strtotime('-3 years +1 minute', $this->now),
+      'published_at' => (clone $this->now)
+        ->sub(new \DateInterval('P3Y'))
+        ->add(new \DateInterval('PT1M'))
+        ->getTimestamp(),
     ]);
     /** @var \Drupal\joinup_event\Entity\EventInterface $event */
     $event = $this->createNode([
       'type' => 'event',
       'og_audience' => $collection,
-      'published_at' => strtotime('-40 years', $this->now),
+      'published_at' => (clone $this->now)
+        ->sub(new \DateInterval('P40Y'))
+        ->getTimestamp(),
     ]);
     /** @var \Drupal\joinup_news\Entity\NewsInterface $news */
     $news = $this->createNode([
       'type' => 'news',
       'og_audience' => $collection,
-      'published_at' => strtotime('-5 years', $this->now),
+      'published_at' => (clone $this->now)
+        ->sub(new \DateInterval('P5Y'))
+        ->getTimestamp(),
     ]);
 
     // The discussion is outdated.
@@ -94,9 +103,8 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
    *   The entity.
    */
   protected function assertIsOutdated(OutdatedContentInterface $entity): void {
-    $outdated_time = $entity->getOutdatedTime();
-    $this->assertNotNull($outdated_time);
-    $this->assertGreaterThan($outdated_time, $this->now);
+    $this->assertNotNull($entity->getOutdatedTime());
+    $this->assertGreaterThan($this->getOutdatedTime($entity), $this->now);
   }
 
   /**
@@ -106,8 +114,28 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
    *   The entity.
    */
   protected function assertIsNotOutdated(OutdatedContentInterface $entity): void {
-    $outdated_time = $entity->getOutdatedTime();
-    $this->assertTrue(!$outdated_time || ($this->now < $outdated_time));
+    if (!$entity->getOutdatedTime()) {
+      // It never gets outdated.
+      $this->assertTrue(TRUE);
+      return;
+    }
+    $this->assertGreaterThan($this->now, $this->getOutdatedTime($entity));
+  }
+
+  /**
+   * Returns the entity outdated date/time.
+   *
+   * @param \Drupal\joinup_core\Entity\OutdatedContentInterface $entity
+   *   The entity.
+   *
+   * @return \DateTime|null
+   *   The entity outdated date/time or NULL if it doesn't get outdated.
+   */
+  protected function getOutdatedTime(OutdatedContentInterface $entity): ?\DateTime {
+    if ($entity->getOutdatedTime()) {
+      return (new \DateTime("@{$entity->getOutdatedTime()}"))->setTimezone($this->now->getTimezone());
+    }
+    return NULL;
   }
 
 }

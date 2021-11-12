@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-d
 Feature: Custom pages enhance search results for their collections/solutions
   In order to increase the chances of my group to be found
   As a facilitator

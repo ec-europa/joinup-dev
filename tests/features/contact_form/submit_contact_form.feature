@@ -1,10 +1,10 @@
-@api @group-b
+@api @group-f
 Feature: Submit the contact form
   In order to gather feedback from the users
   As a moderator
   I want to collect wishes and grievances through a contact form
 
-  @email @uploadFiles:logo.png
+  @uploadFiles:logo.png
   Scenario: Submit a message as an anonymous user
     Given users:
       | Username                | Roles     |

@@ -7,7 +7,7 @@ namespace Joinup\CodingStandards\Sniffs\NamingConventions;
 use Composer\Semver\Comparator;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Sniffs\NamingConventions\ValidFunctionNameSniff;
-use GitWrapper\GitWrapper;
+use Gitonomy\Git\Repository;
 use PHP_CodeSniffer\Files\File;
 
 /**
@@ -145,9 +145,8 @@ class ValidUpdateNameSniff extends ValidFunctionNameSniff {
    */
   protected static function getGitDescribeTag(): string {
     if (!isset(static::$gitDescribeTag)) {
-      $wrapper = new GitWrapper();
-      $workingCopy = $wrapper->workingCopy(getcwd());
-      $tag = trim((string) $workingCopy->run(['describe --tags']));
+      $repository = new Repository(getcwd());
+      $tag = trim($repository->run('describe', ['--tags']));
       // Remove a potential leading 'v'.
       static::$gitDescribeTag = ltrim($tag, 'v');
     }

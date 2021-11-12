@@ -1,0 +1,29 @@
+uuid: 01e4f6d2-2d57-429d-b00e-09aa9c2040e0
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_solr
+id: joinup
+name: 'Joinup Search API Server'
+description: ''
+backend: search_api_solr
+backend_config:
+  connector: standard
+  connector_config:
+    scheme: http
+    host: solr
+    port: '8983'
+    path: /solr
+    core: joinup
+    timeout: 5
+    index_timeout: 5
+    optimize_timeout: 10
+    commit_within: 1000
+    solr_version: ''
+    http_method: AUTO
+  retrieve_data: false
+  highlight_data: false
+  skip_schema_check: false
+  site_hash: true
+  domain: generic
