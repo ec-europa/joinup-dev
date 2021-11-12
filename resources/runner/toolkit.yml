@@ -27,8 +27,6 @@ commands:
 
   # Overrides the toolkit:build-dev command.
   toolkit:build-dev:
-    - task: run
-      command: composer:install
     - task: copy
       from: ${joinup.site_dir}/sites/default/default.services.yml
       to: ${joinup.site_dir}/sites/default/services.yml
@@ -36,14 +34,17 @@ commands:
       command: testing:phpcs-setup
     - task: run
       command: testing:phpcs-git-hook
-    - task: run
-      command: testing:behat-setup
+    - task: process
+      source: ${joinup.dir}/behat.yml.dist
+      destination: ${joinup.dir}/behat.yml
     - task: run
       command: joinup:compile-scss
     - task: mkdir
-      dir: ${env.DRUPAL_PRIVATE_FILE_SYSTEM}
+      dir: ${joinup.files_private_dir}
     - task: mkdir
       dir: ${env.DRUPAL_FILE_TEMP_PATH}
+    - task: exec
+      command: test "$(git tag)" = "" || git describe --tags | tr -d '\n' > ${joinup.dir}/VERSION
 
   # Overrides toolkit:install-clean.
   toolkit:install-clean:
@@ -62,77 +63,7 @@ commands:
     - task: run
       command: drupal:site-install
     - task: run
-      command: virtuoso:import-fixtures
-      arguments:
-        - resources/fixtures/actor.rdf
-        - resources/fixtures/adms-definition.rdf
-        - resources/fixtures/ADMS-SW-v1.00.rdf
-        - resources/fixtures/ADMS_SKOS_v1.00.rdf
-        - resources/fixtures/business-process.rdf
-        - resources/fixtures/countries-skos.rdf
-        - resources/fixtures/data-theme-skos.rdf
-        - resources/fixtures/eif_conceptual_model.rdf
-        - resources/fixtures/eif_interoperability_layer.rdf
-        - resources/fixtures/eif_principle.rdf
-        - resources/fixtures/eif_recommendation.rdf
-        - resources/fixtures/EIRA_SKOS.rdf
-        - resources/fixtures/filetypes-skos.rdf
-        - resources/fixtures/languages-skos.rdf
-        - resources/fixtures/licence-legal-type.rdf
-        - resources/fixtures/product_type.rdf
-        - resources/fixtures/solution_category.rdf
-        - resources/fixtures/standardization_level.rdf
-        - resources/fixtures/test_resource_type.rdf
-    - task: run
-      command: sparql:query
-      arguments:
-        # We get our languages from the Metadata Registry. The Metadata Registry
-        # maintains two authority tables, one for individual languages and one
-        # for groups of languages called multilingual. For legacy reasons the
-        # two tables are published as a merger of the two. The multilingual
-        # language groups are not useful for us and we need to filter them out
-        # to avoid having the language lists polluted with entries labeled
-        # 'Multilingual Code'.
-        # See http://publications.europa.eu/mdr/resource//documentation/schema/cat.html#element_languages
-        # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2764
-        - DELETE FROM <http://languages-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . FILTER(str(?value) = "Multilingual Code") }
-        # See ISAICP-3084
-        - INSERT INTO <http://adms-sw-v1.00> { <http://purl.org/adms/licencetype/ViralEffect-ShareAlike>  <http://www.w3.org/2004/02/skos/core#inScheme> <http://purl.org/adms/licencetype/1.1> }
-        # The licences are defined in both the adms-sw and the adms-skos files.
-        # In adms-sw the version 1.1 is included while the adms-skos has the
-        # version 1.0. As a bundle can have only one uri mapped, the 1.0 version
-        # has to be removed.
-        # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2503
-        - DELETE FROM <http://adms_skos_v1.00> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <http://purl.org/adms/licencetype/1.0>};
-        # Remove any non english version of the taxonomy terms since we are only
-        # supporting english version in the website. If more terms are needed,
-        # the supported languages should be extended (the "en" below). This
-        # needs to repeat multiple times as the terms might.
-        - DELETE { GRAPH ?g { ?entity ?field ?value } } WHERE { GRAPH ?g { ?entity ?field ?value . FILTER (LANG(?value) != "" && LANG(?value) != "en") } };
-        # See ISAICP-3216. Add the "Concept" type to all collection elements so
-        # that they are listed as Parent terms.
-        - WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };
-        # Add the link to all "Concept" type elements so that they are all
-        # considered as children of the EIRA vocabulary regardless of the depth.
-        - WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};
-        # Create a backwards connection from the children to the parent.
-        - WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };
-        # Remove deprecated countries from the country list. See ISAICP-3442.
-        - WITH <http://countries-skos> DELETE { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://publications.europa.eu/ontology/authority/end.use> ?date . FILTER ( bound(?date) ) };
-        # Languages are required to be of type http://purl.org/dc/terms/Location
-        # but are listed as http://www.w3.org/2004/02/skos/core#Concept which is
-        # also correct. Add the entry:
-        # { ?subject a <http://purl.org/dc/terms/Location> } for each language
-        # in the <http://countries-skos> graph.
-        # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4566
-        - WITH <http://countries-skos> INSERT { ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/Location> } WHERE { ?entity a <http://www.w3.org/2004/02/skos/core#Concept> };
-        # As with the EIRA vocabulary, for elements of type skos:Collection, add
-        # the skos:Concept as a type to the list so that the parent elements are
-        # properly mapped to a bundle, and add the skos:broader for the
-        # backwards connection from the child to the parent.
-        - WITH <http://licence-legal-type> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };
-        - WITH <http://licence-legal-type> INSERT { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } WHERE { ?subject a skos:Concept . FILTER NOT EXISTS { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } };
-        - WITH <http://licence-legal-type> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };
+      command: dev:import-sparql-fixtures
     # TODO: Remove this in ISAICP-5271. Newer versions of Search API module are
     # storing the site hash into a state variable, rather than a config.
     # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5271.
@@ -166,3 +97,32 @@ commands:
         - if (node_access_needs_rebuild()) { node_access_rebuild(); }
     - task: run
       command: config-readonly:enable
+
+  # Overrides the toolkit:test-phpcs command.
+  toolkit:test-phpcs:
+    # Handle a potential case where the repo has been shallow cloned. Typically,
+    # this happens in GitLab pipelines, where the repos are shallow cloned for
+    # performance reasons. A shallow clone prevents us to get the Git latest tag
+    # as no tags are available. But we require this info during the coding
+    # standards check.
+    # See \Joinup\CodingStandards\Sniffs\NamingConventions\ValidUpdateNameSniff
+    - task: exec
+      command: if $(git rev-parse --is-shallow-repository); then git fetch --unshallow; fi
+    - task: run
+      command: testing:phpcs-setup
+    - task: exec
+      command: ${phpcs.file.bin}
+    #- task: run
+    #  command: testing:check-deprecated-code
+    #- task: run
+    #  command: testing:check-deprecated-code-contrib
+
+  # Lints YAML files using ESLint.
+  toolkit:lint-yaml:
+    - task: exec
+      command: ${joinup.dir}/node_modules/.bin/eslint --ext .yml .
+
+  # Fixes YAML files using ESLint.
+  toolkit:fix-yaml:
+    - task: exec
+      command: ${joinup.dir}/node_modules/.bin/eslint --ext .yml --fix .

@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-g
 Feature: Report inappropriate content
   In order to outsource the discovery of inappropriate content on the site
   As a moderator
@@ -17,6 +17,19 @@ Feature: Report inappropriate content
     Then I should see the heading "Contact"
     And the "Category" field should contain "report"
     And the "Page URL" field should contain the link to the "<title>" page
+
+    # Submit the form to check if 'destination' has been correctly set.
+    And I fill in the following:
+      | First name     | John            |
+      | Last name      | Doe             |
+      | Organisation   |                 |
+      | E-mail address | doe@example.rg  |
+      | Subject        | Invalid content |
+      | Message        | Spam            |
+    # We need to wait 5 seconds for the spam protection time limit to pass.
+    And I wait for the spam protection time limit to pass
+    When I press "Submit"
+    Then I should see the heading "<title>"
 
     Examples:
       | type        | title                        | body                    |

@@ -1,4 +1,4 @@
 services:
   whats_new.helper:
     class: Drupal\whats_new\WhatsNewHelper
-    arguments: ['@entity_type.manager', '@current_user', '@user.data', '@cache_tags.invalidator']
+    arguments: ['@entity_type.manager', '@current_user', '@user.data', '@cache_tags.invalidator', '@path_alias.manager']

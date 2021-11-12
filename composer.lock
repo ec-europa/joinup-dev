@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d84b68fa25515d08182f6deebe6892f9",
+    "content-hash": "a9aa624ac05867d87540ccd3f57a0d5f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1234,62 +1234,6 @@
             "homepage": "https://github.com/container-interop/container-interop",
             "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
-        },
-        {
-            "name": "cpliakas/git-wrapper",
-            "version": "1.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cpliakas/git-wrapper.git",
-                "reference": "1a2f1131ec9ebe04a0b729b141396fa55f992d44"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cpliakas/git-wrapper/zipball/1a2f1131ec9ebe04a0b729b141396fa55f992d44",
-                "reference": "1a2f1131ec9ebe04a0b729b141396fa55f992d44",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "symfony/event-dispatcher": "~2.3|~3.0",
-                "symfony/process": "~2.3|~3.0"
-            },
-            "require-dev": {
-                "pdepend/pdepend": "~1.0",
-                "phploc/phploc": "~2.0",
-                "phpmd/phpmd": "~1.0",
-                "phpunit/phpunit": "~3.0",
-                "psr/log": "~1.0",
-                "scrutinizer/ocular": "~1.0",
-                "sebastian/phpcpd": "~2.0",
-                "symfony/filesystem": "~2.0"
-            },
-            "suggest": {
-                "monolog/monolog": "Enables logging of executed git commands"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "GitWrapper": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Chris Pliakas",
-                    "email": "opensource@chrispliakas.com"
-                }
-            ],
-            "description": "A PHP wrapper around the Git command line utility.",
-            "homepage": "https://github.com/cpliakas/git-wrapper",
-            "keywords": [
-                "git"
-            ],
-            "abandoned": "symplify/git-wrapper",
-            "time": "2016-04-19T16:12:33+00:00"
         },
         {
             "name": "cweagans/composer-patches",
@@ -5877,6 +5821,68 @@
             }
         },
         {
+            "name": "drupal/monolog",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/monolog.git",
+                "reference": "8.x-1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/monolog-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "939642830811428b5a17afb5c9d4243c72fa796d"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "monolog/monolog": ">=1.6.0,<2.0.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.3",
+                    "datestamp": "1558959784",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Drupal\\Monolog": "src/"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Pliakas",
+                    "homepage": "https://www.drupal.org/user/1011436",
+                    "email": "opensource@chrispliakas.com",
+                    "role": "Project Lead"
+                },
+                {
+                    "name": "See contributors",
+                    "homepage": "http://drupal.org/node/1937716/committers",
+                    "role": "Developer"
+                },
+                {
+                    "name": "lussoluca",
+                    "homepage": "https://www.drupal.org/user/138068"
+                }
+            ],
+            "description": "A Framework and UI for integrating with the Monolog library.",
+            "homepage": "http://drupal.org/project/monolog",
+            "support": {
+                "source": "https://git.drupalcode.org/project/monolog",
+                "issues": "http://drupal.org/project/issues/monolog"
+            }
+        },
+        {
             "name": "drupal/og",
             "version": "dev-neutral-access-result",
             "source": {
@@ -6888,6 +6894,63 @@
             }
         },
         {
+            "name": "drupal/search_api_autocomplete",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/search_api_autocomplete.git",
+                "reference": "8.x-1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api_autocomplete-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "b9ae7e69e95da0910a65b23f2810da4be579ecdd"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/search_api": "1.x"
+            },
+            "require-dev": {
+                "drupal/search_api_page": "1.x-dev"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.5",
+                    "datestamp": "1626685059",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "patches_applied": {
+                    "Clear timeout autosubmit used in views_autosubmit.": "resources/patch/search_api_autocomplete_override_views_autosubmit.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Thomas Seidl",
+                    "homepage": "https://www.drupal.org/u/drunken-monkey"
+                },
+                {
+                    "name": "See other contributors",
+                    "homepage": "https://www.drupal.org/node/1142202/committers"
+                }
+            ],
+            "description": "Adds autocomplete functionality to searches.",
+            "homepage": "https://www.drupal.org/project/search_api_autocomplete",
+            "support": {
+                "source": "http://git.drupal.org/project/search_api_autocomplete.git",
+                "issues": "https://www.drupal.org/project/issues/search_api_autocomplete",
+                "irc": "irc://irc.freenode.org/drupal-search-api"
+            }
+        },
+        {
             "name": "drupal/search_api_solr",
             "version": "2.2.0",
             "source": {
@@ -6934,6 +6997,10 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Missing config schema @see https://www.drupal.org/project/search_api_solr/issues/3236773": "https://git.drupalcode.org/project/search_api_solr/-/merge_requests/8.diff",
+                    "Trying to access array offset on value of type int @see https://www.drupal.org/project/search_api_solr/issues/3173950": "resources/patch/search_api_solr-3173950.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7460,7 +7527,8 @@
                 },
                 "patches_applied": {
                     "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
-                    "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff"
+                    "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff",
+                    "Allow more information shown on a query exception @see https://www.drupal.org/project/sparql_entity_storage/issues/3239395": "https://git.drupalcode.org/project/sparql_entity_storage/-/merge_requests/1.diff"
                 }
             },
             "autoload": {
@@ -7668,39 +7736,42 @@
         },
         {
             "name": "drupal/swiftmailer",
-            "version": "dev-1.x",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/swiftmailer.git",
-                "reference": "694cbf25d8c026b0c7c118093696d151a7874754"
+                "reference": "0fcfeef94b2b5dd37e31305d2c22c5d73232dfaf"
             },
             "require": {
-                "drupal/core": "~8.0",
-                "drupal/mailsystem": "*",
-                "html2text/html2text": "~4.0.1",
-                "swiftmailer/swiftmailer": "~5.4.5"
+                "drupal/core": "^8.9.11 || ^9.0.10",
+                "drupal/mailsystem": "^4.1.0",
+                "egulias/email-validator": "^2.0",
+                "html2text/html2text": "^4.0.1",
+                "php": ">=7.0.0",
+                "swiftmailer/swiftmailer": "^6.1.3",
+                "tijsverkoyen/css-to-inline-styles": "^2.2"
             },
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-1.x": "1.x-dev"
+                    "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+11-dev",
-                    "datestamp": "1554499381",
+                    "version": "8.x-2.0+1-dev",
+                    "datestamp": "1628154387",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2019-08-26/3000553-18.patch",
-                    "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2019-08-26/2892104-21.patch"
+                    "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://git.drupalcode.org/project/swiftmailer/-/merge_requests/2.diff",
+                    "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2021-10-11/2892104-38.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -7733,7 +7804,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/swiftmailer"
             },
-            "time": "2019-04-05T21:22:03+00:00"
+            "time": "2021-09-04T15:57:00+00:00"
         },
         {
             "name": "drupal/theme_rule",
@@ -8220,7 +8291,7 @@
                     }
                 },
                 "patches_applied": {
-                    "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
+                    "Stop auto submitting first character entered in an Autocomplete Filter field. @see https://www.drupal.org/project/views_autosubmit/issues/3160600": "https://www.drupal.org/files/issues/2021-09-06/3160600_views_autosubmit_16.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9366,16 +9437,16 @@
         },
         {
             "name": "html2text/html2text",
-            "version": "4.0.1",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mtibben/html2text.git",
-                "reference": "f55104b7c9f99b0937f0e20fe051b19f9c0ecad1"
+                "reference": "61ad68e934066a6f8df29a3d23a6460536d0855c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mtibben/html2text/zipball/f55104b7c9f99b0937f0e20fe051b19f9c0ecad1",
-                "reference": "f55104b7c9f99b0937f0e20fe051b19f9c0ecad1",
+                "url": "https://api.github.com/repos/mtibben/html2text/zipball/61ad68e934066a6f8df29a3d23a6460536d0855c",
+                "reference": "61ad68e934066a6f8df29a3d23a6460536d0855c",
                 "shasum": ""
             },
             "require-dev": {
@@ -9396,10 +9467,10 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPLv2"
+                "GPL-2.0-or-later"
             ],
             "description": "Converts HTML to formatted plain text",
-            "time": "2016-03-16T23:24:34+00:00"
+            "time": "2020-04-16T23:44:31+00:00"
         },
         {
             "name": "jacklmoore/autosize",
@@ -9410,7 +9481,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2021-06-30T06:04:10+00:00"
+            "time": "2021-05-17T17:56:07+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -10152,6 +10223,88 @@
             "time": "2020-06-16T17:45:06+00:00"
         },
         {
+            "name": "monolog/monolog",
+            "version": "1.26.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "c6b00f05152ae2c9b04a448f99c7590beb6042f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c6b00f05152ae2c9b04a448f99c7590beb6042f5",
+                "reference": "c6b00f05152ae2c9b04a448f99c7590beb6042f5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/log": "~1.0"
+            },
+            "provide": {
+                "psr/log-implementation": "1.0.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
+                "doctrine/couchdb": "~1.0@dev",
+                "graylog2/gelf-php": "~1.0",
+                "php-amqplib/php-amqplib": "~2.4",
+                "php-console/php-console": "^3.1.3",
+                "phpstan/phpstan": "^0.12.59",
+                "phpunit/phpunit": "~4.5",
+                "ruflin/elastica": ">=0.90 <3.0",
+                "sentry/sentry": "^0.13",
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
+                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-mongo": "Allow sending log messages to a MongoDB server",
+                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
+                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
+                "php-console/php-console": "Allow sending log messages to Google Chrome",
+                "rollbar/rollbar": "Allow sending log messages to Rollbar",
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
+                "sentry/sentry": "Allow sending log messages to a Sentry server"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Monolog\\": "src/Monolog"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "http://github.com/Seldaek/monolog",
+            "keywords": [
+                "log",
+                "logging",
+                "psr-3"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/Seldaek",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-05-28T08:32:12+00:00"
+        },
+        {
             "name": "neilime/php-css-lint",
             "version": "v1.1.0",
             "source": {
@@ -10391,7 +10544,7 @@
                 "patches_applied": {
                     "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                     "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/master...cbee0e9.diff",
+                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/1.7.0...cbee0e99a3a17972e1e4553e0b67d8b812ae074d.diff",
                     "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                     "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
                 }
@@ -11655,6 +11808,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-4.0.x": "4.0.x-dev"
+                },
+                "patches_applied": {
+                    "implode() deprecated usage": "resources/patch/solarium.diff"
                 }
             },
             "autoload": {
@@ -11690,7 +11846,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
+            "time": "2021-05-20T17:05:25+00:00"
         },
         {
             "name": "stack/builder",
@@ -11828,29 +11984,36 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.12",
+            "version": "v6.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "181b89f18a90f8925ef805f950d47a7190e9b950"
+                "reference": "15f7faf8508e04471f666633addacf54c0ab5933"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/181b89f18a90f8925ef805f950d47a7190e9b950",
-                "reference": "181b89f18a90f8925ef805f950d47a7190e9b950",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/15f7faf8508e04471f666633addacf54c0ab5933",
+                "reference": "15f7faf8508e04471f666633addacf54c0ab5933",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "egulias/email-validator": "^2.0|^3.1",
+                "php": ">=7.0.0",
+                "symfony/polyfill-iconv": "^1.0",
+                "symfony/polyfill-intl-idn": "^1.10",
+                "symfony/polyfill-mbstring": "^1.0"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9.1",
-                "symfony/phpunit-bridge": "~3.2"
+                "mockery/mockery": "^1.0",
+                "symfony/phpunit-bridge": "^4.4|^5.0"
+            },
+            "suggest": {
+                "ext-intl": "Needed to support internationalized email addresses"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.4-dev"
+                    "dev-master": "6.2-dev"
                 }
             },
             "autoload": {
@@ -11878,7 +12041,17 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2018-07-31T09:26:32+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/swiftmailer/swiftmailer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-03-09T12:30:35+00:00"
         },
         {
             "name": "symfony-cmf/routing",
@@ -12084,6 +12257,69 @@
                 }
             ],
             "time": "2020-10-24T10:57:07+00:00"
+        },
+        {
+            "name": "symfony/css-selector",
+            "version": "v4.4.27",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/css-selector.git",
+                "reference": "5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6",
+                "reference": "5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.3",
+                "symfony/polyfill-php80": "^1.16"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\CssSelector\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Jean-François Simon",
+                    "email": "jeanfrancois.simon@sensiolabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Converts CSS selectors to XPath expressions",
+            "homepage": "https://symfony.com",
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-07-21T12:19:41+00:00"
         },
         {
             "name": "symfony/debug",
@@ -13885,6 +14121,55 @@
                 }
             ],
             "time": "2020-10-24T10:57:07+00:00"
+        },
+        {
+            "name": "tijsverkoyen/css-to-inline-styles",
+            "version": "2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tijsverkoyen/CssToInlineStyles.git",
+                "reference": "b43b05cf43c1b6d849478965062b6ef73e223bb5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tijsverkoyen/CssToInlineStyles/zipball/b43b05cf43c1b6d849478965062b6ef73e223bb5",
+                "reference": "b43b05cf43c1b6d849478965062b6ef73e223bb5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "php": "^5.5 || ^7.0 || ^8.0",
+                "symfony/css-selector": "^2.7 || ^3.0 || ^4.0 || ^5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0 || ^7.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TijsVerkoyen\\CssToInlineStyles\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Tijs Verkoyen",
+                    "email": "css_to_inline_styles@verkoyen.eu",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
+            "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
+            "time": "2020-07-13T06:12:54+00:00"
         },
         {
             "name": "twig/twig",
@@ -16172,83 +16457,6 @@
             }
         },
         {
-            "name": "drupal/stage_file_proxy",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/stage_file_proxy.git",
-                "reference": "8.x-1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/stage_file_proxy-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "bad4d500e56f4e77adb2704ec5d4efdf52340df8"
-            },
-            "require": {
-                "drupal/core": ">=8.7.7"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1601040732",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "stage_file_proxy.drush.services.yml": "^9 || ^10"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "BarisW",
-                    "homepage": "https://www.drupal.org/user/107229"
-                },
-                {
-                    "name": "geek-merlin",
-                    "homepage": "https://www.drupal.org/user/229048"
-                },
-                {
-                    "name": "greggles",
-                    "homepage": "https://www.drupal.org/user/36762"
-                },
-                {
-                    "name": "markdorison",
-                    "homepage": "https://www.drupal.org/user/346106"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
-                },
-                {
-                    "name": "msonnabaum",
-                    "homepage": "https://www.drupal.org/user/75278"
-                },
-                {
-                    "name": "netaustin",
-                    "homepage": "https://www.drupal.org/user/199298"
-                },
-                {
-                    "name": "robwilmshurst",
-                    "homepage": "https://www.drupal.org/user/144488"
-                }
-            ],
-            "description": "Provides stage_file_proxy module.",
-            "homepage": "https://www.drupal.org/project/stage_file_proxy",
-            "support": {
-                "source": "https://git.drupalcode.org/project/stage_file_proxy"
-            }
-        },
-        {
             "name": "drupaltest/behat-one-time-login",
             "version": "1.0.1",
             "source": {
@@ -16309,20 +16517,20 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "4.0.4",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "8707138803f0c86115cf352101f92dfbcaec7721"
+                "reference": "93838e643109c69eed5b5cbfce09a09a6ba71836"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/8707138803f0c86115cf352101f92dfbcaec7721",
-                "reference": "8707138803f0c86115cf352101f92dfbcaec7721",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/93838e643109c69eed5b5cbfce09a09a6ba71836",
+                "reference": "93838e643109c69eed5b5cbfce09a09a6ba71836",
                 "shasum": ""
             },
             "require": {
-                "openeuropa/code-review": "^1.0@beta",
+                "openeuropa/code-review": "^1.1.0",
                 "phpcompatibility/php-compatibility": "^9.1"
             },
             "require-dev": {
@@ -16347,33 +16555,31 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-02-28T08:38:08+00:00"
+            "time": "2020-10-20T08:22:40+00:00"
         },
         {
             "name": "ec-europa/toolkit",
-            "version": "4.4.6",
+            "version": "4.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",
-                "reference": "8a84fdc4105379629fdb09c71ca348bf5c543abe"
+                "reference": "06b6b9c3f1d8acce340a767c0cdb0b54b89246d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/8a84fdc4105379629fdb09c71ca348bf5c543abe",
-                "reference": "8a84fdc4105379629fdb09c71ca348bf5c543abe",
+                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/06b6b9c3f1d8acce340a767c0cdb0b54b89246d3",
+                "reference": "06b6b9c3f1d8acce340a767c0cdb0b54b89246d3",
                 "shasum": ""
             },
             "require": {
                 "cweagans/composer-patches": "^1.4",
                 "drush/drush": "^9.7.1 || ^10.0.0",
-                "ec-europa/qa-automation": "^4.0.0",
+                "ec-europa/qa-automation": "^4.2",
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "^6.3",
                 "openeuropa/task-runner": "^1.0.0-beta6",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.0"
+                "php": "^7.1",
+                "phpunit/phpunit": "^6.0 || ^7.5 || ^9.5"
             },
             "suggest": {
                 "drupal/console": "The Drupal CLI, tool to generate boilerplate code, interact with and debug Drupal."
@@ -16394,7 +16600,7 @@
             ],
             "description": "Toolkit packaged for Drupal 8.",
             "homepage": "https://github.com/ec-europa/toolkit",
-            "time": "2021-05-26T22:33:38+00:00"
+            "time": "2021-09-07T21:53:38+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -16450,6 +16656,76 @@
                 "scraper"
             ],
             "time": "2020-11-01T09:30:18+00:00"
+        },
+        {
+            "name": "foxy/foxy",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fxpio/foxy.git",
+                "reference": "f9b17ec6701413a17358af21f47a35f2dc690616"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fxpio/foxy/zipball/f9b17ec6701413a17358af21f47a35f2dc690616",
+                "reference": "f9b17ec6701413a17358af21f47a35f2dc690616",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1|^2.0",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "composer/composer": "^1.5.0|^2.0.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Foxy\\Foxy",
+                "branch-alias": {
+                    "dev-1.1": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Foxy\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Pluchino",
+                    "email": "francois.pluchino@gmail.com"
+                }
+            ],
+            "description": "Fast, reliable, and secure NPM/Yarn bridge for Composer",
+            "homepage": "https://github.com/fxpio/foxy",
+            "keywords": [
+                "Bridge",
+                "asset",
+                "composer",
+                "dependency manager",
+                "nodejs",
+                "npm",
+                "package",
+                "yarn"
+            ],
+            "funding": [
+                {
+                    "url": "https://paypal.me/francoispluchino",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/francoispluchino",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-08-09T16:18:51+00:00"
         },
         {
             "name": "friends-of-behat/service-container-extension",
@@ -17024,88 +17300,6 @@
             "time": "2021-09-25T08:05:01+00:00"
         },
         {
-            "name": "monolog/monolog",
-            "version": "1.26.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "c6b00f05152ae2c9b04a448f99c7590beb6042f5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c6b00f05152ae2c9b04a448f99c7590beb6042f5",
-                "reference": "c6b00f05152ae2c9b04a448f99c7590beb6042f5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "psr/log": "~1.0"
-            },
-            "provide": {
-                "psr/log-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
-                "doctrine/couchdb": "~1.0@dev",
-                "graylog2/gelf-php": "~1.0",
-                "php-amqplib/php-amqplib": "~2.4",
-                "php-console/php-console": "^3.1.3",
-                "phpstan/phpstan": "^0.12.59",
-                "phpunit/phpunit": "~4.5",
-                "ruflin/elastica": ">=0.90 <3.0",
-                "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "^5.3|^6.0"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
-                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
-                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-                "ext-mongo": "Allow sending log messages to a MongoDB server",
-                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
-                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
-                "php-console/php-console": "Allow sending log messages to Google Chrome",
-                "rollbar/rollbar": "Allow sending log messages to Rollbar",
-                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
-                "sentry/sentry": "Allow sending log messages to a Sentry server"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Monolog\\": "src/Monolog"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-            "homepage": "http://github.com/Seldaek/monolog",
-            "keywords": [
-                "log",
-                "logging",
-                "psr-3"
-            ],
-            "funding": [
-                {
-                    "url": "https://github.com/Seldaek",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-05-28T08:32:12+00:00"
-        },
-        {
             "name": "mtdowling/jmespath.php",
             "version": "2.6.1",
             "source": {
@@ -17401,21 +17595,22 @@
         },
         {
             "name": "openeuropa/code-review",
-            "version": "1.0.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/code-review.git",
-                "reference": "99802c32dcecb0939d90d9f5c0c1d0e4fbef7b19"
+                "reference": "89e90d3016b4bfded98c15052628ecf7dcb1d50e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/code-review/zipball/99802c32dcecb0939d90d9f5c0c1d0e4fbef7b19",
-                "reference": "99802c32dcecb0939d90d9f5c0c1d0e4fbef7b19",
+                "url": "https://api.github.com/repos/openeuropa/code-review/zipball/89e90d3016b4bfded98c15052628ecf7dcb1d50e",
+                "reference": "89e90d3016b4bfded98c15052628ecf7dcb1d50e",
                 "shasum": ""
             },
             "require": {
                 "cweagans/composer-patches": "^1.0",
-                "drupal/coder": "^8.3.2",
+                "drupal/coder": "^8.3.4",
+                "php": ">=7.2",
                 "phpmd/phpmd": "^2.6",
                 "phpro/grumphp": "^0.15.2",
                 "squizlabs/php_codesniffer": "^3.5"
@@ -17438,7 +17633,7 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa code review component.",
-            "time": "2019-10-16T13:52:28+00:00"
+            "time": "2020-09-02T14:39:16+00:00"
         },
         {
             "name": "openeuropa/composer-artifacts",
@@ -17486,16 +17681,16 @@
         },
         {
             "name": "openeuropa/task-runner",
-            "version": "dev-php-7.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/task-runner.git",
-                "reference": "ec9791bc4426d4ab76a44aeb08dbcb353efb854d"
+                "url": "https://github.com/openeuropa/task-runner.git",
+                "reference": "f7d91155e9f84be4aa46af0343fa3d8b97aa9140"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/task-runner/zipball/ec9791bc4426d4ab76a44aeb08dbcb353efb854d",
-                "reference": "ec9791bc4426d4ab76a44aeb08dbcb353efb854d",
+                "url": "https://api.github.com/repos/openeuropa/task-runner/zipball/f7d91155e9f84be4aa46af0343fa3d8b97aa9140",
+                "reference": "f7d91155e9f84be4aa46af0343fa3d8b97aa9140",
                 "shasum": ""
             },
             "require": {
@@ -17503,7 +17698,7 @@
                 "gitonomy/gitlib": "^1.0",
                 "jakeasmith/http_build_url": "^1.0.1",
                 "nuvoleweb/robo-config": "^0.2.1",
-                "php": ">=7.1",
+                "php": ">=7.2",
                 "symfony/console": "^3.4.21|^4|^5"
             },
             "require-dev": {
@@ -17524,26 +17719,18 @@
                     "OpenEuropa\\TaskRunner\\": "./src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "OpenEuropa\\TaskRunner\\Tests\\": "./tests/",
-                    "My\\Custom\\": "./tests/custom/src/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "EUPL-1.2"
             ],
             "description": "PHP task runner based on Robo, focused on extensibility.",
             "keywords": [
-                "Robo",
                 "automation",
+                "robo",
                 "task-runner",
                 "yaml"
             ],
-            "support": {
-                "source": "https://github.com/pfrenssen/task-runner/tree/php-7.1"
-            },
-            "time": "2021-09-10T10:44:20+00:00"
+            "time": "2021-09-14T08:26:33+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -20181,69 +20368,6 @@
             "time": "2021-08-04T20:31:23+00:00"
         },
         {
-            "name": "symfony/css-selector",
-            "version": "v4.4.27",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/css-selector.git",
-                "reference": "5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6",
-                "reference": "5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.3",
-                "symfony/polyfill-php80": "^1.16"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\CssSelector\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Jean-François Simon",
-                    "email": "jeanfrancois.simon@sensiolabs.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Converts CSS selectors to XPath expressions",
-            "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-07-21T12:19:41+00:00"
-        },
-        {
             "name": "symfony/dom-crawler",
             "version": "v4.4.30",
             "source": {
@@ -20776,7 +20900,7 @@
         {
             "alias": "1.0.0-beta7",
             "alias_normalized": "1.0.0.0-beta7",
-            "version": "dev-php-7.1",
+            "version": "9999999-dev",
             "package": "openeuropa/task-runner"
         }
     ],
@@ -20808,7 +20932,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1.0",
+        "php": ">=7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pdo": "*"
@@ -20818,7 +20942,7 @@
         "ext-libxml": "*"
     },
     "platform-overrides": {
-        "php": "7.1.9"
+        "php": "7.4.0"
     },
     "plugin-api-version": "1.1.0"
 }

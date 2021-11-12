@@ -1,0 +1,17 @@
+Index: src/Core/Query/AbstractRequestBuilder.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Core/Query/AbstractRequestBuilder.php b/src/Core/Query/AbstractRequestBuilder.php
+--- a/src/Core/Query/AbstractRequestBuilder.php	
++++ b/src/Core/Query/AbstractRequestBuilder.php	(date 1533819685000)
+@@ -56,7 +56,7 @@
+             }
+ 
+             if (is_array($paramValue)) {
+-                $paramValue = implode($paramValue, ',');
++                $paramValue = implode(',', $paramValue);
+             }
+ 
+             $params .= $paramName.'='.$paramValue.' ';

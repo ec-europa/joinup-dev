@@ -53,16 +53,16 @@ class HomepageContext extends RawDrupalContext {
         $entity = self::getEntityByLabel('rdf_entity', $expected_data['title']);
         // In Joinup, "Read more" links of collections and solutions lead to the
         // 'About' page.
-        $read_more_url = $entity->toUrl('about-page');
+        $read_more_url = $this->getEntityUri($entity, 'about-page');
       }
       else {
         $entity = self::getNodeByTitle($expected_data['title']);
-        $read_more_url = $entity->toUrl('canonical');
+        $read_more_url = $this->getEntityUri($entity, 'canonical');
       }
 
       // Check that title links to the canonical page of the
       // news, event, solution and collection.
-      $xpath = '//h2/a[@href = "' . $entity->toUrl()->toString() . '" and contains(., "' . $expected_data['title'] . '")]';
+      $xpath = '//h2/a[@href = "' . $this->getEntityUri($entity) . '" and contains(., "' . $expected_data['title'] . '")]';
       Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('%s "%s" does not have the correct title which links to the canonical page.', $type, $expected_data['title']));
 
       // Check the body/description text.
@@ -79,7 +79,7 @@ class HomepageContext extends RawDrupalContext {
 
       // Check that a "Read more" link is present which leads to the canonical
       // page of the news, event, solution and collection.
-      $xpath = '//a[@href = "' . $read_more_url->toString() . '" and contains(@class, "read-more")]';
+      $xpath = '//a[@href = "' . $read_more_url . '" and contains(@class, "read-more")]';
       Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('%s "%s" does not have a "Read more" link which leads to the canonical page.', $type, $expected_data['title']));
     }
   }

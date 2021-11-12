@@ -28,6 +28,8 @@
         <exclude name="Drupal.Semantics.FunctionTriggerError.TriggerErrorVersion" />
         <exclude name="Drupal.Semantics.FunctionTriggerError.TriggerErrorPeriodAfterSeeUrl" />
         <exclude name="Drupal.Semantics.FunctionTriggerError.TriggerErrorSeeUrlFormat" />
+        <!-- See https://www.drupal.org/project/coder/issues/3228308 -->
+        <exclude name="Drupal.Classes.UseGlobalClass.RedundantUseStatement" />
     </rule>
     <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice">
         <exclude name="DrupalPractice.CodeAnalysis.VariableAnalysis.UndefinedVariable" />

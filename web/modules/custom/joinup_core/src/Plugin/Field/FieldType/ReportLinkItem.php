@@ -76,15 +76,17 @@ class ReportLinkItem extends LinkItem {
   protected function computeValue() {
     $entity = $this->getEntity();
     if (!$entity->isNew()) {
-      $url = $this->getEntity()->toUrl()->toString();
+      $system_path = $this->getEntity()->toUrl()->getInternalPath();
+      $path = \Drupal::service('path_alias.manager')->getAliasByPath("/$system_path");
       $value = [
         'uri' => 'internal:/contact',
         'title' => $this->t('Report abusive content'),
         'options' => [
           'query' => [
             'category' => 'report',
-            'uri' => $url,
-            'destination' => $url,
+            'uri' => $path,
+            // Remove the leading slash.
+            'destination' => substr($path, 1),
           ],
         ],
       ];

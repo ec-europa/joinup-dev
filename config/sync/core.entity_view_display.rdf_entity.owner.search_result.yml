@@ -1,0 +1,53 @@
+uuid: 612fb333-bd46-4977-b59e-27623a73de19
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.search_result
+    - field.field.rdf_entity.owner.field_owner_name
+    - field.field.rdf_entity.owner.field_owner_state
+    - field.field.rdf_entity.owner.field_owner_type
+    - rdf_entity.rdfentity.owner
+  module:
+    - layout_builder
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: fy6D0LYYE1mq9NgSVFKTRIYDMwjQ32cfT4cIshjpOcA
+id: rdf_entity.owner.search_result
+targetEntityType: rdf_entity
+bundle: owner
+mode: search_result
+content:
+  field_owner_name:
+    type: string
+    weight: 1
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_owner_type:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  changed: true
+  created: true
+  field_owner_state: true
+  langcode: true

@@ -1,6 +1,6 @@
 # Tests notifications for solutions. This file does not include template 1.
 # Template 1 is tested in the add_solution.feature already.
-@api @terms @email
+@api @terms @group-f
 Feature: Solution notifications
   In order to manage solutions
   As a user of the website
@@ -35,7 +35,6 @@ Feature: Solution notifications
     When I am logged in as "Pat Harper"
 
     # Template 7. The moderation team proposes changes.
-    And all e-mails have been sent
     And I go to the homepage of the "Solution notification to propose changes" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
@@ -49,8 +48,7 @@ Feature: Solution notifications
       | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                     |
 
     # Template 13. The moderation team blacklists a solution.
-    When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to blacklist" solution
+    When I go to the homepage of the "Solution notification to blacklist" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Blacklist"
     Then the following email should have been sent:
@@ -59,8 +57,7 @@ Feature: Solution notifications
       | body      | the moderator has blacklisted your interoperability solution - Solution notification to blacklist, you can contact the moderation team to resolve the issue. |
 
     # Template 14. The moderation team restores a solution from blacklisted.
-    When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to publish from blacklisted" solution
+    When I go to the homepage of the "Solution notification to publish from blacklisted" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
@@ -69,8 +66,7 @@ Feature: Solution notifications
       | body      | the moderator has published back your interoperability solution - Solution notification to publish from blacklisted that was blacklisted. |
 
     # Template 15. The moderation team requests changes.
-    When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to request changes" solution
+    When I go to the homepage of the "Solution notification to request changes" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Request changes"
     # Motivation required.
@@ -88,8 +84,7 @@ Feature: Solution notifications
       | If you think this action is not clear or not due, please contact Joinup Support at                                                                                        |
 
     # Template 18. The moderation team deletes a solution without prior request.
-    When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to delete by moderator team" solution
+    When I go to the homepage of the "Solution notification to delete by moderator team" solution
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
@@ -101,8 +96,7 @@ Feature: Solution notifications
     When I am logged in as "Ramiro Myers"
 
     # Template 18. The owner proposes changes.
-    When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to propose from request changes" solution
+    When I go to the homepage of the "Solution notification to propose from request changes" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the email sent to "Pat Harper" with subject "Joinup: An update of a solution has been proposed" contains the following lines of text:
@@ -112,7 +106,7 @@ Feature: Solution notifications
 
     # The owner deletes their own solution. No email should be sent to the owner
     # since we do not send notifications to the actor.
-    When all e-mails have been sent
+    When I mark all emails as read
     And I go to the homepage of the "Solution notification to delete by owner" solution
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"

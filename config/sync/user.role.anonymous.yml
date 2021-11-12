@@ -15,6 +15,7 @@ permissions:
   - 'legal view legal_notice'
   - 'never autoplay videos'
   - 'subscribe to newsletters'
+  - 'use search_api_autocomplete for search'
   - 'use text format basic_html'
   - 'use text format simple_text'
   - 'view compatibility documents'

@@ -1,4 +1,4 @@
-@api @group-a
+@api @group-g
 Feature: In order to help moderators manage effectively imported content
   As the owner of the website
   I need to show status messages if a pipeline has not run for too long.

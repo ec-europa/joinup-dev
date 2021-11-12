@@ -175,23 +175,24 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
     $document = Html::load($text);
     foreach ($document->getElementsByTagName('iframe') as $iframe) {
       /** @var \DOMElement $iframe */
-      $src = $iframe->getAttribute('src');
-      $options = UrlHelper::parse($src);
-      $options['query'] = UrlHelper::filterQueryParameters($options['query'], [
-        'autoplay',
-        'autoPlay',
-        'autostart',
-      ]);
-      $url = $this->getAbsoluteUrl($options);
-      $matches[$document->saveHTML($iframe)] = [
-        'video_url' => $url,
-        'settings' => [
-          'width' => $iframe->getAttribute('width'),
-          'height' => $iframe->getAttribute('height'),
-          'autoplay' => $plugin_settings['autoplay'],
-          'responsive' => $plugin_settings['responsive'],
-        ],
-      ];
+      if ($src = $iframe->getAttribute('src')) {
+        $parts = UrlHelper::parse($src);
+        $parts['query'] = UrlHelper::filterQueryParameters($parts['query'], [
+          'autoplay',
+          'autoPlay',
+          'autostart',
+        ]);
+        $url = $this->getUrl($parts);
+        $matches[$document->saveHTML($iframe)] = [
+          'video_url' => $url,
+          'settings' => [
+            'width' => $iframe->getAttribute('width'),
+            'height' => $iframe->getAttribute('height'),
+            'autoplay' => $plugin_settings['autoplay'],
+            'responsive' => $plugin_settings['responsive'],
+          ],
+        ];
+      }
     }
 
     return $matches;
@@ -218,24 +219,25 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
   }
 
   /**
-   * Attempts to create the absolute url.
+   * Attempts to create a URL.
    *
-   * @param array $options
-   *   An array of options including the path.
+   * @param array $parts
+   *   An array of URL parts.
    *
    * @return string|null
-   *   The string representation of the url or null if no url is found.
+   *   The string representation of the URL or NULL if no URL is found.
    */
-  protected function getAbsoluteUrl(array $options) {
+  protected function getUrl(array $parts): ?string {
     try {
-      $url = Url::fromUri($options['path'], $options)->toString();
+      $url = Url::fromUri($parts['path'], $parts)->toString();
     }
-    catch (\Exception $e) {
+    catch (\Exception $exception) {
       try {
-        $url = ltrim($options['path'], '/');
-        $url = Url::fromUri('internal:/' . $url, $options)->setAbsolute(TRUE)->toString();
+        $path = ltrim($parts['path'], '/');
+        $parts['base_url'] = $GLOBALS['base_url'];
+        $url = Url::fromUri('internal:/' . $path, $parts)->toString();
       }
-      catch (\Exception $e) {
+      catch (\Exception $exception) {
         return NULL;
       }
     }

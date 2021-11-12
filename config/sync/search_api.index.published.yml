@@ -17,42 +17,42 @@ dependencies:
     - custom_page
     - joinup_search
   config:
+    - field.storage.meta_entity.count
+    - field.storage.meta_entity.field_featured
+    - field.storage.meta_entity.field_pinned_in
     - field.storage.node.body
-    - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_ar_description
-    - field.storage.taxonomy_term.field_eif_identifier
-    - field.storage.taxonomy_term.field_eif_related_term
     - field.storage.node.field_event_agenda
     - field.storage.node.field_event_date
-    - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_is_eif_category
-    - field.storage.rdf_entity.field_is_eif_recommendation
-    - field.storage.rdf_entity.field_is_solution_type
-    - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_isr_release_notes
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_licence_spdx_licence
     - field.storage.node.field_location
     - field.storage.node.field_news_headline
     - field.storage.node.field_organisation
+    - field.storage.node.field_paragraphs_body
     - field.storage.node.field_scope
     - field.storage.node.field_short_title
+    - field.storage.paragraph.field_body
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_is_eif_category
+    - field.storage.rdf_entity.field_is_eif_recommendation
+    - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_isr_owner
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_owner_name
+    - field.storage.taxonomy_term.field_eif_identifier
+    - field.storage.taxonomy_term.field_eif_related_term
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
-    - field.storage.meta_entity.count
-    - field.storage.rdf_entity.field_ci_name
-    - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_owner_name
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_isr_owner
-    - field.storage.meta_entity.field_featured
-    - field.storage.meta_entity.field_pinned_in
-    - field.storage.node.field_paragraphs_body
-    - field.storage.paragraph.field_body
-    - search_api.server.solr_published
+    - search_api.server.joinup
 third_party_settings:
   search_api_solr:
     finalize: false
@@ -869,4 +869,4 @@ tracker_settings:
 options:
   index_directly: true
   cron_limit: 50
-server: solr_published
+server: joinup

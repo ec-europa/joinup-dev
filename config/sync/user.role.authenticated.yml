@@ -109,6 +109,7 @@ permissions:
   - 'update paragraph content accordion_item'
   - 'update paragraph content content_listing'
   - 'update paragraph content simple_paragraph'
+  - 'use search_api_autocomplete for search'
   - 'use text format basic_html'
   - 'use text format content_editor'
   - 'use text format essential_html'

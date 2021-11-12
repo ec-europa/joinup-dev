@@ -4,12 +4,11 @@
     "type": "project",
     "license": "EUPL-1.2",
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pdo": "*",
         "composer/installers": "^1.9",
-        "cpliakas/git-wrapper": "~1.7",
         "cweagans/composer-patches": "^1.7",
         "dkarv/mdl-chip-input": "dev-master",
         "drupal/allowed_formats": "^1.3",
@@ -59,6 +58,7 @@
         "drupal/message_digest": "^1.0.0",
         "drupal/message_notify": "~1.2",
         "drupal/meta_entity": "^1.0-alpha2",
+        "drupal/monolog": "^1.3",
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/page_manager": "^4.0@beta",
@@ -75,6 +75,7 @@
         "drupal/schema_metatag": "^2",
         "drupal/schema_social_media_posting": "dev-1.0.x",
         "drupal/search_api": "1.13",
+        "drupal/search_api_autocomplete": "^1.5",
         "drupal/search_api_solr": "2.2",
         "drupal/simple_block": "^1.3",
         "drupal/simple_sitemap": "^3.10",
@@ -86,7 +87,7 @@
         "drupal/spdx": "^1.0",
         "drupal/state_machine": "^1.0",
         "drupal/subpathauto": "dev-1.x#fcd7c1c4c49d5ee1648630d92eb9da46e6bf25f0",
-        "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
+        "drupal/swiftmailer": "dev-2.x",
         "drupal/theme_rule": "^1.0",
         "drupal/token": "~1.7",
         "drupal/video_embed_field": "^2",
@@ -138,15 +139,15 @@
         "drupal/filecache": "^1",
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.18",
-        "drupal/stage_file_proxy": "^1.1",
         "drupaltest/behat-one-time-login": "^1.0",
-        "ec-europa/toolkit": "^4.4.6",
+        "ec-europa/toolkit": "^4.4.11",
+        "foxy/foxy": "^1.1",
         "jcalderonzumba/gastonjs": "^1.2@dev",
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.12.12",
         "mikey179/vfsstream": "~1.6",
         "openeuropa/composer-artifacts": "^0.1.3",
-        "openeuropa/task-runner": "dev-php-7.1 as 1.0.0-beta7",
+        "openeuropa/task-runner": "dev-master as 1.0.0-beta7",
         "pear/http_request2": "~2.4",
         "pfrenssen/phpcs-pre-push": "1.1",
         "php-task-runner/composer": "dev-master",
@@ -172,7 +173,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.1.9"
+            "php": "7.4.0"
         }
     },
     "autoload": {
@@ -213,16 +214,17 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev"
         ],
         "post-update-cmd": [
-            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev",
+            "rm -rf ./resources/solr/conf && cp -r ./web/modules/contrib/search_api_solr/solr-conf/6.x ./resources/solr/conf"
         ]
     },
     "extra": {
@@ -242,6 +244,7 @@
                 "web-root": "web/"
             },
             "file-mapping": {
+                "[web-root]/.eslintrc.json": false,
                 "[web-root]/robots.txt": {
                     "append": "resources/drupal-scaffold/robots.txt.append"
                 },
@@ -336,6 +339,13 @@
                 "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff",
                 "Duplicate dependencies @see https://www.drupal.org/project/search_api/issues/3111635": "https://www.drupal.org/files/issues/2020-02-08/3111635-8--fix_duplicate_dependencies.patch"
             },
+            "drupal/search_api_autocomplete": {
+                "Clear timeout autosubmit used in views_autosubmit.": "resources/patch/search_api_autocomplete_override_views_autosubmit.patch",
+                "Trying to access array offset on value of type int @see https://www.drupal.org/project/search_api_solr/issues/3173950": "resources/patch/search_api_solr-3173950.diff"
+            },
+            "drupal/search_api_solr": {
+                "Missing config schema @see https://www.drupal.org/project/search_api_solr/issues/3236773": "https://git.drupalcode.org/project/search_api_solr/-/merge_requests/8.diff"
+            },
             "drupal/site_alert": {
                 "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-26/3118800-44.patch"
             },
@@ -344,33 +354,37 @@
             },
             "drupal/sparql_entity_storage": {
                 "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
-                "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff"
+                "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff",
+                "Allow more information shown on a query exception @see https://www.drupal.org/project/sparql_entity_storage/issues/3239395": "https://git.drupalcode.org/project/sparql_entity_storage/-/merge_requests/1.diff"
             },
             "drupal/subpathauto": {
                 "Subpaths with redirect not resolved @see https://www.drupal.org/project/subpathauto/issues/3175637": "https://git.drupalcode.org/project/subpathauto/-/merge_requests/1/diffs.diff"
             },
             "drupal/swiftmailer": {
-                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2019-08-26/3000553-18.patch",
-                "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2019-08-26/2892104-21.patch"
+                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://git.drupalcode.org/project/swiftmailer/-/merge_requests/2.diff",
+                "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2021-10-11/2892104-38.patch"
             },
             "drupal/video_embed_field": {
                 "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
             },
             "drupal/views_autosubmit": {
-                "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
+                "Stop auto submitting first character entered in an Autocomplete Filter field. @see https://www.drupal.org/project/views_autosubmit/issues/3160600" : "https://www.drupal.org/files/issues/2021-09-06/3160600_views_autosubmit_16.patch"
             },
             "drupal/views_block_area": {
                 "Views block area missing schema @see https://www.drupal.org/project/views_block_area/issues/3157188": "https://www.drupal.org/files/issues/2020-07-06/views_block_area-missing_schema-3157188-2.patch"
             },
-            "openeuropa/oe_bootstrap_theme": {
-                "Preserve link attributes in navigation menus @see https://github.com/openeuropa/oe_bootstrap_theme/pull/38": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_bootstrap_theme/pull/38.diff"
-            },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                 "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/master...cbee0e9.diff",
+                "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/1.7.0...cbee0e99a3a17972e1e4553e0b67d8b812ae074d.diff",
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
+            },
+            "openeuropa/oe_bootstrap_theme": {
+                "Preserve link attributes in navigation menus @see https://github.com/openeuropa/oe_bootstrap_theme/pull/38": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_bootstrap_theme/pull/38.diff"
+            },
+            "solarium/solarium": {
+                "implode() deprecated usage": "resources/patch/solarium.diff"
             }
         },
         "patches-ignore": {
@@ -425,10 +439,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/gizra/og.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/pfrenssen/task-runner.git"
         },
         {
             "type": "composer",

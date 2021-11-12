@@ -48,7 +48,7 @@ dependencies:
     - field.storage.rdf_entity.field_isr_owner
     - field.storage.node.field_paragraphs_body
     - field.storage.paragraph.field_body
-    - search_api.server.solr_unpublished
+    - search_api.server.joinup
 third_party_settings:
   search_api_solr:
     finalize: false
@@ -688,4 +688,4 @@ tracker_settings:
 options:
   index_directly: true
   cron_limit: 50
-server: solr_unpublished
+server: joinup

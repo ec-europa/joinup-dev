@@ -1,0 +1,112 @@
+uuid: b854db9b-f987-4771-91ec-b6353ceac0e4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result
+    - field.field.node.news.body
+    - field.field.node.news.field_attachment
+    - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
+    - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_logo
+    - field.field.node.news.field_news_referenced_solution
+    - field.field.node.news.field_news_source_url
+    - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_shared_in
+    - field.field.node.news.field_site_featured
+    - field.field.node.news.field_state
+    - field.field.node.news.field_topic
+    - field.field.node.news.og_audience
+    - node.type.news
+  module:
+    - field_delimiter
+    - field_formatter_range
+    - field_group
+    - joinup_html_stripper
+    - layout_builder
+    - template_suggestion
+    - user
+third_party_settings:
+  field_group:
+    group_references:
+      children:
+        - field_news_source_url
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: References
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: node.news.search_result
+targetEntityType: node
+bundle: news
+mode: search_result
+content:
+  body:
+    label: hidden
+    type: joinup_html_stripper_stripped
+    weight: 1
+    settings:
+      trim_length: 200
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    region: content
+  field_topic:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      field_formatter_range:
+        order: 0
+        limit: 0
+        offset: 0
+      template_suggestion:
+        template_suggestion: ''
+  published_at:
+    type: timestamp
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_attachment: true
+  field_comments: true
+  field_keywords: true
+  field_news_headline: true
+  field_news_logo: true
+  field_news_referenced_solution: true
+  field_news_source_url: true
+  field_news_spatial_coverage: true
+  field_shared_in: true
+  field_site_featured: true
+  field_state: true
+  langcode: true
+  links: true
+  og_audience: true
+  read_more: true
+  report: true
+  share_link: true

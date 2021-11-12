@@ -114,7 +114,7 @@ class ContextualLinksHelper {
     }
 
     // @see Drupal.behaviors.contextual.attach(), contextual.js
-    $client->request('POST', '/contextual/render', [
+    $client->request('POST', base_path() . 'contextual/render', [
       'ids' => $ids,
       'tokens' => $tokens,
     ]);
@@ -170,7 +170,7 @@ class ContextualLinksHelper {
     $this->openContextualLinksMenu($element);
 
     $link_list = $element->find('css', '.contextual ul.contextual-links');
-    return $link_list->findAll('xpath', '//a');
+    return $link_list->findAll('css', 'a');
   }
 
   /**
@@ -241,26 +241,28 @@ class ContextualLinksHelper {
    *
    * @param \Behat\Mink\Element\TraversableElement $element
    *   The element that contains the contextual link menu.
-   * @param string $link
+   * @param string $link_title
    *   The link title.
    */
-  public function clickContextualLink(TraversableElement $element, string $link): void {
+  public function clickContextualLink(TraversableElement $element, string $link_title): void {
     $links = $this->findContextualLinkPaths($element);
 
-    if (!isset($links[$link])) {
-      throw new \RuntimeException("Contextual link '$link' not found.");
+    if (!isset($links[$link_title])) {
+      throw new \RuntimeException("Contextual link '$link_title' not found.");
     }
 
     // If we are not in a real browser, visit the link path instead of actually
     // opening the contextual menu and clicking the link.
     if ($this->browserSupportsJavaScript()) {
       $this->openContextualLinksMenu($element);
-      $link_element = $this->findContextualLinkElement($element, $link);
-      $link_element->focus();
+      $link_element = $this->findContextualLinkElement($element, $link_title);
       $link_element->click();
     }
     else {
-      $this->getSession()->visit($this->locatePath($links[$link]));
+      $link = $links[$link_title];
+      // Remove the base path.
+      $link = substr($link, strlen(base_path()) - 1);
+      $this->getSession()->visit($this->locatePath($link));
     }
   }
 
