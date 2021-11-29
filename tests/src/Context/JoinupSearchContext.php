@@ -348,6 +348,11 @@ class JoinupSearchContext extends RawDrupalContext {
     $node_elements = $facet->findAll('xpath', '//li[@class="facet-item"]');
     foreach ($node_elements as $node_element) {
       if ($node_element->getText() === $option) {
+        // The facets redirect to the updated search results using JS. Fall back
+        // to following the hidden link when no JS is available.
+        if (!$this->browserSupportsJavaScript()) {
+          $node_element = $node_element->find('xpath', '//a');
+        }
         $node_element->click();
         return;
       }

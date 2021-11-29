@@ -237,8 +237,51 @@ function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solar
     return;
   }
 
+  _joinup_search_only_allow_sorting_on_relevance_when_keywords_are_passed($solarium_query, $query);
   _joinup_search_apply_global_search_api_solr_settings($solarium_query, $query);
   _joinup_search_apply_listing_content_query_settings($solarium_query, $query);
+}
+
+/**
+ * Changes the search result order to 'last updated' when there are no keywords.
+ *
+ * By default the search results are ordered by relevance. This ordering doesn't
+ * make sense however if no keywords have been entered. In this case we will
+ * instead show the most recently updated content first.
+ *
+ * @param \Solarium\Core\Query\QueryInterface $solarium_query
+ *   The solarium query.
+ * @param \Drupal\search_api\Query\QueryInterface $query
+ *   The Search API query.
+ *
+ * @see joinup_search_search_api_solr_query_alter()
+ */
+function _joinup_search_only_allow_sorting_on_relevance_when_keywords_are_passed(SolariumQueryInterface $solarium_query, QueryInterface $query): void {
+  // Only act on the 'search' view. This is used for the standard search page.
+  if (!$query->hasTag('views') || !$query->hasTag('views_search')) {
+    return;
+  }
+
+  // Only "fix" the ordering in case the user didn't enter any keywords.
+  if (!empty($query->getKeys())) {
+    return;
+  }
+
+  // Skip if the user has manually selected a different sort order.
+  $order = $solarium_query->getSorts();
+  // @todo Use array_key_first() once we are on PHP 7.3.
+  reset($order);
+  if (key($order) !== 'score') {
+    return;
+  }
+
+  // When there are no keywords passed, the default sorting order 'relevance'
+  // (or 'score' in Solr parlance) doesn't make much sense and seemingly returns
+  // random results. Show the most recent results instead.
+  $solarium_query->setSorts([
+    'ds_entity_changed' => 'desc',
+    'ds_entity_created' => 'desc',
+  ]);
 }
 
 /**
